@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react'
-import styles from './Testimonials.module.css'
+import styles from './css/Testimonials.module.css'
 
 const TESTIMONIALS = [
   {name:'Lindiwe',text:'Thindisa helped my child catch up in math and feel confident again. The tutors were patient and caring.'},

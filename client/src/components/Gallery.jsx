@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import styles from './Gallery.module.css'
+import styles from './css/Gallery.module.css'
 
 const IMAGES = new Array(8).fill(0).map((_,i)=>`https://picsum.photos/800/600?random=${200+i}`)
 

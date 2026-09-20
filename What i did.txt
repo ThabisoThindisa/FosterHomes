@@ -1,0 +1,2 @@
+the backend is running on port 4000
+Created a router file then installed :npm install react-router-dom

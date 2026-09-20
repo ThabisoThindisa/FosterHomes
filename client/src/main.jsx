@@ -4,6 +4,9 @@ import { CheckCircle2, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-reac
 import Login from './components/Login';
 import NavBar from './components/NavBar';
 import Register from './components/Register';
+import Programs from './components/Programs';
+import Gallery from './components/Gallery';
+import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import './styles/animations.css';
 
 
@@ -80,7 +83,31 @@ function App() {
 }
 {}
 function Dashboard({ user, onLogout }) {
-  return <><NavBar /><main className="dashboard"><header className="dashboard-header"><div className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span> Thindisa Foster Home</div><button className="logout" onClick={onLogout}>Sign out</button></header><section className="welcome"><p className="eyebrow">Your private portal</p><h1>Welcome, {user.name.split(' ')[0]}.</h1><p>We will keep your next steps clear, considered, and in one place.</p></section><section className="status-grid"><article><CheckCircle2 size={22} /><span><strong>Profile created</strong><small>Your account is ready for the next step.</small></span></article><article><HeartHandshake size={22} /><span><strong>Adoption pathway</strong><small>Your role: {user.role.replace('_', ' ')}</small></span></article><article><ShieldCheck size={22} /><span><strong>Account protected</strong><small>{user.email}</small></span></article></section></main></>;
+  return <><NavBar /><main className="dashboard">
+    <header className="dashboard-header">
+      <div className="brand"><span className="brand-mark"><HeartHandshake size={20} />
+      </span> Thindisa Foster Home
+      </div>
+      <button className="logout" onClick={onLogout}>Sign out</button>
+      </header><section className="welcome"><p className="eyebrow">Your private portal</p>
+      <h1>Welcome, {user.name.split(' ')[0]}.</h1><p>We will keep your next steps clear, considered, and in one place.</p></section><section className="status-grid"><article><CheckCircle2 size={22} />
+      <span><strong>Profile created</strong>
+      <small>Your account is ready for the next step.</small>
+      </span></article><article><HeartHandshake size={22} />
+      <span><strong>Adoption pathway</strong><small>Your role: {user.role.replace('_', ' ')}
+        </small></span></article><article><ShieldCheck size={22} /><span><strong>Account protected</strong><small>{user.email}</small></span>
+      </article></section></main></>;
 }
 
-createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);
+createRoot(document.getElementById('root')).render(
+<React.StrictMode>
+  <BrowserRouter>
+    <Routes>
+
+      {/*Use route to direct to the navigation bar*/}
+      <Route path="/programs" element={<Programs />} />
+      <Route path="/gallery" element={<Gallery />} />
+      <Route path="*" element={<App />} />
+    </Routes>
+  </BrowserRouter>
+</React.StrictMode>);

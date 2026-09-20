@@ -1,0 +1,45 @@
+.page {
+  min-height: 100vh;
+  background: #f4f0e8;
+  color: #173b35;
+}
+
+.hero {
+  min-height: 58vh;
+  padding: 38px clamp(26px, 8vw, 120px) 54px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background: linear-gradient(125deg, rgba(21, 67, 59, .94), rgba(21, 67, 59, .62)), url('../../images/kids-futuristic-school-classroom.jpg');
+  background-position: center;
+  background-size: cover;
+  color: #f8f4e9;
+}
+
+.heroContent { max-width: 760px; }
+.backLink { color: #e9c59f; text-decoration: none; font-size: 13px; font-weight: 700; }
+.eyebrow { color: #c37e4c; text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 700; margin: 0 0 16px; }
+.hero .eyebrow { display: flex; align-items: center; gap: 7px; color: #edb577; margin-top: 16vh; }
+.hero h1 { max-width: 720px; font-family: 'Playfair Display', serif; font-size: clamp(42px, 6vw, 78px); font-weight: 500; line-height: 1.04; margin: 0; }
+.lede { max-width: 570px; color: #d6e2d9; line-height: 1.7; font-size: 16px; margin: 25px 0 0; }
+.heroNote { display: flex; align-items: center; gap: 10px; color: #d6e2d9; font-size: 13px; }
+
+.programSection { max-width: 1200px; margin: 0 auto; padding: 90px clamp(26px, 6vw, 80px); }
+.sectionIntro { max-width: 600px; margin-bottom: 42px; }
+.sectionIntro h2 { font-family: 'Playfair Display', serif; font-size: clamp(34px, 4vw, 52px); font-weight: 500; line-height: 1.08; margin: 0; }
+.grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+.card { min-height: 340px; padding: 28px; display: flex; flex-direction: column; border: 1px solid rgba(47, 114, 98, .17); background: #fcfaf5; }
+.cardNumber { width: 38px; height: 38px; display: grid; place-items: center; margin-bottom: 34px; border: 1px solid #d8b18a; border-radius: 50%; color: #a96439; font-size: 11px; font-weight: 700; }
+.card h3 { font-family: 'Playfair Display', serif; font-size: 27px; font-weight: 500; margin: 0 0 13px; }
+.card p { color: #66736b; line-height: 1.65; margin: 0; }
+.eligibility { display: flex; gap: 8px; align-items: flex-start; margin-top: 24px; color: #52625a; font-size: 12px; line-height: 1.45; }
+.eligibility svg { flex: 0 0 auto; color: #2f7262; }
+.cardLink { display: flex; align-items: center; gap: 7px; margin-top: auto; padding-top: 25px; color: #a96439; font-size: 13px; font-weight: 700; text-decoration: none; }
+.cardLink:hover, .backLink:hover { text-decoration: underline; }
+
+@media (max-width: 800px) {
+  .hero { min-height: 70vh; }
+  .hero .eyebrow { margin-top: 12vh; }
+  .grid { grid-template-columns: 1fr; }
+  .card { min-height: 280px; }
+}

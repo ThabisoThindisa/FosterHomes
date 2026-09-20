@@ -1,3 +1,0 @@
--- Import the user's supplied phpMyAdmin dump first.
--- This application expects the database to be named adoption_portal.
--- Existing user password hashes must be bcrypt hashes for login to work.

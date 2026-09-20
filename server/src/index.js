@@ -11,6 +11,7 @@ const port = Number(process.env.PORT || 4000);
 const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
 const jwtSecret = process.env.JWT_SECRET || 'development-secret-change-me';
 
+//Start the database connection
 const pool = mysql.createPool({
   host: process.env.DB_HOST || '127.0.0.1',
   port: Number(process.env.DB_PORT || 3306),
@@ -67,20 +68,17 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
-app.get('/api/programs', async (_req, res) => {
+//Get the available programs then send to the client 
+app.get('/api/getPrograms', async (_req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT program_id, program_name, description, eligibility_requirements, created_at
-      FROM adoption_programs
-      WHERE is_active = 1
-      ORDER BY created_at DESC;
-    `);
-    res.json({ data: rows });
+    const [rows] = await pool.query('SELECT * FROM adoption_programs');
+    res.json(rows);
   } catch (error) {
     console.error(error);
-    res.status(500).json({ error: 'Database error' });
+    res.status(500).json({ error: 'Failed to retrieve programs' });
   }
 });
+
 
 app.post('/api/auth/register', async (req, res) => {
   const { fullName, birthId, email, phone, password } = req.body;
@@ -93,25 +91,22 @@ app.post('/api/auth/register', async (req, res) => {
   try {
     connection = await pool.getConnection();
     await connection.beginTransaction();
-    const [existing] = await connection.query(`
-      SELECT user_id
-      FROM users
-      WHERE u_email = ? OR u_BirthID = ?
-      LIMIT 1;
-    `, [email.trim().toLowerCase(), birthId.trim()]);
+
+   const [existing] = await connection.query(
+   'SELECT user_id FROM users WHERE u_email = ? OR u_BirthID = ? LIMIT 1;',
+   [email.trim().toLowerCase(), birthId.trim()]
+    );
     if (existing.length) {
       await connection.rollback();
       return res.status(409).json({ message: 'An account with that email or birth ID already exists.' });
     }
     const passwordHash = await bcrypt.hash(password, 12);
-    const [result] = await connection.query(`
-      INSERT INTO users (u_full_name, u_BirthID, u_email, u_password_hash, u_phone, u_role)
-      VALUES (?, ?, ?, ?, ?, ?);
-    `, [fullName.trim(), birthId.trim(), email.trim().toLowerCase(), passwordHash, phone?.trim() || null, 'adoptive_parent']);
-    await connection.query(`
-      INSERT INTO applicants (user_id)
-      VALUES (?);
-    `, [result.insertId]);
+    const [result] = await connection.query(
+      'INSERT INTO users (u_full_name, u_BirthID, u_email, u_password_hash, u_phone, u_role) VALUES (?, ?, ?, ?, ?, ?)'
+    , [fullName.trim(), birthId.trim(), email.trim().toLowerCase(), passwordHash, phone?.trim() || null, 'adoptive_parent']);
+    await connection.query(
+      'INSERT INTO applicants (user_id) VALUES (?)'
+    , [result.insertId]);
     await connection.commit();
     const user = { user_id: result.insertId, u_full_name: fullName.trim(), u_email: email.trim().toLowerCase(), u_phone: phone?.trim() || null, u_role: 'adoptive_parent' };
     setAuthCookie(res, createToken(user));
@@ -144,12 +139,12 @@ app.post('/api/auth/login', async (req, res) => {
 
 app.get('/api/auth/me', requireAuth, async (req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT user_id, u_full_name, u_email, u_phone, u_role
-      FROM users
-      WHERE user_id = ? AND u_is_active = 1
-      LIMIT 1;
-    `, [req.user.user_id]);
+    const [rows] = await pool.query(
+      'SELECT user_id, u_full_name, u_email, u_phone, u_role'
+      +'FROM users'+
+      'WHERE user_id = ? AND u_is_active = 1'
+      +'LIMIT 1;'
+    , [req.user.user_id]);
 
     if (!rows[0]) return res.status(404).json({ message: 'User account not found.' });
     res.json({ user: publicUser(rows[0]) });
@@ -160,4 +155,4 @@ app.get('/api/auth/me', requireAuth, async (req, res) => {
 });
 app.post('/api/auth/logout', (_req, res) => res.clearCookie('auth_token').json({ ok: true }));
 
-app.listen(port, () => console.log(`API listening on http://localhost:${port}`));
+app.listen(port, () => console.log('API listening on http://localhost' + port));
