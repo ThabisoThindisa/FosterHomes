@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react'
 import { ArrowRight, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
-import styles from './css/Programs.module.css'
-import HeaderDisplay from './Header'
+import styles from './css/Program.module.css'
+import Header from './Header'
 
 //Store the link to connect to the api
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
@@ -34,7 +34,7 @@ export default function Programs() {
 	return (
         
 		<main className={styles.page}>
-            <HeaderDisplay />
+            <Header title="Our Programs"/>
 
 			<section className={styles.programSection} aria-labelledby="programs-heading">
 				<div className={styles.sectionIntro}>

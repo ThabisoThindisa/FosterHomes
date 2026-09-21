@@ -8,10 +8,10 @@ import { Link } from 'react-router-dom'
 const LINKS = [
   { label: 'Home', to: '/home' },
   { label: 'Programs', to: '/programs' },
-  { label: 'Stories', href: '#testimonials' },
+  { label: 'Testimonials', to:"/Testimonials" },
   { label: 'Gallery', to: '/gallery' },
   { label: 'Contact', href: '#contact' },
-  { label: 'Logout', to: '/' }
+  { label: 'Logout', action: 'logout' }
 
 ]
 
@@ -28,17 +28,23 @@ export default function NavBar({ onLogout }){
      <header className={styles.header}>
       <div className={styles.brand}>Thindisa FosterHome</div>
       <nav className={styles.nav + ' ' + (open ? styles.open : '')}>
-        {LINKS.map(l => l.to ? (
+        {LINKS.map(l => l.action === 'logout' ? (
+          <Link
+            key={l.label}
+            to="/"
+            onClick={(event) => {
+              event.preventDefault()
+              setOpen(false)
+              onLogout()
+            }}
+          >
+            {l.label}
+          </Link>
+        ) : l.to ? (
           <Link
             key={l.to}
             to={l.to}
-            onClick={(event) => {
-              setOpen(false)
-              if (l.label === 'Logout') {
-                event.preventDefault()
-                onLogout()
-              }
-            }}
+            onClick={() => setOpen(false)}
           >
             {l.label}
           </Link>

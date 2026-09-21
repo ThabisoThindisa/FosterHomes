@@ -10,6 +10,7 @@ import Programs from './components/Programs';
 import Header from './components/Header'
 import Gallery from './components/Gallery';
 import HomePage from './components/homePage';
+import Testimonials from './components/Testimonials'
 
 import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
 import './styles/animations.css';
@@ -90,7 +91,7 @@ function App() {
 }
 {}
 function Dashboard({ user, onLogout }) {
-  return <><NavBar /><main className="dashboard">
+  return <><NavBar onLogout={onLogout} /><main className="dashboard">
     <header className="dashboard-header">
       <div className="brand"><span className="brand-mark"><HeartHandshake size={20} />
       </span> Thindisa Foster Home
@@ -112,10 +113,12 @@ createRoot(document.getElementById('root')).render(
     <Routes>
 
       {/*Use route to direct to the navigation bar*/}
+      <Route path="/" element={<App />} />
       <Route path="/header" element={<Header />} />
       <Route path="/home" element={<HomePage />} />
       <Route path="/programs" element={<Programs />} />
       <Route path="/gallery" element={<Gallery />} />
+      <Route path="/Testimonials" element={<Testimonials />} />
       <Route path="*" element={<App />} />
     </Routes>
   </BrowserRouter>

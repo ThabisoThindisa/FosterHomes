@@ -79,6 +79,17 @@ app.get('/api/getPrograms', async (_req, res) => {
   }
 });
 
+//Get the stored gallery.
+app.get('/api/getGallery', async (_req, res) => {
+  try {
+    const [rows] = await pool.query('SELECT * FROM Gallery ');
+    res.json(rows);
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Failed to retrieve programs' });
+  }
+});
+
 
 app.post('/api/auth/register', async (req, res) => {
   const { fullName, birthId, email, phone, password } = req.body;

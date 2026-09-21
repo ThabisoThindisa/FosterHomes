@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react'
-import styles from './css/Testimonials.module.css'
+import { Link } from 'react-router-dom'
+import styles from './css/Program.module.css'
+import TestimonialsHeader from './Header'
+import NavBar from './NavBar'
 
 const TESTIMONIALS = [
   {name:'Lindiwe',text:'Thindisa helped my child catch up in math and feel confident again. The tutors were patient and caring.'},
@@ -20,6 +23,10 @@ export default function Testimonials(){
 
   return (
     <div className={styles.wrap}>
+
+      <NavBar/>
+      <TestimonialsHeader title= "Our Testimonials"/>
+
       <button onClick={prev} className={styles.nav} aria-label="Previous">‹</button>
       <blockquote className={styles.card}>
         <p>“{TESTIMONIALS[idx].text}”</p>

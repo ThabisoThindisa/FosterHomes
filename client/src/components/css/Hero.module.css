@@ -1,5 +1,5 @@
 .hero{
-  height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
+  height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:visible;
   background-image:url('../../images/couple-getting-ready-move-with-their-children.jpg');
   background-size:cover;background-position:center;background-attachment:fixed;
 }
@@ -10,8 +10,19 @@
 .ctas{display:flex;gap:12px;justify-content:center}
 .primary{background:var(--primary);color:white;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:600}
 .secondary{background:rgba(255,255,255,0.85);color:var(--accent);padding:10px 16px;border-radius:10px;text-decoration:none}
+.gridSection{position:absolute;z-index:2;left:0;right:0;bottom:24px;transform:translateY(462px)}
+.grid{color:#173b35}
+.gridCard{grid-column:span 4;min-height:220px;padding:20px;display:flex;flex-direction:column;background:rgba(252,250,245,.94);border:1px solid rgba(47,114,98,.17);border-radius:8px;box-shadow:0 8px 24px rgba(23,59,53,.12)}
+.feature,.side,.standard{grid-column:span 4}
+.cardNumber{color:#a96439;font-size:11px;font-weight:700;letter-spacing:.12em}
+.gridCard h2{margin:10px 0 8px;font-size:24px}.gridCard p{margin:0 0 14px;color:#66736b;line-height:1.5}.gridCard a{color:#a96439;font-size:13px;font-weight:700;text-decoration:none}
 
 @media (max-width:768px){
   .content h1{font-size:28px}
   .ctas{flex-direction:column}
+  .hero{height:auto;min-height:100vh;padding-bottom:24px;background-attachment:scroll}
+  .gridSection{position:relative;bottom:auto;margin-top:1848px;transform:none}
+  .grid{grid-template-columns:1fr!important;padding:20px!important}
+  .feature,.side,.standard{grid-column:span 1}
+  .gridCard{min-height:180px}
 }
