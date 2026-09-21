@@ -47,7 +47,9 @@ const requireAuth = async (req, res, next) => {
     if (!token) return res.status(401).json({ message: 'Please sign in to continue.' });
     const payload = jwt.verify(token, jwtSecret);
     const [rows] = await pool.execute(
-      'SELECT user_id, u_full_name, u_email, u_phone, u_role FROM users WHERE user_id = ? AND u_is_active = 1',
+      'SELECT user_id, u_full_name, u_email, '
+      + 'u_phone, u_role FROM users WHERE user_id = ? '
+      +'AND u_is_active = 1',
       [payload.userId]
     );
     if (!rows[0]) return res.status(401).json({ message: 'Your account is not active.' });
@@ -67,14 +69,12 @@ app.get('/api/health', async (_req, res) => {
   }
 });
 
-app.get('/api/programs', async (_req, res) => {
+app.get('/api/getPrograms', async (_req, res) => {
   try {
-    const [rows] = await pool.query(`
-      SELECT program_id, program_name, description, eligibility_requirements, created_at
-      FROM adoption_programs
-      WHERE is_active = 1
-      ORDER BY created_at DESC;
-    `);
+    const [rows] = await pool.query(
+      'SELECT * FROM adoption_programs WHERE ad_is_active = 1 '
+      +'ORDER BY ad_created_at DESC;'
+    );
     res.json({ data: rows });
   } catch (error) {
     console.error(error);

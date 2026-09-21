@@ -1,39 +1,27 @@
 // src/components/Programs.jsx
-import React, {useEffect, useState} from 'react'
-import styles from './CardGrid.module.css'
+import React, { useEffect, useState } from 'react'
+import styles from './css/CardGrid.module.css'
+
+//Use this connection.
+const Api_connection ='http://localhost:4000/api';
 
 export default function Programs(){
   const [programs, setPrograms] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-    const [message, setMessage] = useState('')
-  
     useEffect(() => {
-    fetch('http://localhost:5000/api/messageTest')
-      .then((response) => response.json())
-      .then((data) => {
-        setMessage(data.message)
-      })
-      .catch((error) => {
-        console.error('Error:', error)
-      })
-  }, [])
-
-
-   useEffect(() => {
-          fetch('http://localhost:5000/api/messageTest')
-              .then((response) => response.json())
-              .then((data) => {
-                  setPrograms(data);
-                  setLoading(false);
-              })
-              .catch((error) => {
-                  console.error("Error:", error);
-                  setError(error.message);
-                  setLoading(false);
-              });
-      }, []);
+      fetch( Api_connection+'/getPrograms')
+        .then((response) => response.json())
+        .then((data) => {
+          setPrograms(data)
+          setLoading(false)
+        })
+        .catch((fetchError) => {
+          setError(fetchError.message)
+          setLoading(false)
+        })
+    }, [])
 
   if(loading) return <div>Loading programs...</div>
 
@@ -41,7 +29,7 @@ export default function Programs(){
 
   return (
     <div className={styles.grid}>
-      {message.map(p => (
+      {programs.map(p => (
         <article key={p.program_id} className={`${styles.card} card`}>
           <div className={styles.body}>
             <h3>{p.program_name}</h3>

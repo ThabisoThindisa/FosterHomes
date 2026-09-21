@@ -1,9 +1,16 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
 import { CheckCircle2, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
+
+//import the pages
 import Login from './components/Login';
 import NavBar from './components/NavBar';
 import Register from './components/Register';
+import Programs from './components/Programs'
+import Gallery from './components/Gallery'
+import Hero from './components/Hero'
+
 import './styles/animations.css';
 
 
@@ -25,6 +32,7 @@ function App() {
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
+  const navigate = useNavigate();
 
   useEffect(() => {
     request('/auth/me').then((data) => setUser(data.user)).catch(() => {}).finally(() => setLoading(false));
@@ -38,6 +46,7 @@ function App() {
     try {
       const data = await request(`/auth/${authMode}`, { method: 'POST', body: JSON.stringify(body) });
       setUser(data.user);
+      navigate('/hero', { replace: true });
     } catch (submissionError) {
       setError(submissionError.message);
     }
@@ -50,7 +59,12 @@ function App() {
   }
 
   if (loading) return <div className="loading-screen">Loading your portal...</div>;
-  if (user) return <Dashboard user={user} onLogout={logout} />;
+  if (user) return <Routes>
+    <Route path="/hero" element={<Hero />} />
+    <Route path="/programs" element={<ProgramsPage />} />
+    <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
+    <Route path="*" element={<Navigate to="/hero" replace />} />
+  </Routes>;
 
   return (
 
@@ -78,9 +92,18 @@ function App() {
     </main>
   );
 }
-{}
+
+function ProgramsPage() {
+  return <><NavBar /><main className="dashboard"><section className="welcome"><p className="eyebrow">Explore your options</p><h1>Programs</h1><p>Review the support and care pathways available to your family.</p></section><Programs /></main></>;
+}
+
 function Dashboard({ user, onLogout }) {
   return <><NavBar /><main className="dashboard"><header className="dashboard-header"><div className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span> Thindisa Foster Home</div><button className="logout" onClick={onLogout}>Sign out</button></header><section className="welcome"><p className="eyebrow">Your private portal</p><h1>Welcome, {user.name.split(' ')[0]}.</h1><p>We will keep your next steps clear, considered, and in one place.</p></section><section className="status-grid"><article><CheckCircle2 size={22} /><span><strong>Profile created</strong><small>Your account is ready for the next step.</small></span></article><article><HeartHandshake size={22} /><span><strong>Adoption pathway</strong><small>Your role: {user.role.replace('_', ' ')}</small></span></article><article><ShieldCheck size={22} /><span><strong>Account protected</strong><small>{user.email}</small></span></article></section></main></>;
 }
 
-createRoot(document.getElementById('root')).render(<React.StrictMode><App /></React.StrictMode>);
+createRoot(document.getElementById('root')).render(
+<React.StrictMode>
+  <BrowserRouter>
+    <App />
+  </BrowserRouter>
+  </React.StrictMode>);
