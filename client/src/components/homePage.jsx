@@ -1,28 +1,19 @@
 import { useEffect, useState } from 'react';
 import styles from './css/Hero.module.css'
+import NavigationBar from './NavBar'
+import { Link } from 'react-router-dom'
 
-
-//Retrieve programs stored in the database.
-function getPrograms() {
-  const [programs, setPrograms] = useState([]);
-
-  useEffect(() => {
-    fetch('http://localhost:5000/api/getPrograms')
-      .then(response => response.json())
-      .then(data => {
-        setPrograms(data);
-      })
-      .catch(error => {
-        console.error('Error:', error);
-      });
-  }, []);
-}
+//Store the link to connect to the api
+const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
 export default function Hero(){
 
-  useEffect
   return (
     <section id="Home page" className={styles.hero}>
+
+      {/* Display the nav bar */}
+      <NavigationBar />
+      
       <div className={styles.overlay} />
       <div className={styles.content}>
         <h1>Thindisa FosterHome</h1>

@@ -1,9 +1,9 @@
 .hero{
   height:100vh;display:flex;align-items:center;justify-content:center;position:relative;overflow:hidden;
-  background-image:url('https://picsum.photos/1600/900?grayscale&blur=1');
+  background-image:url('../../images/couple-getting-ready-move-with-their-children.jpg');
   background-size:cover;background-position:center;background-attachment:fixed;
 }
-.overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,62,138,0.25),rgba(0,119,182,0.06));}
+.overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(22, 160, 137, 0.25),rgba(0,119,182,0.06));}
 .content{position:relative;z-index:2;text-align:center;color:white;max-width:900px;padding:40px}
 .content h1{font-size:48px;margin:0 0 12px}
 .tag{font-size:18px;opacity:0.95;margin-bottom:20px}

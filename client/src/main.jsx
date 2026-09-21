@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { CheckCircle2, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
+
+//import the pages
 import Login from './components/Login';
 import NavBar from './components/NavBar';
 import Register from './components/Register';
 import Programs from './components/Programs';
+import Header from './components/Header'
 import Gallery from './components/Gallery';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import './styles/animations.css';
+import HomePage from './components/homePage';
 
+import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import './styles/animations.css';
+import { Link } from 'react-router-dom';
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
 
 async function request(path, options = {}) {
-  const response = await fetch(`${API_URL}${path}`, {
+  const response = await fetch(API_URL + path, {
     credentials: 'include',
     headers: { 'Content-Type': 'application/json', ...(options.headers || {}) },
     ...options
@@ -24,6 +29,7 @@ async function request(path, options = {}) {
 }
 
 function App() {
+  const navigate = useNavigate();
   const [mode, setMode] = useState('login');
   const [user, setUser] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -39,8 +45,9 @@ function App() {
     const form = new FormData(event.currentTarget);
     const body = Object.fromEntries(form.entries());
     try {
-      const data = await request(`/auth/${authMode}`, { method: 'POST', body: JSON.stringify(body) });
+      const data = await request('/auth/' + authMode, { method: 'POST', body: JSON.stringify(body) });
       setUser(data.user);
+      if (authMode === 'login') navigate('/home');
     } catch (submissionError) {
       setError(submissionError.message);
     }
@@ -105,6 +112,8 @@ createRoot(document.getElementById('root')).render(
     <Routes>
 
       {/*Use route to direct to the navigation bar*/}
+      <Route path="/header" element={<Header />} />
+      <Route path="/home" element={<HomePage />} />
       <Route path="/programs" element={<Programs />} />
       <Route path="/gallery" element={<Gallery />} />
       <Route path="*" element={<App />} />

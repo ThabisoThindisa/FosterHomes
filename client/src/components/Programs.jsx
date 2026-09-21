@@ -2,11 +2,14 @@ import { useEffect, useState } from 'react'
 import { ArrowRight, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import styles from './css/Programs.module.css'
+import HeaderDisplay from './Header'
 
 //Store the link to connect to the api
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api'
 
 export default function Programs() {
+
+    //My global variables 
 	const [programs, setPrograms] = useState([])
 	const [loading, setLoading] = useState(true)
 	const [error, setError] = useState('')
@@ -29,22 +32,9 @@ export default function Programs() {
     }, []);
 
 	return (
+        
 		<main className={styles.page}>
-			<section className={styles.hero}>
-				<div className={styles.heroContent}>
-					<Link to="/" className={styles.backLink}>Back to portal</Link>
-					<p className={styles.eyebrow}><Sparkles size={14} /> Our programs</p>
-					<h1>Hope, Love, and a Place to Belong</h1>
-					<p className={styles.lede}>
-						Thoughtful support for children, young people, and families as they find stability,
-						connection, and a place to belong.
-					</p>
-				</div>
-				<div className={styles.heroNote}>
-					<HeartHandshake size={24} />
-					<span>Every plan begins with listening.</span>
-				</div>
-			</section>
+            <HeaderDisplay />
 
 			<section className={styles.programSection} aria-labelledby="programs-heading">
 				<div className={styles.sectionIntro}>
@@ -69,6 +59,8 @@ export default function Programs() {
 						</article>
 					))}
 				</div>
+
+                
 			</section>
 		</main>
 	)

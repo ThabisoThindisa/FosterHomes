@@ -140,11 +140,12 @@ app.post('/api/auth/login', async (req, res) => {
 app.get('/api/auth/me', requireAuth, async (req, res) => {
   try {
     const [rows] = await pool.query(
-      'SELECT user_id, u_full_name, u_email, u_phone, u_role'
-      +'FROM users'+
-      'WHERE user_id = ? AND u_is_active = 1'
-      +'LIMIT 1;'
-    , [req.user.user_id]);
+      'SELECT user_id, u_full_name, u_email, u_phone, u_role ' +
+      'FROM users ' +
+      'WHERE user_id = ? AND u_is_active = 1 ' +
+      'LIMIT 1;',
+      [req.user.user_id]
+    );
 
     if (!rows[0]) return res.status(404).json({ message: 'User account not found.' });
     res.json({ user: publicUser(rows[0]) });

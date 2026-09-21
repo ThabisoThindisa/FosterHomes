@@ -4,7 +4,7 @@ import classroomImage from '../images/kids-futuristic-school-classroom.jpg';
 
 export default function Register({ error, onSubmit, onLogin }) {
   return (
-    <div className="register-form" style={{ backgroundImage: `linear-gradient(rgba(252,250,245,.9), rgba(252,250,245,.9)), url(${classroomImage})` }}>
+    <div className="register-form" style={{ backgroundImage: 'linear-gradient(rgba(252,250,245,.9), rgba(252,250,245,.9)), url(' + classroomImage + ')' }}>
       <div className="form-heading"><p className="eyebrow">Welcome</p><h2>Create your account</h2><p>Start your adoption journey with a private profile.</p></div>
       <div className="mode-switch" role="tablist"><button onClick={onLogin}>Sign in</button><button className="active">Register</button></div>
       <form onSubmit={onSubmit}>

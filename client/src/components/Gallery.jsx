@@ -1,7 +1,8 @@
 import React, { useState } from 'react'
 import styles from './css/Gallery.module.css'
+import GalleryHeader from './GalleryHeader'
 
-const IMAGES = new Array(8).fill(0).map((_,i)=>`https://picsum.photos/800/600?random=${200+i}`)
+const IMAGES = new Array(8).fill(0).map((_, i) => 'https://picsum.photos/800/600?random=' + (200 + i))
 
 export default function Gallery(){
   const [open,setOpen] = useState(false)
@@ -14,6 +15,9 @@ export default function Gallery(){
 
   return (
     <div>
+      
+      <GalleryHeader />
+      
       <div className={styles.grid}>
         {IMAGES.map((src,i)=> (
           <button key={i} className={styles.thumb} onClick={()=>openAt(i)}>
