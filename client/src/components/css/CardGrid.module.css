@@ -1,11 +1,19 @@
-.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(2,62,138,0.06);transition:transform .18s,box-shadow .18s;opacity:0;transform:translateY(18px)}
-.card.visible{opacity:1;transform:none}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+  gap: 20px;
+  padding: 24px;
+  background-image: url('../../images/real-estate-concept-with-colored-cubes-wooden-home-white.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(2,62,138,0.06);transition:transform .18s,box-shadow .18s}
+.card:hover{transform:translateY(-4px);box-shadow:0 10px 30px rgba(2,62,138,0.12)}
 .card img{width:100%;height:160px;object-fit:cover}
 .body{padding:16px}
 .body h3{margin:0 0 8px;color:var(--accent)}
 .body p{margin:0 0 12px;color:var(--muted)}
 .link{color:var(--primary);text-decoration:none;font-weight:600}
 
-@media (max-width:1000px){.grid{grid-template-columns:repeat(2,1fr)}}
-@media (max-width:600px){.grid{grid-template-columns:1fr}}

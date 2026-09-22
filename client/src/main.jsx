@@ -8,8 +8,10 @@ import Login from './components/Login';
 import NavBar from './components/NavBar';
 import Register from './components/Register';
 import Programs from './components/Programs'
+import Header from './components/Header'
 import Gallery from './components/Gallery'
-import Hero from './components/Hero'
+import Testimonial from './components/Testimonials'
+import HomePage from './components/HomePage'
 
 import './styles/animations.css';
 
@@ -46,7 +48,7 @@ function App() {
     try {
       const data = await request(`/auth/${authMode}`, { method: 'POST', body: JSON.stringify(body) });
       setUser(data.user);
-      navigate('/hero', { replace: true });
+      navigate('/HomePage', { replace: true });
     } catch (submissionError) {
       setError(submissionError.message);
     }
@@ -58,12 +60,16 @@ function App() {
     setMode('login');
   }
 
+
+  //Route path and links
   if (loading) return <div className="loading-screen">Loading your portal...</div>;
   if (user) return <Routes>
-    <Route path="/hero" element={<Hero />} />
+    <Route path="/HomePage" element={<HomePage />} />
     <Route path="/programs" element={<ProgramsPage />} />
+    <Route path="/Gallery" element={<Gallery />} />
+    <Route path="/Testimonial" element={<Testimonial />} />
     <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
-    <Route path="*" element={<Navigate to="/hero" replace />} />
+    <Route path="*" element={<Navigate to="/HomePage" replace />} />
   </Routes>;
 
   return (
@@ -94,11 +100,38 @@ function App() {
 }
 
 function ProgramsPage() {
-  return <><NavBar /><main className="dashboard"><section className="welcome"><p className="eyebrow">Explore your options</p><h1>Programs</h1><p>Review the support and care pathways available to your family.</p></section><Programs /></main></>;
+  return <><NavBar /><main className="dashboard">
+    <Header
+      eyebrow="Explore your options"
+      title="Programs"
+      description="Review the support and care pathways available to your family."
+    />
+      <Programs /></main></>;
 }
 
 function Dashboard({ user, onLogout }) {
-  return <><NavBar /><main className="dashboard"><header className="dashboard-header"><div className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span> Thindisa Foster Home</div><button className="logout" onClick={onLogout}>Sign out</button></header><section className="welcome"><p className="eyebrow">Your private portal</p><h1>Welcome, {user.name.split(' ')[0]}.</h1><p>We will keep your next steps clear, considered, and in one place.</p></section><section className="status-grid"><article><CheckCircle2 size={22} /><span><strong>Profile created</strong><small>Your account is ready for the next step.</small></span></article><article><HeartHandshake size={22} /><span><strong>Adoption pathway</strong><small>Your role: {user.role.replace('_', ' ')}</small></span></article><article><ShieldCheck size={22} /><span><strong>Account protected</strong><small>{user.email}</small></span></article></section></main></>;
+  return <><NavBar />
+  <main className="dashboard">
+    <header className="dashboard-header">
+      <div className="brand">
+        <span className="brand-mark">
+          <HeartHandshake size={20} />
+          </span> Thindisa Foster Home
+      </div>
+          <button className="logout" onClick={onLogout}>Sign out</button></header>
+          <Header
+            eyebrow="Your private portal"
+            title={`Welcome, ${user.name.split(' ')[0]}.`}
+            description="We will keep your next steps clear, considered, and in one place."
+          />
+          
+          <section className="status-grid">
+            <article><CheckCircle2 size={22} /><span>
+            <strong>Profile created</strong>
+            <small>Your account is ready for the next step.</small>
+            </span></article><article><HeartHandshake size={22} /><span>
+              <strong>Adoption pathway</strong><small>Your role: {user.role.replace('_', ' ')}</small></span></article>
+              <article><ShieldCheck size={22} /><span><strong>Account protected</strong><small>{user.email}</small></span></article></section></main></>;
 }
 
 createRoot(document.getElementById('root')).render(

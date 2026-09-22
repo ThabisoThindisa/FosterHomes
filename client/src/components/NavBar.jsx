@@ -3,11 +3,12 @@ import { Link } from 'react-router-dom'
 import styles from './css/NavBar.module.css'
 
 const LINKS = [
-  { label: 'Home', href: '/dashboard' },
-  { label: 'Programs', href: '/programs' },
-  { label: 'Stories', href: '#testimonials' },
-  { label: 'Gallery', href: '#gallery' },
-  { label: 'Contact', href: '#contact' }
+  { label: 'Home', to: '/HomePage' },
+  { label: 'Programs', to: '/programs' },
+  { label: 'Testimonial', to: "/Testimonial" },
+  { label: 'Gallery', to: "/Gallery"},
+  { label: 'Contact', href: '#contact' },
+  { label: 'Signout', to: "/HomePage" }
 ]
 
 export default function NavBar(){
@@ -24,9 +25,9 @@ export default function NavBar(){
       <div className={styles.brand}>Thindisa FosterHome</div>
       <nav className={`${styles.nav} ${open?styles.open:''}`}>
         {LINKS.map(l=> (
-          l.href.startsWith('/')
-            ? <Link key={l.href} to={l.href} onClick={()=>setOpen(false)}>{l.label}</Link>
-            : <a key={l.href} href={l.href} onClick={()=>setOpen(false)}>{l.label}</a>
+          (l.href || l.to).startsWith("*")
+            ? <Link key={l.label} to={l.href || l.to} onClick={()=>setOpen(false)}>{l.label}</Link>
+            : <a key={l.label} href={l.href || l.to} onClick={()=>setOpen(false)}>{l.label}</a>
         ))}
       </nav>
 

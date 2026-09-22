@@ -1,8 +1,0 @@
-.wrap{display:grid;grid-template-columns:1fr 440px;gap:24px;align-items:start}
-.form{background:white;padding:20px;border-radius:12px;box-shadow:0 8px 30px rgba(2,62,138,0.05)}
-.form label{display:block;margin-bottom:10px;font-size:14px;color:var(--muted)}
-.form input,.form textarea{width:100%;padding:12px;border-radius:8px;border:1px solid #e6eef8;margin-top:6px}
-.btn{background:var(--primary);color:white;padding:12px 16px;border-radius:10px;border:0;margin-top:8px;cursor:pointer}
-.map{background:#f6fbff;padding:12px;border-radius:12px}
-
-@media (max-width:900px){.wrap{grid-template-columns:1fr}}

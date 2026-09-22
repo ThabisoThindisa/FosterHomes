@@ -1,5 +1,30 @@
-.wrap{display:flex;align-items:center;gap:12px;justify-content:center}
+.wrap{display:flex;flex-direction:column;align-items:center;gap:12px;justify-content:center}
+.carousel{display:flex;align-items:center;gap:12px;justify-content:center;width:100%}
 .card{max-width:760px;background:linear-gradient(180deg,#f8fbff,white);padding:28px;border-radius:12px;box-shadow:0 10px 30px rgba(2,62,138,0.06)}
 .card p{margin:0 0 8px;font-size:18px;color:#0b2b3b}
 .card footer{font-size:14px;color:var(--muted)}
 .nav{background:var(--primary);color:white;border:0;width:40px;height:40px;border-radius:10px;cursor:pointer}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
+.flexContainer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  align-items: stretch;
+  font-size: 20px;
+  text-align: left;
+}
+
+.flexItem {
+  flex: 0 0 calc(50% - 10px);
+  min-width: 0;
+}
+
+@media (max-width: 600px) {
+  .flexItem {
+    flex-basis: 100%;
+  }
+}

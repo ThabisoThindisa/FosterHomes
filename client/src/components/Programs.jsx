@@ -10,34 +10,49 @@ export default function Programs(){
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-    useEffect(() => {
-      fetch( Api_connection+'/getPrograms')
-        .then((response) => response.json())
-        .then((data) => {
-          setPrograms(data)
-          setLoading(false)
-        })
-        .catch((fetchError) => {
-          setError(fetchError.message)
-          setLoading(false)
-        })
-    }, [])
+   //Retrieve available programs
+  useEffect(() => {
+    fetch(Api_connection +'/getPrograms')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch programs')
+        }
+        return response.json()
+      })
+     .then((data) => {
+      const programsList = data.data ?? data
+
+  setPrograms(programsList)
+})
+      .catch((fetchError) => {
+        setError(fetchError.message)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
+
 
   if(loading) return <div>Loading programs...</div>
 
   if(error) return <div>Error: {error}</div>
 
-  return (
-    <div className={styles.grid}>
-      {programs.map(p => (
-        <article key={p.program_id} className={`${styles.card} card`}>
+return (
+  <div className={styles.grid}>
+      {programs.map((program) => (
+        <article key={program.program_id} className={styles.card}>
           <div className={styles.body}>
-            <h3>{p.program_name}</h3>
-            <p>{p.description}</p>
-            <small>{p.eligibility_requirements}</small>
+            <h3>{program.ad_name}</h3>
+            <p>{program.ad_description}</p>
+
+            {program.ad_eligibility_requirements && (
+              <small>
+                Eligibility: {program.ad_eligibility_requirements}
+              </small>
+            )}
           </div>
         </article>
       ))}
-    </div>
-  )
+  </div>
+)
 }
