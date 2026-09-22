@@ -6,3 +6,28 @@
 .map{background:#f6fbff;padding:12px;border-radius:12px}
 
 @media (max-width:900px){.wrap{grid-template-columns:1fr}}
+
+
+.NameInput {
+  width: 500px;
+  height: 90px;
+   border-radius: 13px;
+   font-style:italic;
+  font-size: larger;
+}
+
+.EmailInput {
+  width: 500px;
+  height: 90px;
+  border-radius: 13px;
+  font-style:italic;
+  font-size: larger;
+}
+
+
+.MessageInput textarea {
+  height: 300px;
+  resize: vertical;
+  font-size: larger;
+  font-style:normal;
+}

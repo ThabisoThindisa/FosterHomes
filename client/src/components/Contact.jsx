@@ -17,9 +17,9 @@ export default function Contact(){
             description="Connect With Us, Create a Brighter Future."
           />
 
-        <label>Name<input placeholder="Your full name"/></label>
-        <label>Email<input placeholder="you@example.com"/></label>
-        <label>Message<textarea placeholder="I want to learn more about volunteering..."/></label>
+        <label className={styles.NameInput}>Name<input placeholder="Your full name"/></label>
+        <label className={styles.EmailInput} >Email<input placeholder="you@example.com"/></label>
+        <label className={styles.MessageInput} >Message<textarea placeholder="I want to learn more about volunteering..."/></label>
         <button className={styles.btn}>Send Message</button>
            <div className={styles.map}>
         <iframe title="map" width="100%" height="260" style={{border:0}}
