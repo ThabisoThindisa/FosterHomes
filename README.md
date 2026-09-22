@@ -4,7 +4,7 @@ React + Express + MySQL authentication for the `adoption_portal` database.
 
 ## Setup
 
-1. Upload the database `adoption_portal.sql` to a database Portal like e.g MyPhpAdmin
+1. Upload the database `adoption_portal.sql` in the file ' ./FosterHomes/server/src' to a database Portal like e.g MyPhpAdmin
 2. The tables will be Upload
 
 `Server side`
