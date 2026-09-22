@@ -4,23 +4,19 @@ React + Express + MySQL authentication for the `adoption_portal` database.
 
 ## Setup
 
-1. Import the supplied SQL dump into MariaDB/MySQL as `adoption_portal`.
-2. In `server`, copy `.env.example` to `.env` and set the database password and a long `JWT_SECRET`.
-3. Install and run the API:
+1. Upload the database `adoption_portal.sql` to a database Portal like e.g MyPhpAdmin
+2. The tables will be Upload
 
-```powershell
-cd server
-npm install
-npm run dev
-```
+`Server side`
+1. Open the server file and install npm 
+2. Type `npm install`
+3. type `npm run dev`
 
-4. In a second terminal, install and run the React app:
+`client side`
+1. Open the client file and install npm 
+2. Type `npm install`
+3. type `npm run dev`
 
-```powershell
-cd client
-npm install
-npm run dev
-```
 
 Open http://localhost:5173.
 
