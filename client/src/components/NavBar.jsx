@@ -3,12 +3,13 @@ import { Link } from 'react-router-dom'
 import logo from '../images/logo.png'
 import styles from './css/NavBar.module.css'
 
+//The links to each page
 const LINKS = [
   { label: 'Home', to: '/HomePage' },
   { label: 'Programs', to: '/programs' },
   { label: 'Testimonial', to: "/Testimonial" },
   { label: 'Gallery', to: "/Gallery"},
-  { label: 'Contact', href: '#contact' },
+  { label: 'Contact', to: "/contacts" },
   { label: 'Signout', to: "/HomePage" }
 ]
 

@@ -12,6 +12,7 @@ import Header from './components/Header'
 import Gallery from './components/Gallery'
 import Testimonial from './components/Testimonials'
 import HomePage from './components/HomePage'
+import Contact from './components/Contact'
 
 import './styles/animations.css';
 
@@ -68,6 +69,7 @@ function App() {
     <Route path="/programs" element={<ProgramsPage />} />
     <Route path="/Gallery" element={<Gallery />} />
     <Route path="/Testimonial" element={<Testimonial />} />
+    <Route path="/contacts" element={<Contact />} />
     <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
     <Route path="*" element={<Navigate to="/HomePage" replace />} />
   </Routes>;

@@ -8,13 +8,17 @@
 .titleInput {
   width: 700px;
   height: 40px;
-   border-radius: 18px;
+   border-radius: 13px;
+   font-style:italic;
+  font-size: larger;
 }
 
 .storyInput {
   width: 700px;
   height: 200px;
-   border-radius: 18px;
+  border-radius: 13px;
+  font-style:italic;
+  font-size: larger;
 }
 
 .sendButton {
