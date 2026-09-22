@@ -7,6 +7,9 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  background-size: contain;  /* shows the whole image */
+background-size: 90% auto; /* custom proportional size */
+
 }
 
 .card{background:white;border-radius:12px;overflow:hidden;box-shadow:0 6px 24px rgba(2,62,138,0.06);transition:transform .18s,box-shadow .18s}

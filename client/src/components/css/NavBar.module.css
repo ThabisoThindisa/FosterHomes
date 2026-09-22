@@ -3,7 +3,8 @@
   padding:12px 24px;background:linear-gradient(180deg,rgba(255,255,255,0.9),rgba(255,255,255,0.8));backdrop-filter:blur(6px);
   border-bottom:1px solid rgba(2,62,138,0.06);z-index:60
 }
-.brand{font-weight:700;color:var(--primary)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--primary)}
+.logo{width:36px;height:36px;object-fit:contain;border-radius:8px}
 .nav{display:flex;gap:18px;align-items:center}
 .nav a{color:var(--accent);text-decoration:none;padding:8px 10px;border-radius:8px;transition:background .18s,transform .18s}
 .nav a:hover{background:rgba(0,119,182,0.06);transform:translateY(-2px)}

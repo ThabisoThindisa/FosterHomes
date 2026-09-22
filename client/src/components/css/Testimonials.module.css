@@ -5,6 +5,47 @@
 .card footer{font-size:14px;color:var(--muted)}
 .nav{background:var(--primary);color:white;border:0;width:40px;height:40px;border-radius:10px;cursor:pointer}
 
+.titleInput {
+  width: 700px;
+  height: 40px;
+   border-radius: 18px;
+}
+
+.storyInput {
+  width: 700px;
+  height: 200px;
+   border-radius: 18px;
+}
+
+.sendButton {
+  margin-top: 20px ;
+  margin-bottom: 30px;
+  width: 300px;
+  height: 50px;
+  text-decoration-color: black;
+   border-radius: 18px;
+}
+
+.DisplayLabel {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  
+}
+
+.StaticLabel {
+  font-size: 20px;
+  font-weight: bold;
+  
+}
+
+.WriteLabel {
+  font-size: 50px;
+  font-weight: bold;
+}
+
+
+
 *, *::before, *::after {
   box-sizing: border-box;
 }

@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
+import logo from '../images/logo.png'
 import styles from './css/NavBar.module.css'
 
 const LINKS = [
@@ -22,7 +23,10 @@ export default function NavBar(){
 
   return (
     <header className={styles.header}>
-      <div className={styles.brand}>Thindisa FosterHome</div>
+      <div className={styles.brand}>
+        <img src={logo} alt="Thindisa FosterHome logo" className={styles.logo} />
+        <span>Thindisa FosterHome</span>
+      </div>
       <nav className={`${styles.nav} ${open?styles.open:''}`}>
         {LINKS.map(l=> (
           (l.href || l.to).startsWith("*")

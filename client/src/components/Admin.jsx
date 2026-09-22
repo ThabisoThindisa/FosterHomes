@@ -10,35 +10,6 @@ export default function Testimonials(){
   //Store and set the variavles 
    const [Stories, setStories] = useState([])
 
-     const [myTitle, setTitle] = useState("");
-     const [myContent, setContent] = useState("");
-
-     //Function to handle creation messages from the users.
-function creatMessages(e) {
-  const { name, value } = e.target;
-
-  if (name === 'title') {
-    setTitle(value);
-  } else if (name === 'content') {
-    setContent(value);
-  }
-}
-  const handleSendMessage = async () => {
-
-    //Use # to seperate the message charecters later
-    UserStory = myTitle+'#'+myContent;
-
-    if (!UserStory.trim()) return; //Remove all empty charecters before the string of after
-
-    await fetch('/api/Stories', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: UserStory }),
-    });
-
-    setText(''); // Clear the input field after sending
-  };
-
      //Retrieve available programs
     useEffect(() => {
       fetch(Api_connection +'/getStories')
@@ -69,30 +40,6 @@ function creatMessages(e) {
         title="Testimonials"
         description="Hear how our support has helped families move forward."
       />
-
-          <form>
-      <label className={styles.WriteLabel}>Write your story</label>
-      <label className={styles.StaticLabel}>Write the title of your story:
-        <textarea
-        className={styles.titleInput}
-           name="title"
-          value={myTitle}
-          onChange={creatMessages}
-        />
-      </label>
-
-       <label className={styles.StaticLabel}>Write the story:
-        <textarea
-         className={styles.storyInput}
-          name="content"
-          value={myContent}
-          onChange={creatMessages}
-        />
-      </label>
-      <button className={styles.sendButton} onClick={handleSendMessage}>Send Message</button>
-      <label className={styles.DisplayLabel}>Our Testemonial from our users</label>
-    </form>
-
     {/*news_id	title,content,author_id,published_at,is_published */}
 
       <section className={styles.flexContainer}>
