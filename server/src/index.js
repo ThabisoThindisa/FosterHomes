@@ -224,6 +224,46 @@ app.get('/api/getStories', async function (_req, res) {
   }
 });
 
+//3. add programs to the database
+app.post('/api/AddPrograms', async (req, res) => {
+  try {
+    const {
+      ad_name,
+      ad_description,
+      ad_eligibility_requirements
+    } = req.body;
+
+    if (!ad_name || !ad_description) {
+      return res.status(400).json({
+        message: 'Program name and description are required.'
+      });
+    }
+
+    const [result] = await pool.query(
+      'INSERT INTO adoption_programs (ad_name, ad_description, ad_eligibility_requirements) VALUES (?, ?, ?)',
+      [
+        ad_name.trim(),
+        ad_description.trim(),
+        ad_eligibility_requirements ? ad_eligibility_requirements.trim() : null
+      ]
+    );
+
+    res.status(201).json({
+      program_id: result.insertId,
+      ad_name: ad_name.trim(),
+      ad_description: ad_description.trim(),
+      ad_eligibility_requirements: ad_eligibility_requirements ? ad_eligibility_requirements.trim() : null,
+      ad_is_active: 1
+    });
+
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({
+      message: 'Error inserting program'
+    });
+  }
+});
+
 app.post('/api/auth/logout', function (_req, res) {
   return res.clearCookie('auth_token').json({ ok: true });
 });
