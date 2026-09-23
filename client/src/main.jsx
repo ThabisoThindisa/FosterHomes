@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter, Navigate, Route, Routes, useNavigate } from 'react-router-dom';
-import { CheckCircle2, HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
+import { HeartHandshake, ShieldCheck, Sparkles } from 'lucide-react';
+import SiteLogo from './images/logo.png'
+
 
 //import the pages
 import Login from './components/Login';
@@ -13,6 +15,8 @@ import Gallery from './components/Gallery'
 import Testimonial from './components/Testimonials'
 import HomePage from './components/HomePage'
 import Contact from './components/Contact'
+import AdminPag from './components/Admin'
+import Dashboard from './components/Dashboard'
 
 import './styles/animations.css';
 
@@ -47,7 +51,11 @@ function App() {
     const form = new FormData(event.currentTarget);
     const body = Object.fromEntries(form.entries());
     try {
-      const data = await request(`/auth/${authMode}`, { method: 'POST', body: JSON.stringify(body) });
+      const data = await request('/auth/'+authMode, 
+        { method: 'POST', 
+          body: JSON.stringify(body) 
+        });
+
       setUser(data.user);
       navigate('/HomePage', { replace: true });
     } catch (submissionError) {
@@ -68,7 +76,9 @@ function App() {
     <Route path="/HomePage" element={<HomePage />} />
     <Route path="/programs" element={<ProgramsPage />} />
     <Route path="/Gallery" element={<Gallery />} />
+    <Route path="/logout" element={<Dashboard />} />
     <Route path="/Testimonial" element={<Testimonial />} />
+    <Route path="/Admin" element={<AdminPag />} />
     <Route path="/contacts" element={<Contact />} />
     <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
     <Route path="*" element={<Navigate to="/HomePage" replace />} />
@@ -80,6 +90,7 @@ function App() {
     <main className="shell" >
       {/* This will handle the left display of the signing and regisger pages */}
       <section className="intro-panel">
+        {/*Logo*/}
         <div className="brand"><span className="brand-mark"><HeartHandshake size={20} /></span> Thindisa Foster Home</div>
         <div className="intro-copy">
           <p className="eyebrow"><Sparkles size={14} /> Your Journey Starts Here</p>
@@ -109,31 +120,6 @@ function ProgramsPage() {
       description="Review the support and care pathways available to your family."
     />
       <Programs /></main></>;
-}
-
-function Dashboard({ user, onLogout }) {
-  return <><NavBar />
-  <main className="dashboard">
-    <header className="dashboard-header">
-      <div className="brand">
-        <span className="brand-mark">
-          <HeartHandshake size={20} />
-          </span> Thindisa Foster Home
-      </div>
-          <button className="logout" onClick={onLogout}>Sign out</button></header>
-          <Header
-            eyebrow="Your private portal"
-            title={`Welcome, ${user.name.split(' ')[0]}.`}
-            description="We will keep your next steps clear, considered, and in one place."
-          />
-          
-          <section className="status-grid">
-            <article><CheckCircle2 size={22} /><span>
-            <strong>Profile created</strong>
-            <small>Your account is ready for the next step.</small>
-            </span></article><article><HeartHandshake size={22} /><span>
-              <strong>Adoption pathway</strong><small>Your role: {user.role.replace('_', ' ')}</small></span></article>
-              <article><ShieldCheck size={22} /><span><strong>Account protected</strong><small>{user.email}</small></span></article></section></main></>;
 }
 
 createRoot(document.getElementById('root')).render(

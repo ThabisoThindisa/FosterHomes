@@ -24,9 +24,12 @@
 .sendButton {
   margin-top: 20px ;
   margin-bottom: 30px;
-  width: 300px;
+  width: 250px;
   height: 50px;
-  text-decoration-color: black;
+  display: block;
+  background: #0077B6;
+  color: white;
+  margin-top: 16px;
    border-radius: 18px;
 }
 
