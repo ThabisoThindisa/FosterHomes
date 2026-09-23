@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import logo from '../images/logo.png'
 import styles from './css/NavBar.module.css'
@@ -21,9 +21,18 @@ export default function NavBar(){
   useEffect(() => {
     const API_URL = 'http://localhost:4000/api'
 
-    fetch(API_URL+ '/auth/me', { credentials: 'include' })
-      .then((response) => response.ok ? response.json() : null)
-      .then((data) => setIsAdmin(data?.user?.role === 'admin'))
+    fetch(API_URL+ '/auth/me', 
+      { credentials: 'include' })
+      .then((response) => { 
+        {/*cinverted from response.ok ? response.json() : null*/}
+                     if (response.ok) {
+                     return response.json()
+                    } else {
+                     return null
+                   }
+                   })
+      .then((data) => 
+        setIsAdmin(data?.user?.role === 'admin'))
       .catch(() => setIsAdmin(false))
   }, [])
 

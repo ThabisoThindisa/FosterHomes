@@ -1,5 +1,5 @@
 // src/components/Programs.jsx
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styles from './css/CardGrid.module.css'
 
 //Use this connection.

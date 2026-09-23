@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState,useEffect } from 'react'
 import styles from './css/Admin.module.css'
 import Header from './Header'
 import NavigationBar from './NavBar'
@@ -31,36 +31,98 @@ const INITIAL_GALLERY = [
 export default function Admin(){
 
   //Store and set the variavles 
-  const [programs, setPrograms] = useState(INITIAL_PROGRAMS)
-  const [stories, setStories] = useState(INITIAL_STORIES)
-  const [gallery, setGallery] = useState(INITIAL_GALLERY)
+  
   const [program, setProgram] = useState({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
-  const [picture, setPicture] = useState({ image_url: '', alt_text: '' })
+  const [galleryForm, setGalleryForm] = useState({ image_url: '', alt_text: '' })
   const [message, setMessage] = useState('')
+  const [allPrograms , setAllPrograms] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState(null)
 
-  function addProgram(event) {
+  //Static values to display when
+  const [stories, setStories] = useState(INITIAL_STORIES)
+  const [programs, setPrograms] = useState(INITIAL_PROGRAMS)
+  const [gallery, setGallery] = useState(INITIAL_GALLERY)
+
+      //My basic api connection running on port 4000
+    const Api_connection = 'http://localhost:4000'
+
+    //The addmin has access to add the programs
+    async function Add_Programs(event) {
     event.preventDefault()
-    setPrograms((currentPrograms) => [
-      ...currentPrograms,
-      { ...program, program_id: Date.now() }
-    ])
-    setProgram({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
-    setMessage('Program added locally.')
+
+      try {
+        const response = await fetch(Api_connection + '/api/AddPrograms', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(program)
+        })
+
+        if (!response.ok) throw new Error('Unable to add program.')
+
+        const savedProgram = await response.json()
+        setPrograms((currentPrograms) => [...currentPrograms, savedProgram])
+        setProgram({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
+        setMessage('Program added successfully.')
+      } catch (error) {
+        setMessage(error.message)
+      }
   }
 
-  function addPicture(event) {
-    event.preventDefault()
-    setGallery((currentGallery) => [
-      ...currentGallery,
-      { ...picture, gallery_id: Date.now() }
-    ])
-    setPicture({ image_url: '', alt_text: '' })
-    setMessage('Picture added to the gallery locally.')
+  //Diplay programs.
+ useEffect(() => {
+    fetch(Api_connection +'/getPrograms')
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error('Failed to fetch programs')
+        }
+        return response.json()
+      })
+     .then((data) => {
+      const programsList = data.data ?? data
+
+  setAllPrograms(programsList)
+})
+      .catch((fetchError) => {
+        setError(fetchError.message)
+      })
+      .finally(() => {
+        setLoading(false)
+      })
+  }, [])
+
+   
+ //handle file upload
+   const handleFileUpload = (event) => {
+    setFile(event.target.files[0]);
+  };
+
+
+  //Upload gallery images
+  async function add_Gallery(event) {
+     event.preventDefault()
+
+      try {
+        const response = await fetch(Api_connection + '/api/AddPictures', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(galleryForm)
+        })
+
+        if (!response.ok) throw new Error('Unable to add gallery image.')
+
+        const savedGallery = await response.json()
+        setGallery((currentGallery) => [...currentGallery, savedGallery])
+        setGalleryForm({ image_url: '', alt_text: '' })
+        setMessage('Gallery image added successfully.')
+      } catch (error) {
+        setMessage(error.message)
+      }
   }
 
   function remove(id, type, label) {
     if (!window.confirm('Delete this '+ label)) return
-    if (type === 'program') setPrograms((items) => items.filter((item) => item.program_id !== id))
+    if (type === 'program') setAllPrograms((items) => items.filter((item) => item.program_id !== id))
     if (type === 'story') setStories((items) => items.filter((item) => item.news_id !== id))
     if (type === 'picture') setGallery((items) => items.filter((item) => (item.gallery_id || item.image_id) !== id))
     setMessage(`${label[0].toUpperCase()}${label.slice(1)} deleted locally.`)
@@ -75,22 +137,23 @@ export default function Admin(){
             description="Manage programs, community stories, and gallery images." />
       {message && <p className={styles.message} role="status">{message}</p>}
       <section className={styles.forms}>
-        <form onSubmit={addProgram} className={styles.form}>
+        <form onSubmit={Add_Programs} className={styles.form}>
           <h2>Add program</h2>
-          <input required placeholder="Program name" value={program.ad_name} onChange={(event) => setProgram({ ...program, ad_name: event.target.value })} />
-          <textarea required placeholder="Description" value={program.ad_description} onChange={(event) => setProgram({ ...program, ad_description: event.target.value })} />
-          <input placeholder="Eligibility requirements" value={program.ad_eligibility_requirements} onChange={(event) => setProgram({ ...program, ad_eligibility_requirements: event.target.value })} />
+          <input required placeholder="Program name" value={program.ad_name.trim()} onChange={(event) => setProgram({ ...program, ad_name: event.target.value })} />
+          <textarea required placeholder="Description" value={program.ad_description.trim()} onChange={(event) => setProgram({ ...program, ad_description: event.target.value })} />
+          <input placeholder="Eligibility requirements" value={program.ad_eligibility_requirements.trim()} onChange={(event) => setProgram({ ...program, ad_eligibility_requirements: event.target.value })} />
           <button type="submit" className={styles.submitButton}>Add program</button>
         </form>
-        <form onSubmit={addPicture} className={styles.form}>
+        <form onSubmit={add_Gallery} className={styles.form}>
           <h2>Add gallery picture</h2>
-          <input required type="url" placeholder="Image URL" value={picture.image_url} onChange={(event) => setPicture({ ...picture, image_url: event.target.value })} />
-          <input placeholder="Alt text" value={picture.alt_text} onChange={(event) => setPicture({ ...picture, alt_text: event.target.value })} />
-          <button type="submit">Add picture</button>
+          <input required type="url" placeholder="Image URL" value={galleryForm.image_url.trim()} onChange={(event) => setGalleryForm({ ...galleryForm, image_url: event.target.value })} />
+          <input placeholder="Alt text" value={galleryForm.alt_text.trim()} onChange={(event) => setGalleryForm({ ...galleryForm, alt_text: event.target.value })} />
+          {/* onChange={(event) => setProgram({ ...program, ad_name: event.target.value })} />*/}
+          <button type="submit" onChange={(event) => handleFileUpload }>Add picture</button>
         </form>
       </section>
       <section className={styles.list}>
-        <h2>Programs</h2>{programs.map((item) => <article key={item.program_id}>
+        <h2>Programs</h2>{allPrograms.map((item) => <article key={item.program_id}>
           <span><strong>{item.ad_name}</strong>
           <small>{item.ad_description}</small>
           </span><button onClick={() => remove(item.program_id, 'program', 'program')}>Delete</button></article>)}</section>

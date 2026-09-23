@@ -1,4 +1,3 @@
-import React from 'react';
 import { ArrowRight } from 'lucide-react';
 import classroomImage from '../images/kids-futuristic-school-classroom.jpg';
 

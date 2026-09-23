@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './css/src/components/css/BackToTop.module.css'
 
 //import styles from './BackToTop.module.css'

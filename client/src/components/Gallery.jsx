@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import { useState } from 'react'
 import styles from './css/Gallery.module.css'
 import  NavigationBar from './NavBar'
 import Header from './Header'

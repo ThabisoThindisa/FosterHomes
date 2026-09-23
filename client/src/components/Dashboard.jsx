@@ -1,4 +1,3 @@
-import React from 'react'
 import { CheckCircle2, HeartHandshake, ShieldCheck } from 'lucide-react'
 import Header from './Header'
 import NavBar from './NavBar'
