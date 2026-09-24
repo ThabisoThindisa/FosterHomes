@@ -3,6 +3,7 @@ import styles from './css/Admin.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
+import { Link,useNavigate  } from 'react-router-dom'
 
 const INITIAL_STORIES = [
   { news_id: 1, title: 'A welcoming community', content: 'Every child deserves a safe and supportive home.' },
@@ -19,6 +20,9 @@ export default function Admin(){
 
     //My basic api connection running on port 4000
     const Api_connection = 'http://localhost:4000/api'
+      const handleRefresh = () => {
+    navigate(0); // Navigates to the current path, simulating a refresh
+  };
 
   //Store and set the variavles 
   
@@ -39,7 +43,7 @@ export default function Admin(){
     event.preventDefault()
 
       try {
-        const response = await fetch(Api_connection + '/api/AddPrograms', {
+        const response = await fetch(Api_connection + '/AddPrograms', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(program)
@@ -51,6 +55,7 @@ export default function Admin(){
         setAllPrograms((currentPrograms) => [...currentPrograms, savedProgram])
         setProgram({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
         setMessage('Program added successfully.')
+        
       } catch (error) {
         setMessage(error.message)
       }

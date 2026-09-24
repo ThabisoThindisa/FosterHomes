@@ -72,6 +72,18 @@ function App() {
     setMode('login');
   }
 
+  //----handle program page header
+function ProgramsPage() {
+  return <><NavBar /><main className="dashboard">
+    <Header
+      eyebrow="Explore your options"
+      title="Programs"
+      description="Review the support and care pathways available to your family."
+    />
+      <Programs /></main></>;
+}
+
+
 
   //Route path and links
   if (loading) return <div className="loading-screen">Loading your portal...</div>;
@@ -113,16 +125,6 @@ function App() {
       </section>
     </main>
   );
-}
-
-function ProgramsPage() {
-  return <><NavBar /><main className="dashboard">
-    <Header
-      eyebrow="Explore your options"
-      title="Programs"
-      description="Review the support and care pathways available to your family."
-    />
-      <Programs /></main></>;
 }
 
 createRoot(document.getElementById('root')).render(

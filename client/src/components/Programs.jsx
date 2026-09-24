@@ -11,7 +11,7 @@ export default function Programs(){
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(null)
 
-   //Retrieve available programs
+   //------------------Retrieve available programs---------------
   useEffect(() => {
     fetch(Api_connection +'/getPrograms')
       .then((response) => {
@@ -40,6 +40,7 @@ export default function Programs(){
 
 return (
   <>
+  <section>
   <div className={styles.grid} >
       {programs.map((program) => (
         <article key={program.program_id} className={styles.card}>
@@ -56,6 +57,7 @@ return (
         </article>
       ))}
   </div>
+  </section>
   <Footer />
   </>
 )

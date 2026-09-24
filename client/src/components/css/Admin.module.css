@@ -37,3 +37,11 @@
             @media (max-width:700px){
                 .forms{grid-template-columns:1fr}.list article{align-items:flex-start;flex-direction:column}
 .list button{width:100%}}
+
+.AdminStyle{
+         background: '#1f2d3d';
+          color: 'white';
+          border: 'none';
+          padding: '10px 16px';
+          cursor: 'pointer'
+        }

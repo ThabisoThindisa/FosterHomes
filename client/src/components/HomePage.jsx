@@ -4,7 +4,9 @@ import NavigationBar from './SemanticElements/NavBar';
 import Footer from './SemanticElements/Footer'
 
 
+
 export default function HomePage(){
+
   return (
     <>
       <NavigationBar />
@@ -21,7 +23,7 @@ export default function HomePage(){
         
       </section>
       <section className={styles.flexContainer}>
-
+       
         
       </section>
       <Footer />

@@ -31,17 +31,6 @@ export default function Footer() {
             <li><a href="/Testimonial"style={{ color: '#fff', textDecoration: 'none' }}>Testimonials</a></li>
             <li><a href="/Gallery" style={{ color: '#fff', textDecoration: 'none' }}>Gallery</a></li>
             <li><a href="/contacts" style={{ color: '#fff', textDecoration: 'none' }}>Contact us</a></li>
-            {/*  
-                <Route path="/HomePage" element={<HomePage />} />
-    <Route path="/programs" element={<ProgramsPage />} />
-    <Route path="/Gallery" element={<Gallery />} />
-    <Route path="/logout" element={<Dashboard />} />
-    <Route path="/Testimonial" element={<Testimonial />} />
-    <Route path="/Admin" element={<AdminPag />} />
-    <Route path="/contacts" element={<Contact />} /
-            
-            */}
-            
             </ul>
         </div>
 
