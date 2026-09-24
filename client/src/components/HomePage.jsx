@@ -13,7 +13,7 @@ export default function HomePage(){
           <p className={styles.tag}>Building Brighter Futures, One Child at a Time</p>
           <div className={styles.ctas}>
             <Link to="/programs" className={styles.primary}>Explore Programs</Link>
-            <Link to= "/Testimonial" className={styles.secondary}>Visit Us</Link>
+            <Link to= "/contacts"  className={styles.secondary}>Visit Us</Link>
           </div>
         </div>
       </section>

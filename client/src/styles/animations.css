@@ -6,16 +6,32 @@ body { margin: 0; min-width: 320px; }
 button, input { font: inherit; }
 button { cursor: pointer; }
 .shell { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(420px, .9fr); background: #f4f0e8; }
-.intro-panel { min-height: 100vh; padding: 42px clamp(32px, 7vw, 110px); color: #f8f4e9; background-image: linear-gradient(145deg, rgba(18,59,53,.92), rgba(30,85,74,.78)), url('https://images.unsplash.com/photo-1473448912268-2022ce9509d8?auto=format&fit=crop&w=1600&q=80'); background-position: center; background-size: cover; display: flex; flex-direction: column; justify-content: space-between; }
-.brand { display: flex; gap: 12px; align-items: center; font-weight: 700; letter-spacing: .02em; }
-.brand-mark { width: 38px; height: 38px; display: grid; place-items: center; border: 1px solid rgba(255,255,255,.4); border-radius: 50%; }
+.intro-panel { min-height: 100vh; padding: 42px clamp(32px, 7vw, 110px);
+     color: #f8f4e9;
+      background-image:
+     url('../images/kids-futuristic-school-classroom.jpg'); 
+     background-position: center; background-size: cover;
+      display: flex; flex-direction: column; justify-content: space-between; }
+.brand { display: flex; gap: 12px; align-items: center;
+     font-weight: 700; letter-spacing: .02em; }
+.brand-mark { width: 38px; height: 38px;
+     display: grid; place-items: center;
+      border: 1px solid rgba(255,255,255,.4);
+       border-radius: 50%; }
 .intro-copy { max-width: 620px; margin: 7vh 0; }
-.eyebrow { text-transform: uppercase; letter-spacing: .14em; font-size: 11px; font-weight: 700; display: flex; align-items: center; gap: 7px; margin: 0 0 22px; color: #c98954; }
+.eyebrow { text-transform: uppercase; letter-spacing: .14em;
+     font-size: 11px; font-weight: 700; display: flex; 
+     align-items: center; gap: 7px; margin: 0 0 22px;
+      color: #c98954; }
 .intro-panel .eyebrow { color: #edb577; }
-h1, h2 { font-family: 'Playfair Display', serif; font-weight: 500; line-height: 1.05; margin: 0; }
-.intro-copy h1 { font-size: clamp(46px, 5.2vw, 80px); max-width: 720px; letter-spacing: -.02em; }
-.intro-text { color: #d6e2d9; line-height: 1.7; max-width: 440px; font-size: 16px; margin-top: 28px; }
-.trust-note { display: flex; align-items: center; gap: 12px; max-width: 360px; color: #d6e2d9; font-size: 12px; line-height: 1.5; }
+h1, h2 { font-family: 'Playfair Display', serif; font-weight: 500;
+     line-height: 1.05; margin: 0; }
+.intro-copy h1 { font-size: clamp(46px, 5.2vw, 80px);
+     max-width: 720px; letter-spacing: -.02em; }
+.intro-text { color: #d6e2d9; line-height: 1.7;
+     max-width: 440px; font-size: 16px; margin-top: 28px; }
+.trust-note { display: flex; align-items: center; gap: 12px; max-width: 360px; color: #d6e2d9; 
+    font-size: 12px; line-height: 1.5; }
 .form-panel { display: grid; place-items: center; padding: 60px 32px; background: #fcfaf5; }
 .form-wrap { width: min(100%, 390px); }
 .register-form { width: 100%; padding: 28px; border: 1px solid rgba(47,114,98,.16); border-radius: 4px; background-position: center; background-size: cover; }

@@ -42,7 +42,10 @@ function App() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    request('/auth/me').then((data) => setUser(data.user)).catch(() => {}).finally(() => setLoading(false));
+    request('/auth/me').then((data) =>
+       setUser(data.user)).catch(() => {})
+    .finally(() => setLoading(false));
+    
   }, []);
 
   async function handleSubmit(event, authMode) {
@@ -97,7 +100,7 @@ function App() {
           <h1>Hope, Love, and a Place to Belong</h1>
           <p className="intro-text">A private, guided space for families and professionals moving through adoption with care.</p>
         </div>
-        <div className="trust-note"><ShieldCheck size={20} /><span>Your details are protected with encrypted sessions and secure account access.</span></div>
+        
       </section>
       <section className="form-panel">
         <div className="form-wrap">
