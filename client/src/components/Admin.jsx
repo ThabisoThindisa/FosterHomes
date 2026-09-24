@@ -3,21 +3,6 @@ import styles from './css/Admin.module.css'
 import Header from './Header'
 import NavigationBar from './NavBar'
 
-const INITIAL_PROGRAMS = [
-  {
-    program_id: 1,
-    ad_name: 'Foster Care Support',
-    ad_description: 'Guidance and support for families providing temporary care.',
-    ad_eligibility_requirements: 'Approved foster families'
-  },
-  {
-    program_id: 2,
-    ad_name: 'Family Reunification',
-    ad_description: 'Resources that help children and families reconnect safely.',
-    ad_eligibility_requirements: 'Families working with a case manager'
-  }
-]
-
 const INITIAL_STORIES = [
   { news_id: 1, title: 'A welcoming community', content: 'Every child deserves a safe and supportive home.' },
   { news_id: 2, title: 'Growing together', content: 'Our families build lasting connections through care and understanding.' }
@@ -30,22 +15,22 @@ const INITIAL_GALLERY = [
 
 export default function Admin(){
 
+
+    //My basic api connection running on port 4000
+    const Api_connection = 'http://localhost:4000/api'
+
   //Store and set the variavles 
   
   const [program, setProgram] = useState({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
   const [galleryForm, setGalleryForm] = useState({ image_url: '', alt_text: '' })
   const [message, setMessage] = useState('')
-  const [allPrograms , setAllPrograms] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState(null)
+  const [Display_allPrograms , setAllPrograms] = useState([])
 
   //Static values to display when
   const [stories, setStories] = useState(INITIAL_STORIES)
-  const [programs, setPrograms] = useState(INITIAL_PROGRAMS)
+  const [del_Program, seDelProgram] = useState([])
+  const [Add_programs, setPrograms] = useState([])
   const [gallery, setGallery] = useState(INITIAL_GALLERY)
-
-      //My basic api connection running on port 4000
-    const Api_connection = 'http://localhost:4000'
 
     //The addmin has access to add the programs
     async function Add_Programs(event) {
@@ -91,6 +76,7 @@ export default function Admin(){
       })
   }, [])
 
+
    
  //handle file upload
    const handleFileUpload = (event) => {
@@ -120,6 +106,28 @@ export default function Admin(){
       }
   }
 
+  const delete_Program = async (ProgramID) => {
+  try {
+    const response = await fetch(Api_connection +'/deleteUser/'+ ProgramID, {
+      method: 'DELETE',
+    });
+
+    const data = await response.json();
+
+    if (response.ok) {
+      console.log(data.message);
+
+      // Remove the deleted user from the React state
+      seDelProgram(del_Program.filter(user =>
+             del_Program.ProgramID !== ProgramID));
+    } else {
+      console.error(data.message);
+    }
+  } catch (error) {
+    console.error('Error deleting user:', error);
+  }
+};
+
   function remove(id, type, label) {
     if (!window.confirm('Delete this '+ label)) return
     if (type === 'program') setAllPrograms((items) => items.filter((item) => item.program_id !== id))
@@ -139,9 +147,9 @@ export default function Admin(){
       <section className={styles.forms}>
         <form onSubmit={Add_Programs} className={styles.form}>
           <h2>Add program</h2>
-          <input required placeholder="Program name" value={program.ad_name.trim()} onChange={(event) => setProgram({ ...program, ad_name: event.target.value })} />
-          <textarea required placeholder="Description" value={program.ad_description.trim()} onChange={(event) => setProgram({ ...program, ad_description: event.target.value })} />
-          <input placeholder="Eligibility requirements" value={program.ad_eligibility_requirements.trim()} onChange={(event) => setProgram({ ...program, ad_eligibility_requirements: event.target.value })} />
+          <input required placeholder="Program name" value={Add_programs.ad_name} onChange={(event) => setProgram({ ...Add_programs, ad_name: event.target.value })} />
+          <textarea required placeholder="Description" value={Add_programs.ad_description} onChange={(event) => setProgram({ ...Add_programs, ad_description: event.target.value })} />
+          <input placeholder="Eligibility requirements" value={Add_programs.ad_eligibility_requirements} onChange={(event) => setProgram({ ...Add_programs, ad_eligibility_requirements: event.target.value })} />
           <button type="submit" className={styles.submitButton}>Add program</button>
         </form>
         <form onSubmit={add_Gallery} className={styles.form}>
@@ -153,10 +161,12 @@ export default function Admin(){
         </form>
       </section>
       <section className={styles.list}>
-        <h2>Programs</h2>{allPrograms.map((item) => <article key={item.program_id}>
+        <h2>Programs</h2>{Display_allPrograms.map((item) => <article key={item.program_id}>
           <span><strong>{item.ad_name}</strong>
           <small>{item.ad_description}</small>
-          </span><button onClick={() => remove(item.program_id, 'program', 'program')}>Delete</button></article>)}</section>
+          </span><button onClick={() => {delete_Program(item.program_id)
+                                         remove(item.program_id, 'program', 'program')}}>Delete
+</button></article>)}</section>
       <section className={styles.list}><h2>Stories</h2>{stories.map((story) => <article key={story.news_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
         </span><button onClick={() => remove(story.news_id, 'story', 'story')}>Delete</button></article>)}</section>
