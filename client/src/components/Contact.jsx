@@ -1,8 +1,8 @@
-import React from 'react'
 
 import styles from './css/Contact.module.css'
-import Header from './Header'
-import NavigationBar from './NavBar'
+import Header from "./SemanticElements/Header";
+import NavigationBar from "./SemanticElements/NavBar";
+import Footer from './SemanticElements/Footer'
 
 export default function Contact(){
   return (
@@ -28,7 +28,7 @@ export default function Contact(){
       
       </div>
 
-    
+    <Footer />
     </div>
   )
 }

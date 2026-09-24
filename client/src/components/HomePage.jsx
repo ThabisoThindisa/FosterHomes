@@ -1,6 +1,8 @@
 import { Link } from 'react-router-dom'
 import styles from './css/HomePage.module.css'
-import NavigationBar from './NavBar'
+import NavigationBar from './SemanticElements/NavBar';
+import Footer from './SemanticElements/Footer'
+
 
 export default function HomePage(){
   return (
@@ -16,7 +18,13 @@ export default function HomePage(){
             <Link to= "/contacts"  className={styles.secondary}>Visit Us</Link>
           </div>
         </div>
+        
       </section>
+      <section className={styles.flexContainer}>
+
+        
+      </section>
+      <Footer />
     </>
   )
 }

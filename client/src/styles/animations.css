@@ -5,8 +5,11 @@
 body { margin: 0; min-width: 320px; }
 button, input { font: inherit; }
 button { cursor: pointer; }
-.shell { min-height: 100vh; display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(420px, .9fr); background: #f4f0e8; }
-.intro-panel { min-height: 100vh; padding: 42px clamp(32px, 7vw, 110px);
+.shell { min-height: 100vh; 
+     display: grid; grid-template-columns: minmax(0, 1.1fr) minmax(420px, .9fr); 
+     background: #f4f0e8; }
+.intro-panel { min-height: 100vh; 
+     padding: 42px clamp(32px, 7vw, 110px);
      color: #f8f4e9;
       background-image:
      url('../images/kids-futuristic-school-classroom.jpg'); 

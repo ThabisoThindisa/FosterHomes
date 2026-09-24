@@ -3,13 +3,16 @@
   background-image:url('../../images/kids-futuristic-school-classroom.jpg');
   background-size:cover;background-position:center;background-attachment:fixed;
 }
-.overlay{position:absolute;inset:0;background:linear-gradient(180deg,rgba(2,62,138,0.25),rgba(0,119,182,0.06));}
+.overlay{position:absolute;inset:0;
+  background:linear-gradient(180deg,rgba(2,62,138,0.25),rgba(0,119,182,0.06));}
 .content{position:relative;z-index:2;text-align:center;color:white;max-width:900px;padding:40px}
 .content h1{font-size:48px;margin:0 0 12px}
 .tag{font-size:18px;opacity:0.95;margin-bottom:20px}
 .ctas{display:flex;gap:12px;justify-content:center}
 .primary{background:var(--primary);color:white;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:600}
-.secondary{background:rgba(255,255,255,0.85);color:var(--accent);padding:10px 16px;border-radius:10px;text-decoration:none}
+.secondary{background:rgba(75, 19, 180, 0.85);
+  color:var(--accent);padding:10px 16px;
+  border-radius:10px;text-decoration:none}
 
 @media (max-width:768px){
   .content h1{font-size:28px}

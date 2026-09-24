@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import logo from '../images/logo.png'
-import styles from './css/NavBar.module.css'
+import logo from '../../images/logo.png'
+import styles from  '../css/NavBar.module.css'
 
 //The links to each page
 const LINKS = [

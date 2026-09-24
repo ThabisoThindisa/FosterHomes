@@ -23,7 +23,8 @@ body{
 
 .app{min-height:100vh;}
 .section{max-width:var(--max-width);margin:80px auto;padding:0 20px;scroll-margin-top:var(--nav-height)}
-.sectionTitle{font-size:28px;color:var(--accent);margin-bottom:18px}
+.sectionTitle{font-size:28px;color:var(--accent);
+  margin-bottom:18px}
 
 /* Simple utility for centered container */
 .container{max-width:var(--max-width);margin:0 auto;padding:0 20px}

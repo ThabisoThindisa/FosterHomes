@@ -7,10 +7,10 @@ import SiteLogo from './images/logo.png'
 
 //import the pages
 import Login from './components/Login';
-import NavBar from './components/NavBar';
+import NavBar from './components/SemanticElements/NavBar';
 import Register from './components/Register';
 import Programs from './components/Programs'
-import Header from './components/Header'
+import Header from './components/SemanticElements/Header'
 import Gallery from './components/Gallery'
 import Testimonial from './components/Testimonials'
 import HomePage from './components/HomePage'

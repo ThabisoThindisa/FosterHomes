@@ -1,6 +1,7 @@
 // src/components/Programs.jsx
 import { useEffect, useState } from 'react'
 import styles from './css/CardGrid.module.css'
+import Footer from './SemanticElements/Footer'
 
 //Use this connection.
 const Api_connection ='http://localhost:4000/api';
@@ -38,7 +39,8 @@ export default function Programs(){
   if(error) return <div>Error: {error}</div>
 
 return (
-  <div className={styles.grid}>
+  <>
+  <div className={styles.grid} >
       {programs.map((program) => (
         <article key={program.program_id} className={styles.card}>
           <div className={styles.body}>
@@ -54,5 +56,7 @@ return (
         </article>
       ))}
   </div>
+  <Footer />
+  </>
 )
 }

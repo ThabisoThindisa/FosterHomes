@@ -1,7 +1,8 @@
 import { useState } from 'react'
-import styles from './css/Gallery.module.css'
-import  NavigationBar from './NavBar'
-import Header from './Header'
+import styles from './css/Gallery.module.css';
+import  NavigationBar from "./SemanticElements/NavBar";
+import Header from "./SemanticElements/Header";
+import Footer from './SemanticElements/Footer'
 
 const IMAGES = new Array(8).fill(0).map((_,i)=>`https://picsum.photos/800/600?random=${200+i}`)
 
@@ -40,6 +41,7 @@ export default function Gallery(){
           </div>
         )}
       </main>
+      <Footer />
     </>
   )
 }

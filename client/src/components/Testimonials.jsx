@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react'
+import { useState, useEffect } from 'react'
 import styles from './css/Testimonials.module.css'
-import Header from './Header'
-import NavigationBar from './NavBar'
+import Header from './SemanticElements/Header'
+import NavigationBar from './SemanticElements/NavBar';
+import Footer from './SemanticElements/Footer'
 
 const Api_connection ='http://localhost:4000/api';
 
@@ -112,6 +113,7 @@ function creatMessages(e) {
         ))}
       </section>
       </main>
+      <Footer />
     </>
   )
 }
