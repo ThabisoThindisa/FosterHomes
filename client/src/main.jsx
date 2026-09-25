@@ -111,7 +111,7 @@ function ProgramsPage() {
         <div className="intro-copy">
           <p className="eyebrow"><Sparkles size={14} /> Your Journey Starts Here</p>
           <h1>Hope, Love, and a Place to Belong</h1>
-          <p className="intro-text">A private, guided space for families and professionals moving through adoption with care.</p>
+          
         </div>
         
       </section>

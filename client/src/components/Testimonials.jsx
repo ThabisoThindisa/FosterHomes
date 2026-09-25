@@ -9,38 +9,46 @@ const Api_connection ='http://localhost:4000/api';
 export default function Testimonials(){
 
   //Store and set the variavles 
-   const [Stories, setStories] = useState([])
+   const [Stories, setStories] = useState([]) //All stored testimonial /Stories
 
-     const [myTitle, setTitle] = useState("");
-     const [myContent, setContent] = useState("");
+     const [message, setMessage] = useState('')
 
-     //Function to handle creation messages from the users.
-function creatMessages(e) {
-  const { name, value } = e.target;
+     //Store the story as (news_id, title, content, author_id, published_at, is_published)
+     //Stores the current story/ Testimonial data
+     const [myStory, setStory] = useState({ title: '',
+       content: '',
+       author_id: '',
+       published_at: '',
+      is_published: '1', })  
 
-  if (name === 'title') {
-    setTitle(value);
-  } else if (name === 'content') {
-    setContent(value);
+     //-----------------Add single testimonial from the current user---------------
+    async function Add_Testimonial(event) {
+    event.preventDefault()
+
+      try {
+        const response = await fetch(Api_connection + '/AddStory', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(myStory)
+        })
+
+        if (!response.ok) throw new Error('Unable to add story.')
+
+        const saved_Story = await response.json()
+        setStories((current_Story) => [...current_Story, saved_Story])
+        //news_id title content author_id published_at is_published
+
+        
+        const timestamp = new Date().toISOString() //Generate current time stamp
+        setStory({ title: '', content: '',author_id: '4', published_at: '' })
+        setMessage('Story added successfully.')
+        
+      } catch (error) {
+        setMessage(error.message)
+      }
   }
-}
-  const handleSendMessage = async () => {
 
-    //Use # to seperate the message charecters later
-    UserStory = myTitle+'#'+myContent;
-
-    if (!UserStory.trim()) return; //Remove all empty charecters before the string of after
-
-    await fetch('/api/Stories', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ message: UserStory }),
-    });
-
-    setText(''); // Clear the input field after sending
-  };
-
-     //Retrieve available programs
+     //-------------------Retrieve available Stories/ Testimonials---------------------
     useEffect(() => {
       fetch(Api_connection +'/getStories')
         .then((response) => {
@@ -74,23 +82,31 @@ function creatMessages(e) {
           <form>
       <label className={styles.WriteLabel}>Write your story</label>
       <label className={styles.StaticLabel}>Write the title of your story:
-        <textarea
-        className={styles.titleInput}
-           name="title"
-          value={myTitle}
-          onChange={creatMessages}
-        />
+     <textarea
+          className={styles.titleInput}
+            name="title"
+            value={myStory.title}
+          onChange={(event) =>
+         setStory({
+            ...myStory,
+             title: event.target.value
+    })
+  }
+/>
       </label>
 
        <label className={styles.StaticLabel}>Write the story:
-        <textarea
-         className={styles.storyInput}
-          name="content"
-          value={myContent}
-          onChange={creatMessages}
-        />
+      <textarea className={styles.storyInput}
+                name="content"
+                value={myStory.content}
+               onChange={(event) =>
+         setStory({...myStory,
+                 content: event.target.value
+    })
+  }
+/>
       </label>
-      <button className={styles.sendButton} onClick={handleSendMessage}>Send Message</button>
+      <button type="submit" className={styles.sendButton} > Send Message </button>
       <label className={styles.DisplayLabel}>Our Testemonial from our community.</label>
     </form>
 

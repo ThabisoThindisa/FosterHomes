@@ -89,7 +89,7 @@ const Api_connection ='http://localhost:4000/api';
         <div className={stylesBox.grid}>
           {programs.map((program, index) => (
             <div className={stylesBox.card} key={index}>
-              <h3>{(index+1) +'. Name: '+ program.ad_name + "\n"}</h3>
+              <h3>{(index+1) +'. '+ program.ad_name + "\n"}</h3>
               <p>{"Discription: "+program.ad_description}</p>
             </div>
           ))}
