@@ -78,7 +78,8 @@ function ProgramsPage() {
     <Header
       eyebrow="Explore your options"
       title="Programs"
-      description="Review the support and care pathways available to your family."
+      description="Thindisa FosterHome focuses on providing a safe and
+       supportive environment for children."
     />
       <Programs /></main></>;
 }

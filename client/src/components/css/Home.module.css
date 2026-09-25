@@ -1,0 +1,85 @@
+.flexContainer {
+  width: 100%;
+  padding: 70px 8%;
+  box-sizing: border-box;
+  background: #f7f7f7;
+}
+
+.sectionHeader {
+  max-width: 800px;
+  margin: 0 auto 40px;
+  text-align: center;
+}
+
+.sectionHeader h2 {
+  font-size: 2.2rem;
+  margin-bottom: 15px;
+}
+
+.sectionHeader p {
+  font-size: 1.1rem;
+  line-height: 1.6;
+}
+
+/* Flexbox Grid */
+.grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 25px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Individual cards */
+.card {
+  flex: 1 1 calc(33.333% - 25px);
+  min-width: 280px;
+  padding: 30px;
+  box-sizing: border-box;
+  background: white;
+  border-radius: 12px;
+  text-align: center;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.08);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.12);
+}
+
+.card h3 {
+  margin-bottom: 15px;
+  font-size: 1.4rem;
+}
+
+.card p {
+  line-height: 1.6;
+  margin: 0;
+}
+
+/* Tablet */
+@media (max-width: 900px) {
+  .card {
+    flex: 1 1 calc(50% - 25px);
+  }
+}
+
+/* Mobile */
+@media (max-width: 600px) {
+  .flexContainer {
+    padding: 50px 5%;
+  }
+
+  .grid {
+    flex-direction: column;
+  }
+
+  .card {
+    min-width: 100%;
+  }
+
+  .sectionHeader h2 {
+    font-size: 1.8rem;
+  }
+}
