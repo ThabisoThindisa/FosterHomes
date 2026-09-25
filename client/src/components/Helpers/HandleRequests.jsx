@@ -47,7 +47,7 @@ export const addStory = async (myStory) => {
 };
 
 //---------------
-    export const AddPrograms = async (myStory) => {
+    export const AddPrograms = async (program) => {
 
       try {
         const response = await fetch(Api_connection + '/AddPrograms', {
@@ -66,4 +66,18 @@ export const addStory = async (myStory) => {
       }
   }
 
-
+  //---------------
+  export const Add_Programs = async (myStory) => {
+    const response = await fetch(Api_connection + '/AddStory', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(myStory)
+    });
+    if (!response.ok) {
+        throw new Error('Unable to add story');
+    }
+    const data = await response.json();
+    return data;
+};

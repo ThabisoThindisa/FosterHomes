@@ -4,7 +4,7 @@ import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
 import { Link,useNavigate  } from 'react-router-dom'
-import {getPrograms,AddPrograms} from './Helpers/HandleRequests'
+import {getPrograms,AddPrograms,getStories} from './Helpers/HandleRequests'
 
 const INITIAL_STORIES = [
   { news_id: 1, title: 'A welcoming community', content: 'Every child deserves a safe and supportive home.' },
@@ -77,6 +77,25 @@ export default function Admin(){
       fetchPrograms();
   
   }, []);
+
+//---------------------------Get stories/ Testimonials---------------
+useEffect(() => {
+
+    const fetchStories = async () => {
+        try {
+            const storiesList = await getStories();
+            setStories(storiesList);
+        } catch (fetchError) {
+            setError(fetchError.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchStories();
+
+}, []);
+
    
  //handle file upload
    const handleFileUpload = (event) => {

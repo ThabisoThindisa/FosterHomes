@@ -11,7 +11,6 @@ export default function Programs(){
 
    //------------------Retrieve available programs---------------
 useEffect(() => {
-
     const fetchPrograms = async () => {
         try {
             const programsList = await getPrograms();
