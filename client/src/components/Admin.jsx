@@ -3,13 +3,8 @@ import styles from './css/Admin.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
-import { Link,useNavigate  } from 'react-router-dom'
-import {getPrograms,AddPrograms,getStories} from './Helpers/HandleRequests'
+import {getPrograms, AddPrograms, getStories} from './Helpers/HandleRequests'
 
-const INITIAL_STORIES = [
-  { news_id: 1, title: 'A welcoming community', content: 'Every child deserves a safe and supportive home.' },
-  { news_id: 2, title: 'Growing together', content: 'Our families build lasting connections through care and understanding.' }
-]
 
 const INITIAL_GALLERY = [
   { gallery_id: 1, image_url: 'https://picsum.photos/800/600?random=201', alt_text: 'Community gathering' },
@@ -18,7 +13,6 @@ const INITIAL_GALLERY = [
 
 export default function Admin(){
 
-
     //My basic api connection running on port 4000
     const Api_connection = 'http://localhost:4000/api'
       const handleRefresh = () => {
@@ -26,17 +20,21 @@ export default function Admin(){
   };
 
   //Store and set the variavles 
-  
-  const [program, setProgram] = useState({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
   const [galleryForm, setGalleryForm] = useState({ image_url: '', alt_text: '' })
   const [message, setMessage] = useState('')
-  const [Display_allPrograms, setAllPrograms] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   //Static values to display when
-  const [stories, setStories] = useState(INITIAL_STORIES)
-  const [gallery, setGallery] = useState(INITIAL_GALLERY)
+
+  //1. Add single program 
+  const [program, setProgram] = useState(
+    { ad_name: '', ad_description: '',
+     ad_eligibility_requirements: '' })
+
+  const [Display_allPrograms, setAllPrograms] = useState([]) //Display all programs
+  const [Display_Allstories, setAllStories] = useState([])
+  const [gallery, setGallery] = useState([])
   const [file, setFile] = useState(null)
 
     //The addmin has access to add the programs
@@ -84,7 +82,7 @@ useEffect(() => {
     const fetchStories = async () => {
         try {
             const storiesList = await getStories();
-            setStories(storiesList);
+            setAllStories(storiesList);
         } catch (fetchError) {
             setError(fetchError.message);
         } finally {
@@ -199,7 +197,7 @@ useEffect(() => {
           remove(item.program_id, 'program', 'program')}}>Delete
           </button></article>)}</section>
 
-      <section className={styles.list}><h2>Stories</h2>{stories.map((story) => <article key={story.news_id}><span>
+      <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.news_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
         </span><button onClick={() => remove(story.news_id, 'story', 'story')}>Delete</button></article>)}</section>
       <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button onClick={() => remove(image.gallery_id || image.image_id, 'picture', 'picture')}>Delete</button></article>)}</section>

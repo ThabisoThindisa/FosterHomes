@@ -66,18 +66,17 @@ export const addStory = async (myStory) => {
       }
   }
 
-  //---------------
-  export const Add_Programs = async (myStory) => {
-    const response = await fetch(Api_connection + '/AddStory', {
-        method: 'POST',
-        headers: {
-            'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(myStory)
-    });
-    if (!response.ok) {
-        throw new Error('Unable to add story');
+  export const delete_Program = async (ProgramID) => {
+    const data = null;
+    try {
+      const response = await fetch(Api_connection + '/deleteProgram/' + ProgramID, {
+        method: 'DELETE',
+      })
+
+       data = await response.json().catch(() => ({}))
+       return data
+
+    } catch (error) {
+      console.error('Error deleting program:', error)
     }
-    const data = await response.json();
-    return data;
-};
+  }
