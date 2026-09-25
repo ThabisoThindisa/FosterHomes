@@ -1,10 +1,8 @@
-// src/components/Programs.jsx
+
 import { useEffect, useState } from 'react'
 import styles from './css/CardGrid.module.css'
 import Footer from './SemanticElements/Footer'
-
-//Use this connection.
-const Api_connection ='http://localhost:4000/api';
+import { getPrograms } from './Helpers/HandleRequests';
 
 export default function Programs(){
   const [programs, setPrograms] = useState([])
@@ -12,26 +10,21 @@ export default function Programs(){
   const [error, setError] = useState(null)
 
    //------------------Retrieve available programs---------------
-  useEffect(() => {
-    fetch(Api_connection +'/getPrograms')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch programs')
-        }
-        return response.json()
-      })
-     .then((data) => {
-      const programsList = data.data ?? data
+useEffect(() => {
 
-  setPrograms(programsList)
-})
-      .catch((fetchError) => {
-        setError(fetchError.message)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
+    const fetchPrograms = async () => {
+        try {
+            const programsList = await getPrograms();
+            setPrograms(programsList);
+        } catch (fetchError) {
+            setError(fetchError.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+    fetchPrograms();
+
+}, []);
 
 
   if(loading) return <div>Loading programs...</div>

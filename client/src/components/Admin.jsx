@@ -4,6 +4,7 @@ import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
 import { Link,useNavigate  } from 'react-router-dom'
+import {getPrograms,AddPrograms} from './Helpers/HandleRequests'
 
 const INITIAL_STORIES = [
   { news_id: 1, title: 'A welcoming community', content: 'Every child deserves a safe and supportive home.' },
@@ -51,7 +52,7 @@ export default function Admin(){
 
         if (!response.ok) throw new Error('Unable to add program.')
 
-        const savedProgram = await response.json()
+        const savedProgram = await AddPrograms;
         setAllPrograms((currentPrograms) => [...currentPrograms, savedProgram])
         setProgram({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
         setMessage('Program added successfully.')
@@ -61,29 +62,21 @@ export default function Admin(){
       }
   }
 
-  //Diplay programs.
- useEffect(() => {
-    fetch(Api_connection +'/getPrograms')
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch programs')
-        }
-        return response.json()
-      })
-     .then((data) => {
-      const programsList = data.data ?? data
-
-  setAllPrograms(programsList)
-})
-      .catch((fetchError) => {
-        setError(fetchError.message)
-      })
-      .finally(() => {
-        setLoading(false)
-      })
-  }, [])
-
-
+     //------------------Retrieve available programs---------------
+  useEffect(() => {
+      const fetchPrograms = async () => {
+          try {
+              const programsList = await getPrograms();
+              setAllPrograms(programsList);
+          } catch (fetchError) {
+              setError(fetchError.message);
+          } finally {
+              setLoading(false);
+          }
+      };
+      fetchPrograms();
+  
+  }, []);
    
  //handle file upload
    const handleFileUpload = (event) => {

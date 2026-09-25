@@ -3,8 +3,8 @@ import styles from './css/Testimonials.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar';
 import Footer from './SemanticElements/Footer'
+import {getStories,addStory} from './Helpers/HandleRequests'
 
-const Api_connection ='http://localhost:4000/api';
 
 export default function Testimonials(){
 
@@ -22,51 +22,48 @@ export default function Testimonials(){
       is_published: '1', })  
 
      //-----------------Add single testimonial from the current user---------------
-    async function Add_Testimonial(event) {
-    event.preventDefault()
+   async function Add_Testimonial(event) {
+    event.preventDefault();
+    try {
 
-      try {
-        const response = await fetch(Api_connection + '/AddStory', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(myStory)
-        })
+        const saved_Story = await addStory(myStory);
 
-        if (!response.ok) throw new Error('Unable to add story.')
+        setStories((current_Story) => [
+            ...current_Story,
+            saved_Story
+        ]);
 
-        const saved_Story = await response.json()
-        setStories((current_Story) => [...current_Story, saved_Story])
-        //news_id title content author_id published_at is_published
+        setStory({
+            title: '',
+            content: '',
+            author_id: '4',
+            published_at: '',
+            is_published: '1'
+        });
+        setMessage('Story added successfully.');
+    } catch (error) {
+        setMessage(error.message);
 
-        
-        const timestamp = new Date().toISOString() //Generate current time stamp
-        setStory({ title: '', content: '',author_id: '4', published_at: '' })
-        setMessage('Story added successfully.')
-        
-      } catch (error) {
-        setMessage(error.message)
-      }
-  }
+    }
+}
 
      //-------------------Retrieve available Stories/ Testimonials---------------------
-    useEffect(() => {
-      fetch(Api_connection +'/getStories')
-        .then((response) => {
-          if (!response.ok) {
-            throw new Error('Failed to fetch stories')
-          }
-          return response.json()
-        })
-       .then((data) => {
-        setStories(data.data ?? data)
-  })
-        .catch((fetchError) => {
-          setError(fetchError.message)
-        })
-        .finally(() => {
-          setLoading(false)
-        })
-    }, [])
+useEffect(() => {
+
+    const fetchStories = async () => {
+        try {
+            const storiesList = await getStories();
+            setStories(storiesList);
+        } catch (fetchError) {
+            setError(fetchError.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    fetchStories();
+
+}, []);
   
 
   return (
@@ -113,16 +110,17 @@ export default function Testimonials(){
     {/*news_id	title,content,author_id,published_at,is_published */}
 
       <section className={styles.flexContainer}>
-        {Stories.map((story) => (
+        {Stories.map((story,index =1) => (
           <article key={story.news_id} className={`${styles.card} ${styles.flexItem}`}>
             <div className={styles.body}>
-              <h3>{story.title}</h3>
+              <h3>{(index+1)+'. ' + story.title}</h3>
               <p>{story.content}</p>
 
               {story.content && (
                 <small>
                   Published at: {story.published_at.slice(0, 10) +' Time: '+story.published_at.slice(12, 16)}
                 </small>
+                
               )}
             </div>
           </article>
