@@ -67,16 +67,23 @@ const Api_connection ='http://localhost:4000/api';
 
       {/* Flexbox Grid */}
       <section className={stylesBox.flexContainer}>
-        <div className={stylesBox.sectionHeader}>
-          <h2>Our Programs.</h2>
+
+            <div className={stylesBox.sectionHeader}>
+          <h2>Welcome to Thindisa FosterHome</h2>
           <p>
-         Thindisa FosterHome focuses on providing a safe and 
-         supportive environment for children. Our programs include
-          foster care, adoption support, education, child development,
-           and family services, aiming to improve the lives of 
-           vulnerable children and foster their potential for a brighter future.
+         Our home is built around compassion, care, dignity, and hope.
+          We strive to create a nurturing environment where children
+          feel safe, valued, respected, and supported.Through our
+           programs and services, we focus on the individual needs 
+           of every child while encouraging their emotional, educational, 
+           social, and personal development.S
           </p>
         </div>
+
+        <div className={stylesBox.sectionHeader}>
+          <h2>Our Programs.</h2>
+        </div>
+
        
        {/*program_id ad_name ad_description ad_eligibility_requirements ad_is_active ad_created_at */}
         <div className={stylesBox.grid}>
@@ -86,6 +93,31 @@ const Api_connection ='http://localhost:4000/api';
               <p>{"Discription: "+program.ad_description}</p>
             </div>
           ))}
+        </div>
+                <div className={stylesBox.sectionHeader}>
+          
+          <p>
+    
+          </p>
+        </div>
+
+                     <div className={stylesBox.sectionHeader}>
+          <h2>Why Choose Thindisa FosterHome?</h2>
+   <p>
+    At Thindisa FosterHome, we are committed to providing a safe and
+    nurturing environment where children can feel comfortable, protected,
+    and supported. We believe every child deserves to be treated with
+    kindness, dignity, respect, and understanding. Our programs focus on
+    the individual needs, development, and well-being of each child.
+  </p>
+
+  <p>
+    Through compassionate care and continued support, we encourage education,
+    personal development, family support, and positive community relationships.
+    We strive to help every child build confidence, discover their potential,
+    and work towards a stronger and brighter future.
+  </p>
+
         </div>
       </section>
 

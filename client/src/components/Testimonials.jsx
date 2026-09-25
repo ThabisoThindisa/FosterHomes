@@ -91,7 +91,7 @@ function creatMessages(e) {
         />
       </label>
       <button className={styles.sendButton} onClick={handleSendMessage}>Send Message</button>
-      <label className={styles.DisplayLabel}>Our Testemonial from our users</label>
+      <label className={styles.DisplayLabel}>Our Testemonial from our community.</label>
     </form>
 
     {/*news_id	title,content,author_id,published_at,is_published */}

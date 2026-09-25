@@ -1,4 +1,4 @@
-import React from 'react'
+import fosterImage from '../../images/logo.png'
 
 export default function Footer() {
   return (
@@ -16,10 +16,12 @@ export default function Footer() {
         gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))',
         gap: '1.5rem'
       }}>
+
         <div>
+    
           <h3 style={{ marginBottom: '0.75rem' }}>Thindisa Foster Home</h3>
           <p style={{ margin: 0, lineHeight: 1.6, color: '#d1d5db' }}>
-            Supporting families with care, safety, and belonging.
+            Hope, Love, and a Place to Belong
           </p>
         </div>
 
@@ -37,8 +39,8 @@ export default function Footer() {
         <div>
           <h4 style={{ marginBottom: '0.75rem' }}>Contact</h4>
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, lineHeight: 1.8 }}>
-            <li>Email: hello@thindisa.org</li>
-            <li>Phone: +27 00 000 0000</li>
+            <li>Email: thabiso@homes.co.za</li>
+            <li>Phone: +27 76 654 7791</li>
             <li>Location: South Africa</li>
           </ul>
         </div>
