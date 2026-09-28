@@ -67,16 +67,34 @@ export const addStory = async (myStory) => {
   }
 
   export const delete_Program = async (ProgramID) => {
-    const data = null;
+    
     try {
       const response = await fetch(Api_connection + '/deleteProgram/' + ProgramID, {
         method: 'DELETE',
       })
 
-       data = await response.json().catch(() => ({}))
+      const data = await response.json().catch(() => ({}))
        return data
 
     } catch (error) {
       console.error('Error deleting program:', error)
     }
+  }
+    ///_----add pictures----
+     export const add_Gallery = async (ThisImage) => {
+     
+      try {
+        const response = await fetch(Api_connection + '/AddPictures', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(ThisImage)
+        })
+
+        if (!response.ok) throw new Error('Unable to add gallery image.')
+
+        const savedGallery = await response.json()
+         return savedGallery;
+      } catch (error) {
+        setMessage(error.message)
+      }
   }

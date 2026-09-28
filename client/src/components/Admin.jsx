@@ -5,7 +5,6 @@ import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
 import {getPrograms, AddPrograms, getStories} from './Helpers/HandleRequests'
 
-
 const INITIAL_GALLERY = [
   { gallery_id: 1, image_url: 'https://picsum.photos/800/600?random=201', alt_text: 'Community gathering' },
   { gallery_id: 2, image_url: 'https://picsum.photos/800/600?random=202', alt_text: 'Family activity' }
@@ -180,13 +179,37 @@ useEffect(() => {
           <input placeholder="Eligibility requirements" value={program.ad_eligibility_requirements} onChange={(event) => setProgram({ ...program, ad_eligibility_requirements: event.target.value })} />
           <button type="submit" className={styles.submitButton}>Add program</button>
         </form>
-        <form onSubmit={add_Gallery} className={styles.form}>
-          <h2>Add gallery picture</h2>
-          <input required type="url" placeholder="Image URL" value={galleryForm.image_url.trim()} onChange={(event) => setGalleryForm({ ...galleryForm, image_url: event.target.value })} />
-          <input placeholder="Alt text" value={galleryForm.alt_text.trim()} onChange={(event) => setGalleryForm({ ...galleryForm, alt_text: event.target.value })} />
-          {/* onChange={(event) => setProgram({ ...program, ad_name: event.target.value })} />*/}
-          <button type="submit" onClick={(event) => handleFileUpload(event)}>Add picture</button>
-        </form>
+     
+         {/*-------Upload the image/ Picture--------------  */}
+         <form onSubmit={add_Gallery} className={styles.form}>
+    <h2>Add gallery picture</h2>
+
+    {/* Select an image */}
+    <input
+        type="file"
+        accept="image/*"
+        onChange={handleFileUpload}
+    />
+
+    {/* Alt text */}
+    <input
+        type="text"
+        placeholder="Alt text"
+        value={galleryForm.alt_text}
+        onChange={(event) =>
+            setGalleryForm({
+                ...galleryForm,
+                alt_text: event.target.value
+            })
+        }
+    />
+
+    <button type="submit" className={styles.submitButton}>
+        Upload Picture
+    </button>
+</form>
+       {/*----------------------------  */}
+
       </section>
       <section className={styles.list}>
         <h2>Programs</h2>{Display_allPrograms.map((item) => <article key={item.program_id}>
