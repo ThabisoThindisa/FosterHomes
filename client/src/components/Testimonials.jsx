@@ -72,7 +72,7 @@ useEffect(() => {
       <main className="dashboard">
       <Header
         eyebrow="Stories from our community"
-        title="Testimonials"
+        title="Community Stories"
         description="Hear how our support has helped families move forward."
       />
 
