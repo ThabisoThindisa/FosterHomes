@@ -154,7 +154,7 @@ useEffect(() => {
 
     if (type === 'story') setStories((items) => 
       items.filter((item) => 
-        item.news_id !== id))
+        item.Story_id !== id))
 
     if (type === 'picture')
        setGallery((items) =>
@@ -197,9 +197,9 @@ useEffect(() => {
           remove(item.program_id, 'program', 'program')}}>Delete
           </button></article>)}</section>
 
-      <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.news_id}><span>
+      <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.Story_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
-        </span><button onClick={() => remove(story.news_id, 'story', 'story')}>Delete</button></article>)}</section>
+        </span><button onClick={() => remove(story.Story_id, 'story', 'story')}>Delete</button></article>)}</section>
       <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button onClick={() => remove(image.gallery_id || image.image_id, 'picture', 'picture')}>Delete</button></article>)}</section>
       </main>
      <Footer />

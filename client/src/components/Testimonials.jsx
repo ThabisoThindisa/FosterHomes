@@ -13,7 +13,7 @@ export default function Testimonials(){
 
      const [message, setMessage] = useState('')
 
-     //Store the story as (news_id, title, content, author_id, published_at, is_published)
+     //Store the story as (Story_id, title, content, author_id, published_at, is_published)
      //Stores the current story/ Testimonial data
      const [myStory, setStory] = useState({ title: '',
        content: '',
@@ -107,11 +107,9 @@ useEffect(() => {
       <label className={styles.DisplayLabel}>Our Testemonial from our community.</label>
     </form>
 
-    {/*news_id	title,content,author_id,published_at,is_published */}
-
       <section className={styles.flexContainer}>
         {Stories.map((story,index =1) => (
-          <article key={story.news_id} className={`${styles.card} ${styles.flexItem}`}>
+          <article key={story.Story_id} className={`${styles.card} ${styles.flexItem}`}>
             <div className={styles.body}>
               <h3>{(index+1)+'. ' + story.title}</h3>
               <p>{story.content}</p>

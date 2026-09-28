@@ -8,7 +8,7 @@ const LINKS = [
   { label: 'Home', to: '/HomePage' },
   { label: 'Admin', to: '/Admin', adminOnly: true },
   { label: 'Programs', to: '/programs' },
-  { label: 'Testimonial', to: '/Testimonial' },
+  { label: 'Community Stories', to: '/Testimonial' },
   { label: 'Gallery', to: '/Gallery' },
   { label: 'Contact', to: '/contacts' },
   { label: 'Sign-Out', to: "/logout", action: 'logout' }
