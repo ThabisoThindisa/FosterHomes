@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 24, 2026 at 03:17 AM
+-- Generation Time: Sep 28, 2026 at 07:39 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -73,7 +73,10 @@ CREATE TABLE `adoption_programs` (
 
 INSERT INTO `adoption_programs` (`program_id`, `ad_name`, `ad_description`, `ad_eligibility_requirements`, `ad_is_active`, `ad_created_at`) VALUES
 (1, 'Domestic Adoption Programme', 'A programme supporting eligible individuals and families through the domestic adoption process.', 'Applicants must meet the applicable legal, social and financial requirements and complete the required assessment process.', 1, '2026-09-20 14:44:21'),
-(2, 'Foster-to-Adopt Programme', 'A programme for approved foster caregivers who may become eligible to adopt a child in their care.', 'Applicants must be approved foster caregivers and complete the required adoption assessment.', 1, '2026-09-20 14:44:21');
+(2, 'Foster-to-Adopt Programme', 'A programme for approved foster caregivers who may become eligible to adopt a child in their care.', 'Applicants must be approved foster caregivers and complete the required adoption assessment.', 1, '2026-09-20 14:44:21'),
+(9, 'Meet ups', 'Trust building and communication', 'First time adoption', 1, '2026-09-23 21:54:38'),
+(24, 'aa', 'aa', 'aa', 1, '2026-09-25 15:07:17'),
+(25, 'test', 'test', 'aaa', 1, '2026-09-25 15:50:18');
 
 -- --------------------------------------------------------
 
@@ -97,7 +100,9 @@ CREATE TABLE `applicants` (
 INSERT INTO `applicants` (`applicant_id`, `user_id`, `s_marital_status`, `s_occupation`, `s_address`, `s_adoption_preferences`) VALUES
 (1, 11, NULL, NULL, NULL, NULL),
 (2, 12, NULL, NULL, NULL, NULL),
-(3, 13, NULL, NULL, NULL, NULL);
+(3, 13, NULL, NULL, NULL, NULL),
+(4, 14, NULL, NULL, NULL, NULL),
+(5, 15, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -187,11 +192,11 @@ INSERT INTO `gallery` (`id`, `name`, `file_upload`) VALUES
 -- --------------------------------------------------------
 
 --
--- Table structure for table `news`
+-- Table structure for table `ourstories`
 --
 
-CREATE TABLE `news` (
-  `news_id` int(11) NOT NULL,
+CREATE TABLE `ourstories` (
+  `Story_id` int(11) NOT NULL,
   `title` varchar(255) NOT NULL,
   `content` text NOT NULL,
   `author_id` int(11) DEFAULT NULL,
@@ -200,19 +205,14 @@ CREATE TABLE `news` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
--- Dumping data for table `news`
+-- Dumping data for table `ourstories`
 --
 
-INSERT INTO `news` (`news_id`, `title`, `content`, `author_id`, `published_at`, `is_published`) VALUES
-(1, 'Understanding the Adoption Process', 'The adoption process involves several important steps, including an initial application, assessment, interviews, background checks, and approval. Applicants are encouraged to work closely with their social worker throughout the process.', 3, '2026-01-15 09:00:00', 1),
+INSERT INTO `ourstories` (`Story_id`, `title`, `content`, `author_id`, `published_at`, `is_published`) VALUES
 (2, 'Preparing Your Home for Adoption', 'Creating a safe, welcoming, and stable home environment is an important part of preparing for adoption. Prospective adoptive parents should consider the child\'s physical, emotional, educational, and social needs.', 4, '2026-02-03 10:30:00', 1),
-(3, 'Adoption Information Session', 'Our upcoming information session will provide prospective applicants with an opportunity to learn more about adoption requirements, assessments, documentation, and the role of social workers.', 3, '2026-03-10 14:00:00', 1),
 (4, 'Supporting Children Through Transition', 'Children going through the adoption process may experience a range of emotions. Families can help by providing reassurance, consistency, patience, and age-appropriate communication throughout the transition.', 4, '2026-04-18 11:00:00', 1),
-(5, 'Frequently Asked Questions About Adoption', 'We have compiled answers to some of the most common questions about adoption applications, eligibility requirements, assessments, matching, and post-adoption support.', 3, '2026-05-06 09:30:00', 1),
 (6, 'New Adoption Support Resources', 'Our adoption support resources have been expanded to provide applicants and families with additional information about preparing for adoption and supporting children before and after placement.', 4, '2026-06-12 13:00:00', 1),
-(7, 'Preparing for Your Social Worker Assessment', 'Applicants can prepare for their social worker assessment by ensuring that their required documents are available and being prepared to discuss their family circumstances, living arrangements, and reasons for adopting.', 3, '2026-07-20 10:00:00', 1),
-(8, 'Upcoming Adoption Awareness Event', 'Our organisation will be hosting an adoption awareness event to provide information about adoption and connect prospective applicants with adoption professionals.', 4, '2026-08-15 12:00:00', 1),
-(9, 'Building Stable and Supportive Families', 'Stable family environments can help children develop a sense of security and belonging. Prospective adoptive parents are encouraged to learn about the needs of children and seek appropriate support when necessary.', 3, '2026-09-05 09:00:00', 1);
+(8, 'Upcoming Adoption Awareness Event', 'Our organisation will be hosting an adoption awareness event to provide information about adoption and connect prospective applicants with adoption professionals.', 4, '2026-08-15 12:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -269,9 +269,11 @@ CREATE TABLE `users` (
 INSERT INTO `users` (`user_id`, `u_full_name`, `u_BirthID`, `u_email`, `u_password_hash`, `u_phone`, `u_role`, `u_is_active`, `u_created_at`) VALUES
 (3, 'Sipho Dlamini', '8205205300089', 'sipho.dlamini@example.com', '$2b$10$ExampleHash003', '0734567890', 'social_worker', 1, '2026-09-19 13:13:09'),
 (4, 'Lerato Maseko', '8807154200082', 'lerato.maseko@example.com', '$2b$10$ExampleHash004', '0745678901', 'social_worker', 1, '2026-09-19 13:13:09'),
-(11, 'thabiso', '0006045560080', 'thabisothindisa1@gmail.com', '$2a$12$AjIFo1rWNP9z64SreBTCIOoVA15K1ox4wE5/QHY73pvUc4Awmkb1K', '0766547791', 'admin', 1, '2026-09-19 14:47:16'),
+(11, 'thabiso', '1111111111111', 'thabisothindisa1@gmail.com', '$2a$12$AjIFo1rWNP9z64SreBTCIOoVA15K1ox4wE5/QHY73pvUc4Awmkb1K', '0766547791', 'admin', 1, '2026-09-19 14:47:16'),
 (12, '3', '444', 't@gmail.com', '$2a$12$lxbjHWWH6dQDkeO/nb9YA.df3u3z3kY8VT19FmmB5LLnJxWkkrZu6', NULL, 'adoptive_parent', 1, '2026-09-20 13:40:30'),
-(13, 'Admin', '0000000000000', 'admin@gmail.com', '$2a$12$UIWG5FxIXLyhwO5eZFSaSO5NP4/ALMeMS1KfxES.KZhu.orggCwW.', NULL, 'adoptive_parent', 1, '2026-09-23 18:11:21');
+(13, 'test', '0000000000000', 'test@gmail.com', '$2a$12$UIWG5FxIXLyhwO5eZFSaSO5NP4/ALMeMS1KfxES.KZhu.orggCwW.', NULL, 'adoptive_parent', 1, '2026-09-23 18:11:21'),
+(14, 'thabiso', '0006045560080', 'admin@gmail.com', '$2a$12$7EVRtIbgkbUyKzOY90KDJeiMWqgL/OZoJl/Qy4PD86m53vSXHCgbi', NULL, 'admin', 1, '2026-09-23 21:29:43'),
+(15, 'vincent', '123456789101', 'vin@gmail.com', '$2a$12$E8SwS4zmvOkbmBfjGwwd/eZF07cPzgTk/zKhWWqvQkq6T69FgcQSW', NULL, 'adoptive_parent', 1, '2026-09-24 18:34:44');
 
 --
 -- Indexes for dumped tables
@@ -342,10 +344,10 @@ ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
 
 --
--- Indexes for table `news`
+-- Indexes for table `ourstories`
 --
-ALTER TABLE `news`
-  ADD PRIMARY KEY (`news_id`),
+ALTER TABLE `ourstories`
+  ADD PRIMARY KEY (`Story_id`),
   ADD KEY `FK_News_Users` (`author_id`);
 
 --
@@ -390,13 +392,13 @@ ALTER TABLE `adoption_matches`
 -- AUTO_INCREMENT for table `adoption_programs`
 --
 ALTER TABLE `adoption_programs`
-  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
 
 --
 -- AUTO_INCREMENT for table `applicants`
 --
 ALTER TABLE `applicants`
-  MODIFY `applicant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `applicant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `application_documents`
@@ -429,10 +431,10 @@ ALTER TABLE `gallery`
   MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
--- AUTO_INCREMENT for table `news`
+-- AUTO_INCREMENT for table `ourstories`
 --
-ALTER TABLE `news`
-  MODIFY `news_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=11;
+ALTER TABLE `ourstories`
+  MODIFY `Story_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -450,7 +452,7 @@ ALTER TABLE `social_workers`
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=14;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- Constraints for dumped tables
@@ -489,12 +491,6 @@ ALTER TABLE `application_documents`
 ALTER TABLE `appointments`
   ADD CONSTRAINT `FK_Appointments_Applicants` FOREIGN KEY (`applicant_id`) REFERENCES `applicants` (`applicant_id`),
   ADD CONSTRAINT `FK_Appointments_SocialWorkers` FOREIGN KEY (`social_worker_id`) REFERENCES `social_workers` (`social_worker_id`);
-
---
--- Constraints for table `news`
---
-ALTER TABLE `news`
-  ADD CONSTRAINT `FK_News_Users` FOREIGN KEY (`author_id`) REFERENCES `users` (`user_id`);
 
 --
 -- Constraints for table `social_workers`

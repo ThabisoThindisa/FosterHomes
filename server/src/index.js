@@ -211,11 +211,11 @@ app.get('/api/getPrograms', async function (_req, res) {
   }
 });
 
-// 2. Get testemonilas of the users
+//----------------------------------2. Get testemonilas of the users--------------------
 app.get('/api/getStories', async function (_req, res) {
   try {
     const [rows] = await pool.query(
-      'SELECT * FROM news ORDER BY news_id DESC;'
+      'SELECT * FROM ourstories ORDER BY Story_id DESC;'
     );
 
     res.json(rows);
@@ -224,7 +224,7 @@ app.get('/api/getStories', async function (_req, res) {
   }
 });
 
-//3. add programs to the database
+//---------------------------------3. add programs to the database--------------------
 app.post('/api/AddPrograms', async (req, res) => {
   try {
     const {
@@ -263,6 +263,57 @@ app.post('/api/AddPrograms', async (req, res) => {
     });
   }
 });
+
+//-----------------Add stories/ Testimomials----------------------
+
+// Add a story
+app.post('/api/AddStory', async (req, res) => {
+  try {
+    const {
+      title,
+      content,
+      author_id,
+      published_at,
+      is_published
+    } = req.body
+
+    // Check required fields
+    if (!title || !content) {
+      return res.status(400).json({
+        message: 'Title and content are required.'
+      })
+    }
+
+    const sql = `
+      INSERT INTO ourstories
+      (title, content, author_id, published_at, is_published)
+      VALUES (?, ?, ?, ?, ?)
+    `
+
+    const [result] = await pool.execute(sql, [
+      title,
+      content,
+      author_id || null,
+      published_at || new Date(),
+      is_published ?? 1
+    ])
+
+    // Return the newly created story
+    const [newStory] = await pool.execute(
+      `SELECT * FROM ourstories WHERE Story_id = ?`,
+      [result.insertId]
+    )
+
+    res.status(201).json(newStory[0])
+
+  } catch (error) {
+    console.error('Error adding story:', error)
+
+    res.status(500).json({
+      message: 'Unable to add story.'
+    })
+  }
+})
 
 app.post('/api/auth/logout', function (_req, res) {
   return res.clearCookie('auth_token').json({ ok: true });
