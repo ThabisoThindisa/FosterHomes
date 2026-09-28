@@ -85,6 +85,43 @@ useEffect(() => {
 
 }, []);
 
+//-------------------------
+const Add_Gallery_Image = async (event) => {
+  event.preventDefault()
+
+  if (!file) {
+    setMessage('Please select an image.')
+    return
+  }
+
+  try {
+    const formData = new FormData()
+
+    formData.append('image', file)
+    formData.append('alt_text', galleryForm.alt_text)
+
+    const savedGallery = await add_Gallery(formData)
+
+    setGallery((currentGallery) => [
+      ...currentGallery,
+      savedGallery
+    ])
+
+    setFile(null)
+
+    setGalleryForm({
+      image_url: '',
+      alt_text: ''
+    })
+
+    event.target.reset()
+
+    setMessage('Gallery image added successfully.')
+
+  } catch (error) {
+    setMessage(error.message)
+  }
+}
    
  //handle file upload
    const handleFileUpload = (event) => {
@@ -150,7 +187,7 @@ useEffect(() => {
         </form>
      
          {/*-------Upload the image/ Picture--------------  */}
-         <form onSubmit={add_Gallery} className={styles.form}>
+         <form onSubmit={Add_Gallery_Image} className={styles.form}>
     <h2>Add gallery picture</h2>
 
     {/* Select an image */}

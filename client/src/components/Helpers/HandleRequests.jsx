@@ -30,7 +30,7 @@ export async function getPrograms() {
     return data.data ?? data;
 }
 
-//-----------------Add a single story
+//-----------------Add a single story----------------
 export const addStory = async (myStory) => {
     const response = await fetch(Api_connection + '/AddStory', {
         method: 'POST',
@@ -80,21 +80,25 @@ export const addStory = async (myStory) => {
       console.error('Error deleting program:', error)
     }
   }
-    ///_----add pictures----
-     export const add_Gallery = async (ThisImage) => {
-     
-      try {
-        const response = await fetch(Api_connection + '/AddPictures', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(ThisImage)
-        })
+    ///_-----------------add pictures----
+export const add_Gallery = async (ThisImage) => {
+  try {
+    const response = await fetch(Api_connection + '/AddPictures', {
+      method: 'POST',
+      body: ThisImage
+    })
 
-        if (!response.ok) throw new Error('Unable to add gallery image.')
+    if (!response.ok) {
+      throw new Error('Unable to add gallery image.')
+    }
 
-        const savedGallery = await response.json()
-         return savedGallery;
-      } catch (error) {
-        setMessage(error.message)
-      }
+    const savedGallery = await response.json()
+
+    return savedGallery
+
+  } catch (error) {
+    throw error
   }
+}
+
+  
