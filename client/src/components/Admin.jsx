@@ -3,7 +3,7 @@ import styles from './css/Admin.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
-import {getPrograms, AddPrograms, getStories} from './Helpers/HandleRequests'
+import {getPrograms, AddPrograms, getStories,add_Gallery} from './Helpers/HandleRequests'
 
 const INITIAL_GALLERY = [
   { gallery_id: 1, image_url: 'https://picsum.photos/800/600?random=201', alt_text: 'Community gathering' },
@@ -36,20 +36,12 @@ export default function Admin(){
   const [gallery, setGallery] = useState([])
   const [file, setFile] = useState(null)
 
-    //The addmin has access to add the programs
+    //--------The add single the program----
     async function Add_Programs(event) {
     event.preventDefault()
 
       try {
-        const response = await fetch(Api_connection + '/AddPrograms', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(program)
-        })
-
-        if (!response.ok) throw new Error('Unable to add program.')
-
-        const savedProgram = await AddPrograms;
+        const savedProgram = await AddPrograms(program);
         setAllPrograms((currentPrograms) => [...currentPrograms, savedProgram])
         setProgram({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
         setMessage('Program added successfully.')
@@ -98,29 +90,6 @@ useEffect(() => {
    const handleFileUpload = (event) => {
     const selectedFile = event.target.files?.[0] || null
     setFile(selectedFile)
-  }
-
-
-  //Upload gallery images
-  async function add_Gallery(event) {
-     event.preventDefault()
-
-      try {
-        const response = await fetch(Api_connection + '/api/AddPictures', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(galleryForm)
-        })
-
-        if (!response.ok) throw new Error('Unable to add gallery image.')
-
-        const savedGallery = await response.json()
-        setGallery((currentGallery) => [...currentGallery, savedGallery])
-        setGalleryForm({ image_url: '', alt_text: '' })
-        setMessage('Gallery image added successfully.')
-      } catch (error) {
-        setMessage(error.message)
-      }
   }
 
   const delete_Program = async (ProgramID) => {
