@@ -5,6 +5,7 @@ import cookieParser from 'cookie-parser';
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import mysql from 'mysql2/promise';
+import multer from 'multer';
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -263,10 +264,15 @@ app.post('/api/AddPrograms', async (req, res) => {
     });
   }
 });
+//-------------- add image-------------
+
+const upload = multer({
+    storage: multer.memoryStorage()
+})
 
 //-----------------Add stories/ Testimomials----------------------
 
-// Add a story
+//--------------Add a story
 app.post('/api/AddStory', async (req, res) => {
   try {
     const {
@@ -314,6 +320,73 @@ app.post('/api/AddStory', async (req, res) => {
     })
   }
 })
+
+//---------delete programs----------
+app.delete('/api/deleteProgram/:id', async (req, res) => {
+  try {
+    // Get the program ID from the URL
+    const ProgramID = req.params.id;
+    const [result] = await db.query(
+      'DELETE FROM adoption_programs WHERE program_id = ?',
+      [ProgramID]
+    );
+
+    // Check if the program exists
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        message: 'Program not found.'
+      });
+    }
+
+    // Send success response
+    res.status(200).json({
+      message: 'Program deleted successfully.'
+    });
+
+  } catch (error) {
+    res.status(500).json({
+      message: 'Internal server error.'
+    });
+  }
+});
+
+app.post('/api/AddPictures', upload.single('image'), async (req, res) => {
+  try {
+    const alt_text = req.body.alt_text;
+    const image = req.file;
+
+    if (!image) {
+      return res.status(400).json({
+        message: 'Please upload an image.'
+      });
+    }
+         // Insert image into MySQL
+    const [result] = await db.query(
+      `INSERT INTO gallery (image_data, image_type, alt_text)
+       VALUES (?, ?, ?)`,
+      [
+        image.buffer,
+        image.mimetype,
+        alt_text.trim()
+      ]
+    );
+
+    // Send the saved image information to React
+    res.status(201).json({
+      message: 'Gallery image uploaded successfully.',
+      gallery_id: result.insertId,
+      image_type: image.mimetype,
+      alt_text: alt_text.trim()
+    });
+
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Unable to upload image.'
+    });
+  }
+});
 
 app.post('/api/auth/logout', function (_req, res) {
   return res.clearCookie('auth_token').json({ ok: true });

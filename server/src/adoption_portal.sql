@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Sep 28, 2026 at 07:39 PM
+-- Generation Time: Sep 30, 2026 at 12:18 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -76,7 +76,8 @@ INSERT INTO `adoption_programs` (`program_id`, `ad_name`, `ad_description`, `ad_
 (2, 'Foster-to-Adopt Programme', 'A programme for approved foster caregivers who may become eligible to adopt a child in their care.', 'Applicants must be approved foster caregivers and complete the required adoption assessment.', 1, '2026-09-20 14:44:21'),
 (9, 'Meet ups', 'Trust building and communication', 'First time adoption', 1, '2026-09-23 21:54:38'),
 (24, 'aa', 'aa', 'aa', 1, '2026-09-25 15:07:17'),
-(25, 'test', 'test', 'aaa', 1, '2026-09-25 15:50:18');
+(25, 'test', 'test', 'aaa', 1, '2026-09-25 15:50:18'),
+(26, 'sun', 'sun', 'aaaaa', 1, '2026-09-28 13:32:54');
 
 -- --------------------------------------------------------
 
@@ -176,18 +177,10 @@ CREATE TABLE `enquiries` (
 
 CREATE TABLE `gallery` (
   `id` int(11) NOT NULL,
-  `name` varchar(150) NOT NULL,
-  `file_upload` varchar(255) NOT NULL
+  `image_data` longblob NOT NULL,
+  `image_type` varchar(100) NOT NULL,
+  `alt_text` varchar(150) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
---
--- Dumping data for table `gallery`
---
-
-INSERT INTO `gallery` (`id`, `name`, `file_upload`) VALUES
-(1, 'Family', '/images/medium-shot-parents-holding-baby.jpg'),
-(2, 'Children', '/images/close-up-smiley-family-home.jpg'),
-(3, 'Community Event', '/images/united-states-soldier-departing-from-his-family.jpg');
 
 -- --------------------------------------------------------
 
@@ -392,7 +385,7 @@ ALTER TABLE `adoption_matches`
 -- AUTO_INCREMENT for table `adoption_programs`
 --
 ALTER TABLE `adoption_programs`
-  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
 
 --
 -- AUTO_INCREMENT for table `applicants`
@@ -428,7 +421,7 @@ ALTER TABLE `enquiries`
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ourstories`
