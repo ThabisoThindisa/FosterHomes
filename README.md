@@ -1,6 +1,6 @@
 # Hearth & Home Adoption Portal
 
-###Problem: I have noticed that the are many south african children who are homeless especially in large cities such as Johannessburg and Cape town for example.
+Problem: I have noticed that the are many south african children who are homeless especially in large cities such as Johannessburg and Cape town for example.
 I thik the problem is that the government is relaying on word of mouth to promote their adoption site. So when the children grow up without a proper support 
 system when they turn 18.
 
