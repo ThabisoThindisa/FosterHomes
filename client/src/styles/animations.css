@@ -49,8 +49,13 @@ label { display: grid; gap: 7px; color: #52625a; font-size: 13px; font-weight: 6
 .optional { color: #9aa39b; font-weight: 400; }
 input { width: 100%; border: 1px solid #d6ded7; border-radius: 3px; background: #fff; color: #173b35; outline: none; padding: 14px 15px; }
 input:focus { border-color: #2f7262; box-shadow: 0 0 0 3px rgba(47,114,98,.12); }
-.submit-button { margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 10px; border: 0; border-radius: 3px; padding: 15px; color: #fff; background: #c37e4c; font-weight: 700; }
-.submit-button:hover { background: #a96439; }
+.submit-button { margin-top: 8px;
+      display: flex; align-items: center;
+       justify-content: center; gap: 10px;
+        border: 0; border-radius: 3px; padding: 15px;
+         color: #fff; background: #374ed3;
+          font-weight: 700; }
+.submit-button:hover { background: #08065e; }
 .error { color: #a33f35; background: #fae9e5; border-left: 3px solid #bf5c4e; padding: 11px 12px; font-size: 13px; }
 .fine-print { color: #98a19a; line-height: 1.5; font-size: 11px; text-align: center; margin-top: 22px; }
 .loading-screen { min-height: 100vh; display: grid; place-items: center; color: #173b35; }

@@ -1,6 +1,7 @@
 import { CheckCircle2, HeartHandshake, ShieldCheck } from 'lucide-react'
 import Header from "./SemanticElements/Header";
 import NavBar from "./SemanticElements/NavBar";
+import LogoImage from '../images/logo.png';
 
 export default function Dashboard({ user, onLogout }) {
   return <><NavBar />

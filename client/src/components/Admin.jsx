@@ -4,11 +4,7 @@ import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
 import {getPrograms, AddPrograms, getStories,add_Gallery} from './Helpers/HandleRequests'
-
-const INITIAL_GALLERY = [
-  { gallery_id: 1, image_url: 'https://picsum.photos/800/600?random=201', alt_text: 'Community gathering' },
-  { gallery_id: 2, image_url: 'https://picsum.photos/800/600?random=202', alt_text: 'Family activity' }
-]
+import { useNavigate } from 'react-router-dom'
 
 export default function Admin(){
 
@@ -85,40 +81,37 @@ useEffect(() => {
 
 }, []);
 
-//-------------------------
+//------------------Add single image-------
 const Add_Gallery_Image = async (event) => {
   event.preventDefault()
-
   if (!file) {
     setMessage('Please select an image.')
     return
   }
-
+  if (!galleryForm.alt_text.trim()) {
+    setMessage('Please enter alternative text for the image.')
+    return
+  }
   try {
+    // Create FormData
     const formData = new FormData()
-
     formData.append('image', file)
     formData.append('alt_text', galleryForm.alt_text)
-
     const savedGallery = await add_Gallery(formData)
 
+    // Add the returned image information to React state
     setGallery((currentGallery) => [
       ...currentGallery,
       savedGallery
     ])
-
     setFile(null)
-
     setGalleryForm({
-      image_url: '',
       alt_text: ''
     })
-
     event.target.reset()
-
     setMessage('Gallery image added successfully.')
-
   } catch (error) {
+    console.error('Gallery upload error:', error)
     setMessage(error.message)
   }
 }
@@ -138,7 +131,6 @@ const Add_Gallery_Image = async (event) => {
       const data = await response.json().catch(() => ({}))
 
       if (response.ok) {
-        console.log(data.message || 'Program deleted successfully.')
         setAllPrograms((currentPrograms) => currentPrograms.filter((item) => item.program_id !== ProgramID))
         setMessage('Program deleted successfully.')
       } else {
@@ -177,7 +169,7 @@ const Add_Gallery_Image = async (event) => {
             title="Administrative access"  
             description="Manage programs, community stories, and gallery images." />
       {message && <p className={styles.message} role="status">{message}</p>}
-      <section className={styles.forms}>
+ <section className={styles.forms}>
         <form onSubmit={Add_Programs} className={styles.form}>
           <h2>Add program</h2>
           <input required placeholder="Program name" value={program.ad_name} onChange={(event) => setProgram({ ...program, ad_name: event.target.value })} />
@@ -185,8 +177,7 @@ const Add_Gallery_Image = async (event) => {
           <input placeholder="Eligibility requirements" value={program.ad_eligibility_requirements} onChange={(event) => setProgram({ ...program, ad_eligibility_requirements: event.target.value })} />
           <button type="submit" className={styles.submitButton}>Add program</button>
         </form>
-     
-         {/*-------Upload the image/ Picture--------------  */}
+       {/*-------Upload the image/ Picture--------------  */}
          <form onSubmit={Add_Gallery_Image} className={styles.form}>
     <h2>Add gallery picture</h2>
 
@@ -198,33 +189,34 @@ const Add_Gallery_Image = async (event) => {
     />
 
     {/* Alt text */}
-    <input
-        type="text"
-        placeholder="Alt text"
-        value={galleryForm.alt_text}
-        onChange={(event) =>
-            setGalleryForm({
-                ...galleryForm,
-                alt_text: event.target.value
-            })
-        }
-    />
+  <input
+       type="text"
+       placeholder="Image description"
+       value={galleryForm.alt_text}
+       onChange={(event) =>
+       setGalleryForm({
+       ...galleryForm,
+       alt_text: event.target.value
+      })
+       }
+  required
+  />
 
     <button type="submit" className={styles.submitButton}>
         Upload Picture
     </button>
 </form>
        {/*----------------------------  */}
-
       </section>
       <section className={styles.list}>
         <h2>Programs</h2>{Display_allPrograms.map((item) => <article key={item.program_id}>
           <span><strong>{item.ad_name}</strong>
           <small>{item.ad_description}</small>
-          </span><button onClick={() => 
-          {delete_Program(item.program_id)
+          </span>
+          <button onClick={() => {delete_Program(item.program_id)
           remove(item.program_id, 'program', 'program')}}>Delete
-          </button></article>)}</section>
+          </button>
+          </article>)}</section>
 
       <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.Story_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
