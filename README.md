@@ -16,7 +16,8 @@ React + Express + MySQL authentication for the `adoption_portal` database.
 `Server side`
 1. Open the server file and install npm 
 2. Type `npm install`
-3. type `npm run dev`
+3. Type `npm install multer`
+4. type `npm run dev`
 
 `client side`
 1. Open the client file and install npm 
