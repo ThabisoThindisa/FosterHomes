@@ -320,6 +320,19 @@ app.post('/api/AddStory', async (req, res) => {
     })
   }
 })
+//---------------- --------------------
+app.get('/api/getFosterHomes', async function (_req, res) {
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM fosterhomes ORDER BY foster_home_id DESC;'
+    );
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve Foster-homes!' });
+  }
+});
+
 
 //---------delete programs----------
 app.delete('/api/deleteProgram/:id', async (req, res) => {

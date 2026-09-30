@@ -19,6 +19,9 @@ import AdminPag from './components/Admin'
 import Dashboard from './components/Dashboard'
 
 import './styles/animations.css';
+//Import admin pages
+import FosterHomesP from './components/Admin Access/DisplayHomes';
+import AdoptionPage from './components/Admin Access/ManageAdoptions';
 
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
@@ -95,6 +98,9 @@ function ProgramsPage() {
     <Route path="/logout" element={<Dashboard />} />
     <Route path="/Testimonial" element={<Testimonial />} />
     <Route path="/Admin" element={<AdminPag />} />
+    {/*Admin pages */}
+    <Route path="/fosterHomes" element={<FosterHomesP />} />
+    <Route path="/adoption" element={<AdoptionPage />} />
     <Route path="/contacts" element={<Contact />} />
     <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
     <Route path="*" element={<Navigate to="/HomePage" replace />} />

@@ -6,20 +6,25 @@ import styles from '../css/NavBar.module.css'
 // The links to each page
 const LINKS = [
   { label: 'Home', to: '/HomePage' },
-  { label: 'Admin', to: '/Admin', adminOnly: true,
+  { label: 'Admin', adminOnly: true,
      children: [
       { label: 'Administrative access', to: "/Admin"},
-      { label: 'Manage users', to: '/programs'},
-      { label: 'Manage Adoptions', to: '/ourstories' },
-      { label: 'View Homes', to: '/Gallery' }
+      { label: 'View Homes', to: "/fosterHomes" },
+      { label: 'Manage users', to: '/programs'}
       
+    ]
+   },
+  { label: 'Adoption Portal',
+      children: [
+      
+      { label: 'Our Programs', to: '/programs'},
+      { label: 'Manage Adoptions', to: "/adoption" },
+      { label: 'Community Stories', to: "/Testimonial"},
+      { label: 'Gallery', to: '/Gallery' }
 
     ]
-
    },
-  { label: 'Programs', to: '/programs' },
-  { label: 'Community Stories', to: '/ourstories' },
-  { label: 'Gallery', to: '/Gallery' },
+ 
   { label: 'Contact', to: '/contacts' },
   { label: 'Sign-Out', to: "/logout", action: 'logout' }
 ]
@@ -30,7 +35,7 @@ export default function NavBar() {
   const [isAdmin, setIsAdmin] = useState(false)
   const [userState, setUserState] = useState(null)
   const [mode, setMode] = useState('login')
-  const [adminDropdown, setAdminDropdown] = useState(true)
+const [openDropdown, setOpenDropdown] = useState(null)
 
   // API connection
   const API_URL = 'http://localhost:4000/api'
@@ -119,42 +124,48 @@ export default function NavBar() {
     </a>
             ):Nav_item.children ? (
 
-        // ADMIN DROPDOWN
-        <div className={styles.dropdown} key={Nav_item.label}>
+  <div className={styles.dropdown} key={Nav_item.label}>
 
-          <button
-            type="button"
-            className={styles.dropdownButton}
-            onClick={() => setAdminDropdown((prev) => !prev)}
+    <button
+      type="button"
+      className={styles.dropdownButton}
+      onClick={() => {
+        setOpenDropdown(
+          openDropdown === Nav_item.label
+            ? null
+            : Nav_item.label
+        )
+      }}
+    >
+      {Nav_item.label}
+
+      <span className={styles.arrow}>
+        {openDropdown === Nav_item.label ? '▲' : '▼'}
+      </span>
+    </button>
+
+    {openDropdown === Nav_item.label && (
+      <div className={styles.dropdownMenu}>
+
+        {Nav_item.children.map((child) => (
+          <Link
+            key={child.label}
+            to={child.to}
+            onClick={() => {
+              setOpenDropdown(null)
+              setOpen(false)
+            }}
           >
-            {Nav_item.label}
-            <span className={styles.arrow}>
-              {adminDropdown ? '▲' : '▼'}
-            </span>
-          </button>
+            {child.label}
+          </Link>
+        ))}
 
-          {adminDropdown && (
-            <div className={styles.dropdownMenu}>
+      </div>
+    )}
 
-              {Nav_item.children.map((child) => (
-                <Link
-                  key={child.label}
-                  to={child.to}
-                  onClick={() => {
-                    setAdminDropdown(false)
-                    setOpen(false)
-                  }}
-                >
-                  {child.label}
-                </Link>
-              ))}
+  </div>
 
-            </div>
-          )}
-
-        </div>
-
-      ) : (
+) : (
 
               // NORMAL NAVIGATION LINKS
               <Link

@@ -76,3 +76,17 @@
     flex-basis: 100%;
   }
 }
+
+.fosterHomesContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.fosterHomeCard {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+}

@@ -16,6 +16,20 @@ export const getStories = async () => {
     }
 };
 
+//-------------Get available homes----------------
+export const getHomes = async () => {
+    try {
+        const response = await fetch(Api_connection + '/getFosterHomes');
+        if (!response.ok) {
+            throw new Error('Failed to fetch fosterHomes');
+        }
+        const data = await response.json();
+        return data.data ?? data;
+    } catch (error) {
+        throw error;
+    }
+};
+
 //------Get the available programs-------------
 export async function getPrograms() {
 

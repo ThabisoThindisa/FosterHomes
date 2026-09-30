@@ -1,0 +1,68 @@
+.wrap{display:flex;flex-direction:column;align-items:center;gap:12px;justify-content:center}
+
+.nav{background:var(--primary);color:white;border:0;width:40px;height:40px;border-radius:10px;cursor:pointer}
+
+.DisplayLabel {
+  font-size: 50px;
+  font-weight: bold;
+  margin-bottom: 40px;
+  
+}
+
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+@media (max-width: 600px) {
+  .flexItem {
+    flex-basis: 100%;
+  }
+}
+
+.fosterHomesContainer {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 20px;
+  padding: 20px;
+}
+
+.fosterHomeCard {
+  padding: 20px;
+  border: 1px solid #ddd;
+  border-radius: 10px;
+  background: white;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+}
+
+.dropdown > button {
+  padding: 10px 20px;
+  cursor: pointer;
+}
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  min-width: 200px;
+  background: white;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  z-index: 10;
+}
+
+.dropdownMenu button {
+  display: block;
+  width: 100%;
+  padding: 10px;
+  border: none;
+  background: white;
+  text-align: left;
+  cursor: pointer;
+}
+
+.dropdownMenu button:hover {
+  background: #f2f2f2;
+}
