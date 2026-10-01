@@ -320,7 +320,7 @@ app.post('/api/AddStory', async (req, res) => {
     })
   }
 })
-//---------------- --------------------
+//------------- Get all Homes --------------------
 app.get('/api/getFosterHomes', async function (_req, res) {
   try {
     const [rows] = await pool.query(
@@ -330,6 +330,19 @@ app.get('/api/getFosterHomes', async function (_req, res) {
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve Foster-homes!' });
+  }
+});
+
+//------------- Get all Users --------------------
+app.get('/api/getUsers', async function (_req, res) {
+  try {
+    const [rows] = await pool.query(
+      'SELECT * FROM users ORDER BY user_id DESC;'
+    );
+
+    res.json(rows);
+  } catch (error) {
+    res.status(500).json({ error: 'Failed to retrieve All users!' });
   }
 });
 
