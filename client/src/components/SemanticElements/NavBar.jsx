@@ -10,7 +10,7 @@ const LINKS = [
      children: [
       { label: 'Administrative access', to: "/Admin"},
       { label: 'View Homes', to: "/fosterHomes" },
-      { label: 'Manage users', to: '/programs'}
+      { label: 'Manage users', to: "/AllUsers"}
       
     ]
    },

@@ -22,6 +22,7 @@ import './styles/animations.css';
 //Import admin pages
 import FosterHomesP from './components/Admin Access/DisplayHomes';
 import AdoptionPage from './components/Admin Access/ManageAdoptions';
+import UserPage from './components/Admin Access/ManageUsers'
 
 
 const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
@@ -75,25 +76,11 @@ function App() {
     setMode('login');
   }
 
-  //----handle program page header
-function ProgramsPage() {
-  return <><NavBar /><main className="dashboard">
-    <Header
-      eyebrow="Explore your options"
-      title="Programs"
-      description="Thindisa FosterHome focuses on providing a safe and
-       supportive environment for children."
-    />
-      <Programs /></main></>;
-}
-
-
-
   //Route path and links
   if (loading) return <div className="loading-screen">Loading your portal...</div>;
   if (user) return <Routes>
     <Route path="/HomePage" element={<HomePage />} />
-    <Route path="/programs" element={<ProgramsPage />} />
+    <Route path="/programs" element={<Programs />} />
     <Route path="/Gallery" element={<Gallery />} />
     <Route path="/logout" element={<Dashboard />} />
     <Route path="/Testimonial" element={<Testimonial />} />
@@ -101,6 +88,8 @@ function ProgramsPage() {
     {/*Admin pages */}
     <Route path="/fosterHomes" element={<FosterHomesP />} />
     <Route path="/adoption" element={<AdoptionPage />} />
+    <Route path="/AllUsers" element={<UserPage />} />
+    
     <Route path="/contacts" element={<Contact />} />
     <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
     <Route path="*" element={<Navigate to="/HomePage" replace />} />

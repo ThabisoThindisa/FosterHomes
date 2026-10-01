@@ -104,7 +104,7 @@ useEffect(() => {
 />
       </label>
       <button type="submit" className={styles.sendButton} > Send Message </button>
-      <label className={styles.DisplayLabel}>Our Testemonial from our community.</label>
+      <label className={styles.DisplayLabel}>Our Stories from our community.</label>
     </form>
 
       <section className={styles.flexContainer}>

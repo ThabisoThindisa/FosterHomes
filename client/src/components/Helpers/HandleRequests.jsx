@@ -60,7 +60,7 @@ export const addStory = async (myStory) => {
     return data;
 };
 
-//---------------
+//---------------Add single program---------
     export const AddPrograms = async (program) => {
 
       try {
@@ -115,4 +115,71 @@ export const add_Gallery = async (ThisImage) => {
   }
 }
 
+//--------------Remove users-------------------
+  export const delete_Users = async (userID) => {
+    
+    try {
+      const response = await fetch(Api_connection + '/deleteUsers/' + userID, {
+        method: 'DELETE',
+      })
+
+      const data = await response.json().catch(() => ({}));
+       return data;
+
+    } catch (error) {
+      console.error('Error deleting program:', error);
+    }
+  }
+
+  //------Get all users------------
+  export async function getAllUsers() {
+
+    const response = await fetch(Api_connection + '/getUsers');
+
+    if (!response.ok) {
+        throw new Error('Failed to fetch users');
+    }
+
+    const data = await response.json();
+
+    return data.data ?? data;
+}
+
+//---------------Add single child---------
+    export const AddChildren = async (ourChild) => {
+
+      try {
+        const response = await fetch(Api_connection + '/AddChild', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(ourChild)
+        })
+
+        if (!response.ok) throw new Error('Unable to add child.')
+
+        const savedChild = await response.json()
+        return savedChild;
+        
+      } catch (error) {
+        setMessage(error.message)
+      }
+  }
+
+  //---------------Add single child---------
+    export const AddSocialWorker = async (ourWorker) => {
+
+      try {
+        const response = await fetch(Api_connection + '/addWorker', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(ourWorker)
+        })
+
+        if (!response.ok) throw new Error('Unable to add social Worker.')
+        return await response.json(); //Get the data
+        
+      } catch (error) {
+        setMessage(error.message)
+      }
+  }
   

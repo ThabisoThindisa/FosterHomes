@@ -15,9 +15,10 @@ export default function Admin(){
   };
 
   //Store and set the variavles 
-  const [galleryForm, setGalleryForm] = useState({ image_url: '', alt_text: '' })
+  const [galleryForm, setGalleryForm] = useState(
+    { image_url: '', alt_text: '' })
+    
   const [message, setMessage] = useState('')
-  const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
 
   //Static values to display when
@@ -55,8 +56,6 @@ export default function Admin(){
               setAllPrograms(programsList);
           } catch (fetchError) {
               setError(fetchError.message);
-          } finally {
-              setLoading(false);
           }
       };
       fetchPrograms();
@@ -72,8 +71,6 @@ useEffect(() => {
             setAllStories(storiesList);
         } catch (fetchError) {
             setError(fetchError.message);
-        } finally {
-            setLoading(false);
         }
     };
 

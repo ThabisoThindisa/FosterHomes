@@ -55,7 +55,7 @@ const Api_connection ='http://localhost:4000/api';
 
           <div className={styles.ctas}>
             <Link to="/Testimonial" className={styles.primary}>
-              Community Testimonials
+              Community Stories
             </Link>
 
             <Link to="/contacts" className={styles.secondary}>
