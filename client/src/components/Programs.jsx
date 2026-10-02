@@ -17,19 +17,12 @@ export default function Programs() {
     const fetchPrograms = async () => {
 
       try {
-
         const programsList = await getPrograms()
-
         setPrograms(programsList)
-
       } catch (fetchError) {
-
         setError(fetchError.message)
-
       } finally {
-
         setLoading(false)
-
       }
 
     }

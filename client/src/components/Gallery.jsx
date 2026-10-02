@@ -1,47 +1,73 @@
-import { useState } from 'react'
-import styles from './css/Gallery.module.css';
-import  NavigationBar from "./SemanticElements/NavBar";
+import { useEffect, useState } from 'react';
+import NavigationBar from "./SemanticElements/NavBar";
 import Header from "./SemanticElements/Header";
 import Footer from './SemanticElements/Footer'
 
-const IMAGES = new Array(8).fill(0).map((_,i)=>`https://picsum.photos/800/600?random=${200+i}`)
 
-export default function Gallery(){
-  const [open,setOpen] = useState(false)
-  const [idx,setIdx] = useState(0)
+export default function Gallery() {
+  const [pictures, setPictures] = useState([]);
+  const [error, setError] = useState('');
 
-  function openAt(i){ setIdx(i); setOpen(true) }
-  function close(){ setOpen(false) }
-  function next(){ setIdx((idx+1)%IMAGES.length) }
-  function prev(){ setIdx((idx-1+IMAGES.length)%IMAGES.length) }
+  useEffect(() => {
+    async function getPictures() {
+      try {
+        const response = await fetch(
+          'http://localhost:4000/api/getPictures'
+        );
+
+        if (!response.ok) {
+          throw new Error('Failed to load pictures');
+        }
+
+        const data = await response.json();
+
+        setPictures(data);
+
+      } catch (error) {
+        console.error(error);
+        setError(error.message);
+      }
+    }
+
+    getPictures();
+  }, []);
 
   return (
-    <>
-      <NavigationBar />
-      <main className="dashboard">
-        <Header
-          eyebrow="A glimpse into our journey"
-          title="Gallery"
-          description="Explore moments of care, connection, and belonging."
-        />
 
-        <div className={styles.grid}>
-        {IMAGES.map((src,i)=> (
-          <button key={i} className={styles.thumb} onClick={()=>openAt(i)}>
-            <img src={src} alt="gallery"/>
-          </button>
-        ))}
-        </div>
+      <>
+          <NavigationBar />
+          <main className="dashboard">
+            <Header
+              eyebrow="A glimpse into our journey"
+              title="Gallery"
+              description="Explore moments of care, connection, and belonging."
+            />
+    <div className="galleryContainer">
 
-        {open && (
-          <div className={styles.lightbox} onClick={close}>
-            <button className={styles.prev} onClick={(e)=>{e.stopPropagation(); prev()}}>‹</button>
-            <img src={IMAGES[idx]} alt="full"/>
-            <button className={styles.next} onClick={(e)=>{e.stopPropagation(); next()}}>›</button>
+      <h1>Our Gallery</h1>
+
+      {error && <p>{error}</p>}
+
+      <div className="galleryGrid">
+
+        {pictures.map((picture) => (
+          <div className="galleryCard" key={picture.gallery_id}>
+
+            <img
+              src={`http://localhost:4000/api/getPictures/${picture.gallery_id}`}
+              alt={picture.alt_text}
+            />
+
+            <p>{picture.alt_text}</p>
+
           </div>
-        )}
-      </main>
-      <Footer />
-    </>
-  )
+        ))}
+
+      </div>
+
+    </div>
+         </main>
+          <Footer />
+        </>
+  );
 }

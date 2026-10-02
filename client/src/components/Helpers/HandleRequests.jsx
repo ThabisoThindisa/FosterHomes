@@ -183,3 +183,16 @@ export const add_Gallery = async (ThisImage) => {
       }
   }
   
+  //----------------Display Gallery
+export const getGallery = async () => {
+    try {
+        const response = await fetch(Api_connection + '/getPictures');
+        if (!response.ok) {
+            throw new Error('Failed to fetch Pictures');
+        }
+        const data = await response.json();
+        return data.data ?? data;
+    } catch (error) {
+        throw error;
+    }
+};

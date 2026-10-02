@@ -6,6 +6,9 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import mysql from 'mysql2/promise';
 import multer from 'multer';
+import path from 'node:path';
+import fs from 'node:fs/promises';
+import crypto from 'node:crypto';
 
 const app = express();
 const port = Number(process.env.PORT || 4000);
@@ -25,6 +28,24 @@ const pool = mysql.createPool({
 app.use(cors({ origin: clientOrigin, credentials: true }));
 app.use(express.json());
 app.use(cookieParser());
+
+const uploadDir = path.resolve('uploads');
+await fs.mkdir(uploadDir, { recursive: true });
+app.use('/uploads', express.static(uploadDir));
+
+const upload = multer({
+  storage: multer.diskStorage({
+    destination: uploadDir,
+    filename: (_req, file, done) => {
+      done(null, `${crypto.randomUUID()}${path.extname(file.originalname)}`);
+    }
+  }),
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (_req, file, done) => {
+    if (file.mimetype.startsWith('image/')) done(null, true);
+    else done(new Error('Please upload an image.'));
+  }
+});
 
 const publicUser = function (user) {
   return {
@@ -264,12 +285,6 @@ app.post('/api/AddPrograms', async (req, res) => {
     });
   }
 });
-//-------------- add image-------------
-
-const upload = multer({
-    storage: multer.memoryStorage()
-})
-
 //-----------------Add stories/ Testimomials----------------------
 
 //--------------Add a story
@@ -376,40 +391,82 @@ app.delete('/api/deleteProgram/:id', async (req, res) => {
   }
 });
 
+//------Add image------------
 app.post('/api/AddPictures', upload.single('image'), async (req, res) => {
-  try {
-    const alt_text = req.body.alt_text;
-    const image = req.file;
+  const altText = typeof req.body.alt_text === 'string' ? req.body.alt_text.trim() : '';
 
-    if (!image) {
+  if (!req.file || !altText) {
+    if (req.file) await fs.unlink(req.file.path).catch(() => {});
+    return res.status(400).json({ message: 'Image and description are required.' });
+  }
+
+  const imageUrl = '/uploads/'+ req.file.filename;
+
+  try {
+    const [result] = await pool.execute(
+      'INSERT INTO gallery (image_type, image_url, alt_text) VALUES (?, ?, ?)',
+      [req.file.mimetype, imageUrl, altText]
+    );
+
+    return res.status(201).json({
+      gallery_id: result.insertId,
+      image_url: imageUrl,
+      alt_text: altText
+    });
+  } catch (error) {
+    console.error(error);
+    await fs.unlink(req.file.path).catch(() => {});
+    return res.status(500).json({ message: 'Could not save the gallery image.' });
+  }
+});
+
+//------Add child----------
+app.post('/api/AddChildren', async (req, res) => {
+  try {
+    const {
+      c_reference_code,
+      c_Fullname,
+      c_date_of_birth,
+      c_gender,
+      status
+    } = req.body;
+
+    // Check required information
+    if (!c_Fullname || !c_date_of_birth || !c_gender) {
       return res.status(400).json({
-        message: 'Please upload an image.'
+        message: 'All required information is needed.'
       });
     }
-         // Insert image into MySQL
-    const [result] = await db.query(
-      `INSERT INTO gallery (image_data, image_type, alt_text)
-       VALUES (?, ?, ?)`,
+
+    // Insert child into MySQL
+    const [result] = await pool.query(
+      `INSERT INTO children
+      (c_reference_code, c_Fullname, c_date_of_birth, c_gender, status)
+      VALUES (?, ?, ?, ?, ?)`,
       [
-        image.buffer,
-        image.mimetype,
-        alt_text.trim()
+        c_reference_code ? c_reference_code.trim() : null,
+        c_Fullname.trim(),
+        c_date_of_birth.trim(),
+        c_gender.trim(),
+        status || 'in_care'
       ]
     );
 
-    // Send the saved image information to React
+    // Send response
     res.status(201).json({
-      message: 'Gallery image uploaded successfully.',
-      gallery_id: result.insertId,
-      image_type: image.mimetype,
-      alt_text: alt_text.trim()
+      child_id: result.insertId,
+      c_reference_code: c_reference_code || null,
+      c_Fullname: c_Fullname.trim(),
+      c_date_of_birth: c_date_of_birth.trim(),
+      c_gender: c_gender.trim(),
+      status: status || 'in_care'
     });
 
   } catch (error) {
-    console.error(error);
+    console.error('Error inserting child:', error);
 
     res.status(500).json({
-      message: 'Unable to upload image.'
+      message: 'Error inserting child'
     });
   }
 });
@@ -420,4 +477,23 @@ app.post('/api/auth/logout', function (_req, res) {
 
 app.listen(port, function () {
   console.log('API listening on http://localhost:' + port);
+});
+
+//----Get gallery----
+app.get('/api/getPictures', async function (_req, res) {
+  try {
+    const [rows] = await pool.query(
+      `SELECT id AS gallery_id, alt_text
+       FROM gallery
+       ORDER BY id DESC`
+    );
+
+    return res.json(rows);
+
+  } catch (error) {
+    console.error('Failed to retrieve pictures:', error);
+    return res.status(500).json({
+      error: 'Failed to retrieve pictures'
+    });
+  }
 });
