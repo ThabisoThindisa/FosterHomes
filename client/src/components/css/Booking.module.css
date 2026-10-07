@@ -66,3 +66,9 @@
 .dropdownMenu button:hover {
   background: #f2f2f2;
 }
+
+.workerButton {
+  width: 2cm;
+  padding: 8px;
+  cursor: pointer;
+}

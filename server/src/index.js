@@ -10,6 +10,7 @@ import path from 'node:path';
 import fs from 'node:fs/promises';
 import crypto from 'node:crypto';
 
+
 const app = express();
 const port = Number(process.env.PORT || 4000);
 const clientOrigin = process.env.CLIENT_ORIGIN || 'http://localhost:5173';
@@ -265,6 +266,7 @@ app.post('/api/AddPrograms', async (req, res) => {
       'INSERT INTO adoption_programs (ad_name, ad_description, ad_eligibility_requirements) VALUES (?, ?, ?)',
       [
         ad_name.trim(),
+
         ad_description.trim(),
         ad_eligibility_requirements ? ad_eligibility_requirements.trim() : null
       ]
@@ -335,6 +337,7 @@ app.post('/api/AddStory', async (req, res) => {
     })
   }
 })
+
 //------------- Get all Homes --------------------
 app.get('/api/getFosterHomes', async function (_req, res) {
   try {
@@ -358,6 +361,36 @@ app.get('/api/getUsers', async function (_req, res) {
     res.json(rows);
   } catch (error) {
     res.status(500).json({ error: 'Failed to retrieve All users!' });
+  }
+});
+
+//------------- Get Social Worker --------------------
+app.get('/api/getWorkers', async function (_req, res) {
+  try {
+      const [workers] = await pool.query(`
+      SELECT
+        sw.social_worker_id,
+        sw.user_id,
+        u.u_full_name AS worker_name,
+        sw.s_registration_number,
+        sw.s_organisation_name,
+        sw.s_office_location,
+        sw.s_specialisation
+      FROM social_workers sw
+      INNER JOIN users u
+      ON sw.user_id = u.user_id
+      WHERE u.u_role = 'social_worker'
+        AND u.u_is_active = 1
+    `);
+    res.json({
+      data: workers
+    });
+  } catch (error) {
+    console.error(error);
+
+    res.status(500).json({
+      message: 'Failed to fetch social workers'
+    });
   }
 });
 
@@ -391,6 +424,57 @@ app.delete('/api/deleteProgram/:id', async (req, res) => {
   }
 });
 
+
+//--------------Add a Workers---
+app.post('/api/AddWorker', async (req, res) => {
+  try {
+    const {
+         s_fullName,
+         s_registration_number,
+         s_organisation_name,
+         s_office_location,
+         s_specialisation
+    } = req.body
+
+    // Check required fields
+    if (!s_fullName || !s_registration_number 
+      || !s_organisation_name || !s_office_location || !s_specialisation ) {
+      return res.status(400).json({
+        message: 'Please fill all information..'
+      })
+    }
+
+    const sql = `
+      INSERT INTO ourstories
+      (title, content, author_id, published_at, is_published)
+      VALUES (?, ?, ?, ?, ?)
+    `
+
+    const [result] = await pool.execute(sql, [
+      title,
+      content,
+      author_id || null,
+      published_at || new Date(),
+      is_published ?? 1
+    ])
+
+    // Return the newly created story
+    const [newStory] = await pool.execute(
+      `SELECT * FROM ourstories WHERE Story_id = ?`,
+      [result.insertId]
+    )
+
+    res.status(201).json(newStory[0])
+
+  } catch (error) {
+    console.error('Error adding story:', error)
+
+    res.status(500).json({
+      message: 'Unable to add story.'
+    })
+  }
+})
+
 //------Add image------------
 app.post('/api/AddPictures', upload.single('image'), async (req, res) => {
   const altText = typeof req.body.alt_text === 'string' ? req.body.alt_text.trim() : '';
@@ -422,13 +506,15 @@ app.post('/api/AddPictures', upload.single('image'), async (req, res) => {
 
 //------Add child----------
 app.post('/api/AddChildren', async (req, res) => {
+
   try {
     const {
-      c_reference_code,
       c_Fullname,
+      c_reference_code,
       c_date_of_birth,
       c_gender,
-      status
+      status,
+      special_needs
     } = req.body;
 
     // Check required information
@@ -495,5 +581,76 @@ app.get('/api/getPictures', async function (_req, res) {
     return res.status(500).json({
       error: 'Failed to retrieve pictures'
     });
+  }
+  
+});
+
+//-------------test
+const childStatuses = [
+  'in_care',
+  'eligible_for_adoption',
+  'matched',
+  'adopted',
+  'reunified'
+];
+
+app.post('/api/AddChild', async (req, res) => {
+  const {
+    C_fullName,
+    c_reference_code,
+    c_date_of_birth,
+    c_gender,
+    status,
+    special_needs
+  } = req.body;
+
+  if (
+    typeof C_fullName !== 'string' || !C_fullName.trim() ||
+    typeof c_reference_code !== 'string' || !c_reference_code.trim() ||
+    typeof c_date_of_birth !== 'string' || !c_date_of_birth.trim() ||
+    typeof c_gender !== 'string' || !c_gender.trim()
+  ) {
+    return res.status(400).json({ message: 'Please provide all required child information.' });
+  }
+
+  const childStatus = status?.trim() || 'in_care';
+
+  if (!childStatuses.includes(childStatus)) {
+    return res.status(400).json({ message: 'Invalid child status.' });
+  }
+
+  try {
+    const [result] = await pool.execute(
+      `INSERT INTO children
+        (c_reference_code, c_Fullname, c_date_of_birth, c_gender, status, special_needs)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        c_reference_code.trim(),
+        C_fullName.trim(),
+        c_date_of_birth.trim(),
+        c_gender.trim(),
+        childStatus,
+        typeof special_needs === 'string' && special_needs.trim()
+          ? special_needs.trim()
+          : null
+      ]
+    );
+
+    return res.status(201).json({
+      child_id: result.insertId,
+      C_fullName: C_fullName.trim(),
+      c_reference_code: c_reference_code.trim(),
+      c_date_of_birth: c_date_of_birth.trim(),
+      c_gender: c_gender.trim(),
+      status: childStatus,
+      special_needs: special_needs?.trim() || ''
+    });
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ message: 'That reference code is already in use.' });
+    }
+
+    console.error('Error inserting child:', error);
+    return res.status(500).json({ message: 'Could not add the child.' });
   }
 });

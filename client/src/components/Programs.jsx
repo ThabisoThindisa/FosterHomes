@@ -3,7 +3,7 @@ import styles from './css/CardGrid.module.css'
 import Footer from './SemanticElements/Footer'
 import NavigationBar from './SemanticElements/NavBar'
 import Header from './SemanticElements/Header'
-import { getPrograms } from './Helpers/HandleRequests'
+import {HandleGetList } from './Helpers/HandleRequests'
 
 export default function Programs() {
 
@@ -15,16 +15,14 @@ export default function Programs() {
   useEffect(() => {
 
     const fetchPrograms = async () => {
-
       try {
-        const programsList = await getPrograms()
-        setPrograms(programsList)
+      const programsList = await HandleGetList('/getPrograms');
+      setPrograms(programsList)
       } catch (fetchError) {
-        setError(fetchError.message)
+      setError(fetchError.message)
       } finally {
-        setLoading(false)
+      setLoading(false)
       }
-
     }
 
     fetchPrograms()

@@ -2,83 +2,37 @@
 //User api connection
 const Api_connection = 'http://localhost:4000/api'
 
-//----------------Get all the stories/Testimonilas
-export const getStories = async () => {
-    try {
-        const response = await fetch(Api_connection + '/getStories');
-        if (!response.ok) {
-            throw new Error('Failed to fetch stories');
-        }
-        const data = await response.json();
-        return data.data ?? data;
-    } catch (error) {
-        throw error;
-    }
-};
 
-//-------------Get available homes----------------
-export const getHomes = async () => {
-    try {
-        const response = await fetch(Api_connection + '/getFosterHomes');
-        if (!response.ok) {
-            throw new Error('Failed to fetch fosterHomes');
-        }
-        const data = await response.json();
-        return data.data ?? data;
-    } catch (error) {
-        throw error;
-    }
-};
-
-//------Get the available programs-------------
-export async function getPrograms() {
-
-    const response = await fetch(Api_connection + '/getPrograms');
+//------Get the social workers
+export const HandleGetList = async (urlName) => {
+  try {
+  const response = await fetch(Api_connection + urlName);
 
     if (!response.ok) {
-        throw new Error('Failed to fetch programs');
+    throw new Error('Failed to get entry.');
     }
-
     const data = await response.json();
-
     return data.data ?? data;
-}
+  } catch (error) {
+    throw error;
+  }
+};
 
-//-----------------Add a single story----------------
-export const addStory = async (myStory) => {
-    const response = await fetch(Api_connection + '/AddStory', {
+//-----------------Add entry to the database ----------------
+export const addEntryRequest = async (myEntry,urlName) => {
+    const response = await fetch(Api_connection + urlName, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(myStory)
+        body: JSON.stringify(myEntry)
     });
     if (!response.ok) {
-        throw new Error('Unable to add story');
+        throw new Error('Unable to add request.');
     }
     const data = await response.json();
     return data;
 };
-
-//---------------Add single program---------
-    export const AddPrograms = async (program) => {
-
-      try {
-        const response = await fetch(Api_connection + '/AddPrograms', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(program)
-        })
-
-        if (!response.ok) throw new Error('Unable to add program.')
-
-        const savedProgram = await response.json()
-        return savedProgram;
-        
-      } catch (error) {
-        setMessage(error.message)
-      }
-  }
 
   export const delete_Program = async (ProgramID) => {
     
@@ -94,26 +48,6 @@ export const addStory = async (myStory) => {
       console.error('Error deleting program:', error)
     }
   }
-    ///_-----------------add pictures----
-export const add_Gallery = async (ThisImage) => {
-  try {
-    const response = await fetch(Api_connection + '/AddPictures', {
-      method: 'POST',
-      body: ThisImage
-    })
-
-    if (!response.ok) {
-      throw new Error('Unable to add gallery image.')
-    }
-
-    const savedGallery = await response.json()
-
-    return savedGallery
-
-  } catch (error) {
-    throw error
-  }
-}
 
 //--------------Remove users-------------------
   export const delete_Users = async (userID) => {
@@ -129,58 +63,6 @@ export const add_Gallery = async (ThisImage) => {
     } catch (error) {
       console.error('Error deleting program:', error);
     }
-  }
-
-  //------Get all users------------
-  export async function getAllUsers() {
-
-    const response = await fetch(Api_connection + '/getUsers');
-
-    if (!response.ok) {
-        throw new Error('Failed to fetch users');
-    }
-
-    const data = await response.json();
-
-    return data.data ?? data;
-}
-
-//---------------Add single child---------
-    export const AddChildren = async (ourChild) => {
-
-      try {
-        const response = await fetch(Api_connection + '/AddChild', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(ourChild)
-        })
-
-        if (!response.ok) throw new Error('Unable to add child.')
-
-        const savedChild = await response.json()
-        return savedChild;
-        
-      } catch (error) {
-        setMessage(error.message)
-      }
-  }
-
-  //---------------Add single child---------
-    export const AddSocialWorker = async (ourWorker) => {
-
-      try {
-        const response = await fetch(Api_connection + '/addWorker', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(ourWorker)
-        })
-
-        if (!response.ok) throw new Error('Unable to add social Worker.')
-        return await response.json(); //Get the data
-        
-      } catch (error) {
-        setMessage(error.message)
-      }
   }
   
   //----------------Display Gallery

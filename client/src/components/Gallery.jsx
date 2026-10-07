@@ -44,8 +44,6 @@ export default function Gallery() {
             />
     <div className="galleryContainer">
 
-      <h1>Our Gallery</h1>
-
       {error && <p>{error}</p>}
 
       <div className="galleryGrid">

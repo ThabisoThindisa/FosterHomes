@@ -3,7 +3,7 @@ import styles from './css/Admin.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
-import {getPrograms, AddPrograms, getStories,add_Gallery} from './Helpers/HandleRequests'
+import {HandleGetList,addEntryRequest} from './Helpers/HandleRequests'
 import { useNavigate } from 'react-router-dom'
 
 export default function Admin(){
@@ -38,7 +38,7 @@ export default function Admin(){
     event.preventDefault()
 
       try {
-        const savedProgram = await AddPrograms(program);
+          const savedProgram = await addEntryRequest(program,'/AddPrograms')
         setAllPrograms((currentPrograms) => [...currentPrograms, savedProgram])
         setProgram({ ad_name: '', ad_description: '', ad_eligibility_requirements: '' })
         setMessage('Program added successfully.')
@@ -52,7 +52,7 @@ export default function Admin(){
   useEffect(() => {
       const fetchPrograms = async () => {
           try {
-              const programsList = await getPrograms();
+              const programsList = await HandleGetList('/getPrograms');
               setAllPrograms(programsList);
           } catch (fetchError) {
               setError(fetchError.message);
@@ -67,7 +67,7 @@ useEffect(() => {
 
     const fetchStories = async () => {
         try {
-            const storiesList = await getStories();
+            const storiesList = await HandleGetList('/getStories');
             setAllStories(storiesList);
         } catch (fetchError) {
             setError(fetchError.message);
@@ -94,7 +94,7 @@ const Add_Gallery_Image = async (event) => {
     const formData = new FormData()
     formData.append('image', file)
     formData.append('alt_text', galleryForm.alt_text)
-    const savedGallery = await add_Gallery(formData)
+    const savedGallery =  await addEntryRequest(formData,'/AddPictures')
 
     // Add the returned image information to React state
     setGallery((currentGallery) => [

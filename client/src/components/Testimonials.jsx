@@ -3,7 +3,7 @@ import styles from './css/Testimonials.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar';
 import Footer from './SemanticElements/Footer'
-import {getStories,addStory} from './Helpers/HandleRequests'
+import {HandleGetList,addEntryRequest} from './Helpers/HandleRequests'
 
 
 export default function Testimonials(){
@@ -26,7 +26,7 @@ export default function Testimonials(){
     event.preventDefault();
     try {
 
-        const saved_Story = await addStory(myStory);
+        const saved_Story = await addEntryRequest(myStory,'/AddStory');
 
         setStories((current_Story) => [
             ...current_Story,
@@ -52,7 +52,7 @@ useEffect(() => {
 
     const fetchStories = async () => {
         try {
-            const storiesList = await getStories();
+            const storiesList = await HandleGetList('/getStories');
             setStories(storiesList);
         } catch (fetchError) {
             setError(fetchError.message);
@@ -103,7 +103,8 @@ useEffect(() => {
   }
 />
       </label>
-      <button type="submit" className={styles.sendButton} > Send Message </button>
+      <button type="submit" className={styles.sendButton} 
+      onClick={Add_Testimonial}> Send Message </button>
       <label className={styles.DisplayLabel}>Our Stories from our community.</label>
     </form>
 

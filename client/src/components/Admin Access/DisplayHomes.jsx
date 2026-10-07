@@ -4,7 +4,7 @@ import styles from  '../css/Testimonials.module.css'
 import Header from '../SemanticElements/Header'   //'./SemanticElements/Header'
 import NavigationBar from '../SemanticElements/NavBar';
 import Footer from '../SemanticElements/Footer' //'./SemanticElements/Footer'
-import {getHomes} from '../Helpers/HandleRequests'  //'./Helpers/HandleRequests'
+import {HandleGetList} from '../Helpers/HandleRequests'  //'./Helpers/HandleRequests'
 
 export default function DisplayHomes(){
 
@@ -16,7 +16,7 @@ useEffect(() => {
 
     const getFosterHomes = async () => {
         try {
-            const HomeList = await getHomes();
+            const HomeList = await HandleGetList('/getFosterHomes');
             setHomes(HomeList);
         } catch (fetchError) {
             setError(fetchError.message);
