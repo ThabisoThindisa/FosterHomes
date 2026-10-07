@@ -28,3 +28,7 @@ React + Express + MySQL authentication for the `adoption_portal` database.
 Open http://localhost:5173.
 
 The API runs on http://localhost:4000. Registration creates both a `users` record and an `applicants` profile, and login checks `u_is_active` before issuing an HTTP-only cookie.
+
+## Admin Login details
+Email: Homes@gmail.com
+Password: Homes@2026
