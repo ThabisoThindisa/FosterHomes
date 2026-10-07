@@ -548,7 +548,7 @@ app.post('/api/AddChild', async (req, res) => {
     c_date_of_birth,
     c_gender,
     status,
-    special_needs
+    
   } = req.body;
 
   if (
@@ -599,5 +599,62 @@ app.post('/api/AddChild', async (req, res) => {
 
     console.error('Error inserting child:', error);
     return res.status(500).json({ message: 'Could not add the child.' });
+  }
+});
+
+//--------------- The user sent enqueries----------
+app.post('/api/AddEnquiry', async (req, res) => {
+  try {
+    const {
+      enq_full_name,
+      enq_email,
+      enq_phone,
+      enq_subject,
+      enq_message,
+      enq_status
+    } = req.body;
+
+    // Check required fields
+    if (!enq_full_name || !enq_email || !enq_message) {
+      return res.status(400).json({
+        message: 'Name, email and message are required.'
+      });
+    }
+
+    // Insert enquiry into MySQL
+    const [result] = await pool.query(
+      `INSERT INTO enquiries
+       (full_name, email, phone, subject, message, status)
+       VALUES (?, ?, ?, ?, ?, ?)`,
+      [
+        enq_full_name,
+        enq_email,
+        enq_phone || null,
+        enq_subject || null,
+        enq_message,
+        enq_status || 'new'
+      ]
+    );
+
+    // Return the newly created enquiry
+    const [rows] = await pool.query(
+      `SELECT *
+       FROM enquiries
+       WHERE enquiry_id = ?`,
+      [result.insertId]
+    );
+
+    res.status(201).json({
+      message: 'Enquiry added successfully.',
+      data: rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error adding enquiry:', error);
+
+    res.status(500).json({
+      message: 'Failed to add enquiry.',
+      error: error.message
+    });
   }
 });

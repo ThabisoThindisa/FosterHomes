@@ -3,7 +3,7 @@ import styles from './css/Contact.module.css'
 import Header from "./SemanticElements/Header";
 import NavigationBar from "./SemanticElements/NavBar";
 import Footer from './SemanticElements/Footer'
-import { useEffect,useState } from 'react';
+import { useState } from 'react';
 import { addEntryRequest } from './Helpers/HandleRequests';
 
 export default function Contact(){
@@ -20,11 +20,10 @@ export default function Contact(){
 
  //-----------------Add single testimonial from the current user---------------
    
- async function Add_Testimonial(event) {
+ async function add_Enquery(event) {
     event.preventDefault();
     try {
-
-        const stored_message = await addEntryRequest(myStory,'/AddStory');
+      const stored_message = await addEntryRequest(myStory,'/AddEnquiry');
 
         setALLEnquery((current_enq) => [
             ...current_enq,
@@ -44,7 +43,6 @@ export default function Contact(){
         setMessage(error.message);
     }
 }
-
   return (
       
     <div className={styles.wrap}>
@@ -60,7 +58,6 @@ export default function Contact(){
         <label className={styles.NameInput}>Name<input placeholder="Your full name" value={Enquery.enq_full_name}
           onChange={(e) => setEnquery(e.target.value)}
           /></label>
-
         <label className={styles.EmailInput} >Email<input placeholder="you@example.com" value={Enquery.enq_email}
           onChange={(e) => setEnquery(e.target.value)}
         /></label>
@@ -69,7 +66,7 @@ export default function Contact(){
           /></label>
         <label className={styles.MessageInput} >Message<textarea
          value={Enquery.enq_message} onChange={(e) => setEnquery(e.target.value)} /></label>
-        <button className={styles.btn} onClick={Add_Testimonial} >Send Message</button>
+        <button className={styles.btn} onClick={add_Enquery} >Send Message</button>
            <div className={styles.map}>
         <iframe title="map" width="100%" height="260" style={{border:0}}
           src="https://www.google.com/maps?q=-24.1832994,29.007982&z=17&output=embed"></iframe>
