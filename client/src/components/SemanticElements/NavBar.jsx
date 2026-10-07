@@ -26,6 +26,7 @@ const LINKS = [
    },
  
   { label: 'Contact', to: '/contacts' },
+  { label: 'My Account', to: '/account' },
   { label: 'Sign-Out', to: "/logout", action: 'logout' }
 ]
 

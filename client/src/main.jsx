@@ -17,6 +17,10 @@ import HomePage from './components/HomePage'
 import Contact from './components/Contact'
 import AdminPag from './components/Admin'
 import Dashboard from './components/Dashboard'
+import AcountPage from './components/AcountPage'
+import AddChildPage from './components/Admin Access/AddChildren'
+import AddWorkerPage from './components/Admin Access/AddSocialWorker'
+
 
 import './styles/animations.css';
 //Import admin pages
@@ -87,11 +91,15 @@ function App() {
     <Route path="/Admin" element={<AdminPag />} />
     {/*Admin pages */}
     <Route path="/fosterHomes" element={<FosterHomesP />} />
+    <Route path="/ChildManage" element={<AddChildPage />} />
+    <Route path="/SocialWorkers" element={<AddWorkerPage />} />
+
     <Route path="/adoption" element={<AdoptionPage />} />
     <Route path="/AllUsers" element={<UserPage />} />
     
     <Route path="/contacts" element={<Contact />} />
     <Route path="/dashboard" element={<Dashboard user={user} onLogout={logout} />} />
+    <Route path="/account" element={<AcountPage user={user} />} />
     <Route path="*" element={<Navigate to="/HomePage" replace />} />
   </Routes>;
 

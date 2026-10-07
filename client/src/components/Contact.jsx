@@ -41,7 +41,7 @@ export default function Contact(){
         setMessage('message added successfully.');
     } catch (error) {
         setMessage(error.message);
-    }
+    }form
 }
   return (
       

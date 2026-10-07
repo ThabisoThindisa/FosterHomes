@@ -8,9 +8,12 @@ export default function Dashboard({ user, onLogout }) {
     <main className="dashboard">
       <header className="dashboard-header">
         <div className="brand">
-          <span className="brand-mark">
-            <HeartHandshake size={20} />
-          </span> Thindisa Foster Home
+          <img
+            src={LogoImage}
+            alt="Thindisa FosterHome logo"
+            className="dashboard-logo"
+          />
+          Thindisa Foster Home
         </div>
         <button className="logout" onClick={onLogout}>Sign out</button>
       </header>

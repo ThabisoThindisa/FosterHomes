@@ -5,12 +5,14 @@ import Header from '../SemanticElements/Header'
 import NavigationBar from '../SemanticElements/NavBar'
 import Footer from '../SemanticElements/Footer'
 import { delete_Users, HandleGetList, addEntryRequest } from '../Helpers/HandleRequests'
+import { useNavigate } from "react-router-dom";
 
 export default function ManageUsers() {
   const [Allusers, setAllUsers] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
   const [message, setMessage] = useState('')
+  const navigate = useNavigate();
 
   const [child, setChild] = useState({
      C_fullName: '',
@@ -117,99 +119,39 @@ export default function ManageUsers() {
            ))}
            
          </section>
-      <button className={styles.list}>Add Children</button>
-        <button className={styles.list}>Add Social Worker</button>
-         <section>
-           <form>
-             <label className={styles.DisplayLabel}>Add Children to the Platform.</label>
-           </form>
-
-           <form onSubmit={Add_Children} className={styles.form}>
-             <h2>Children information.</h2>
-
-             <input
-               required
-               placeholder="Child Name"
-               value={child.C_fullName}
-               onChange={(event) => setChild({ ...child, C_fullName: event.target.value })}
-             />
-             <input
-               required
-               placeholder="Reference code"
-               value={child.c_reference_code}
-               onChange={(event) => setChild({ ...child, c_reference_code: event.target.value })}
-             />
-
-             <div>
-               <label htmlFor="ChildDOB">Date of Birth:</label>
-               <input
-                 type="date"
-                 id="ChildDOB"
-                 value={child.c_date_of_birth}
-                 onChange={(event) => setChild({ ...child, c_date_of_birth: event.target.value })}
-               />
-             </div>
-
-             <input
-               required
-               placeholder="Gender"
-               value={child.c_gender}
-               onChange={(event) => setChild({ ...child, c_gender: event.target.value })}
-             />
-             <input
-               required
-               placeholder="Status"
-               value={child.status}
-               onChange={(event) => setChild({ ...child, status: event.target.value })}
-             />
-             <input
-               placeholder="Special needs"
-               value={child.special_needs}
-               onChange={(event) => setChild({ ...child, special_needs: event.target.value })}
-             />
-             <button type="submit" className={styles.submitButton}>Add Child.</button>
-           </form>
-
-           <label className={styles.DisplayLabel}></label>
-
-           <label className={styles.DisplayLabel}>Add Social Worker</label>
-           <form onSubmit={Add_Workers} className={styles.form}>
-             <h2>Social Worker information.</h2>
-
-             <input
-               required
-               placeholder="Social worker Name"
-               value={worker.s_fullName}
-               onChange={(event) => setWorker({ ...worker, s_fullName: event.target.value })}
-             />
-             <input
-               required
-               placeholder="Registration number"
-               value={worker.s_registration_number}
-               onChange={(event) => setWorker({ ...worker, s_registration_number: event.target.value })}
-             />
-             <input
-               required
-               placeholder="Organisation name"
-               value={worker.s_organisation_name}
-               onChange={(event) => setWorker({ ...worker, s_organisation_name: event.target.value })}
-             />
-             <input
-               required
-               placeholder="Office location"
-               value={worker.s_office_location}
-               onChange={(event) => setWorker({ ...worker, s_office_location: event.target.value })}
-             />
-             <input
-               required
-               placeholder="Specialisation"
-               value={worker.s_specialisation}
-               onChange={(event) => setWorker({ ...worker, s_specialisation: event.target.value })}
-             />
-
-             <button type="submit" className={styles.submitButton}>Add Social Worker.</button>
-           </form>
-         </section>
+      <button 
+      
+    style={{
+    backgroundColor: '#4175af',
+    color: 'white',
+    border: 'none',
+    padding: '22px 24px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    marginTop: '10px',
+    marginRight: '10px',
+    cursor: 'pointer'
+  }}
+      
+      onClick={() => navigate("/ChildManage")} >Add Children</button>
+      <button 
+      
+          style={{
+    backgroundColor: '#4175af',
+    color: 'white',
+    border: 'none',
+    padding: '22px 24px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    marginTop: '10px',
+    marginRight: '10px',
+    cursor: 'pointer'
+  }}
+      
+      onClick={() => navigate("/SocialWorkers")}>Add Social Worker</button>
+ 
        </main>
        <Footer />
      </>
