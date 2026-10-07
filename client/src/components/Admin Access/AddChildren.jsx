@@ -101,24 +101,6 @@ export default function ManageUsers() {
            <label className={styles.DisplayLabel}>Registered Users.</label>
          </form>
 
-         <section className={styles.list}>
-           <h2>Users</h2>
-           {Allusers.map((item) => (
-             <article key={item.user_id || item.child_id}>
-               <span>
-                 <strong>{'Full name: ' + (item.u_full_name || item.C_fullName || item.c_Fullname || item.worker_name)}</strong>
-                 <small>{'ID: ' + (item.u_BirthID || item.c_reference_code || item.s_registration_number || item.user_id)}</small>
-                 <small>{'Email: ' + (item.u_email || item.c_date_of_birth || '')}</small>
-                 <small>{'Contact No: ' + (item.u_phone || item.c_gender || '')}</small>
-                 <small>{'Role: ' + (item.u_role || item.status || 'child')}</small>
-               </span>
-               <button type="button">Delete</button>
-             </article>
-           ))}
-           
-         </section>
-      <button className={styles.list}>Add Children</button>
-        <button className={styles.list}>Add Social Worker</button>
          <section>
            <form>
              <label className={styles.DisplayLabel}>Add Children to the Platform.</label>

@@ -504,59 +504,6 @@ app.post('/api/AddPictures', upload.single('image'), async (req, res) => {
   }
 });
 
-//------Add child----------
-app.post('/api/AddChildren', async (req, res) => {
-
-  try {
-    const {
-      c_Fullname,
-      c_reference_code,
-      c_date_of_birth,
-      c_gender,
-      status,
-      special_needs
-    } = req.body;
-
-    // Check required information
-    if (!c_Fullname || !c_date_of_birth || !c_gender) {
-      return res.status(400).json({
-        message: 'All required information is needed.'
-      });
-    }
-
-    // Insert child into MySQL
-    const [result] = await pool.query(
-      `INSERT INTO children
-      (c_reference_code, c_Fullname, c_date_of_birth, c_gender, status)
-      VALUES (?, ?, ?, ?, ?)`,
-      [
-        c_reference_code ? c_reference_code.trim() : null,
-        c_Fullname.trim(),
-        c_date_of_birth.trim(),
-        c_gender.trim(),
-        status || 'in_care'
-      ]
-    );
-
-    // Send response
-    res.status(201).json({
-      child_id: result.insertId,
-      c_reference_code: c_reference_code || null,
-      c_Fullname: c_Fullname.trim(),
-      c_date_of_birth: c_date_of_birth.trim(),
-      c_gender: c_gender.trim(),
-      status: status || 'in_care'
-    });
-
-  } catch (error) {
-    console.error('Error inserting child:', error);
-
-    res.status(500).json({
-      message: 'Error inserting child'
-    });
-  }
-});
-
 app.post('/api/auth/logout', function (_req, res) {
   return res.clearCookie('auth_token').json({ ok: true });
 });

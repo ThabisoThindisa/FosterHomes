@@ -1,6 +1,11 @@
 
 import { useEffect,useState } from 'react';
 import styles from  '../css/Booking.module.css'
+
+import stylesM from  '../css/HomePage.module.css'
+import stylesBoxM from '../css/Home.module.css'
+
+
 import Header from '../SemanticElements/Header'   //'./SemanticElements/Header'
 import NavigationBar from '../SemanticElements/NavBar';
 import Footer from '../SemanticElements/Footer' //'./SemanticElements/Footer'
@@ -34,10 +39,13 @@ useEffect(() => {
         title="Adoption Options."
         description="Our foster homes provide a safe, loving, and supportive environment for children who need temporary care and protection."
       />
-          <form>
+  
+       <section>
+
+       </section>
+              <form>
       <label className={styles.DisplayLabel}>Book adoption. </label>
     </form>
-       
        <section className={styles.forms}>
        <section className={styles.fosterHomesContainer}>
 
@@ -51,11 +59,8 @@ useEffect(() => {
   value={selectedWorker}
   onChange={(e) => setSelectedWorker(e.target.value)}
   style={{
-    width: '400px',
-    padding: '8px',
-    borderRadius: '11px',
-    border: '1px solid #ccc',
-    cursor: 'pointer'
+ width: '200px',padding: '19px',borderRadius: '11px',
+    border: '1px solid #ccc', cursor: 'pointer'
   }}
 >
     <option value="">
@@ -70,44 +75,89 @@ useEffect(() => {
   </div>
 
   <div className={styles.fosterHomeCard}>
-    <h2>Appointment</h2>
+    <h2>Appointment Type</h2>
     <p>
-     Appointments can be scheduled for adoption consultations, 
+    Appointments can be scheduled for adoption consultations, 
      application discussions, foster-to-adopt consultations,
-      assessments, and follow-up meetings. Our goal is to make
-       every appointment informative, supportive, and focused 
-       on helping families take the next step in their journey.
+      assessments, and follow-up meetings.
     </p>
-    <button>Select Worker ▼</button>
+<select
+  value={selectedWorker}
+  onChange={(e) => setSelectedWorker(e.target.value)}
+  style={{
+    width: '200px',padding: '19px',borderRadius: '11px',
+    border: '1px solid #ccc', cursor: 'pointer'
+  }}
+>
+    <option value="">
+    Select Appointment.
+  </option>
+  {showWorkers.map((worker) => (
+    <option key={worker.social_worker_id || worker.s_registration_number} value={worker.s_organisation_name}>
+      {worker.worker_name + ' ('+worker.s_specialisation +').'}
+    </option>
+  ))}
+</select>
   </div>
 
   <div className={styles.fosterHomeCard}>
     <h2>Date</h2>
     <p>
       Select a convenient date for your appointment with our 
-      social worker. Please choose a date that works well for
-       you so that we can provide the appropriate time and 
-       support for your consultation.
+      social worker.
     </p>
-    <button>Select Date ▼</button>
+          <div>
+               <label htmlFor="ChildDOB"></label>
+               <input
+                 type="date"
+                 id="ChildDOB"
+                style={{width: '200px',padding: '19px',borderRadius: '11px',
+                border: '1px solid #ccc'}}
+                 
+               />
+             </div>
   </div>
 
    <div className={styles.fosterHomeCard}>
     <h2>Time </h2>
     <p>
       Select a convenient date for your appointment with our
-       social worker. Please choose a date that works well 
-       for you so that we can provide the appropriate time
-        and support for your consultation.
+       social worker.
     </p>
-    <button>Select Time ▼</button>
+
+<input
+  type="time"
+  id="appointmentTime"
+  name="appointmentTime"
+  min="08:00"
+  max="16:00"
+  style={{width: '200px',padding: '19px',borderRadius: '11px',
+          border: '1px solid #ccc'}}
+  required
+/>
   </div>
 
 </section>
 
               
              </section>
+           <section>
+    
+      <div className={stylesBoxM.sectionHeader}>
+        <h1></h1>
+         <h1>Meet Our Social Workers</h1>
+      <p >
+        Our social workers play an important role in supporting children and prospective
+         adoptive parents. They help applicants understand the adoption
+          process, conduct assessments, provide guidance, and support 
+          families through important decisions.
 
+       If you have questions about adoption or would like assistance with your application,
+        you can arrange an appointment with one of our social workers.
+      </p>
+    </div>
+
+       </section>
       
       </main>
       <Footer />
