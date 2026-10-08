@@ -1,8 +1,24 @@
 import { HeartHandshake, Mail, ShieldCheck, UserRound } from 'lucide-react'
 import NavBar from './SemanticElements/NavBar'
 import styles from './css/AcountPage.module.css'
+import { useState } from 'react';
+import {addEntryRequest} from './Helpers/HandleRequests'
+
 
 export default function AcountPage({ user }) {
+
+const [applicant, setApplicant] = useState({
+    user_id: user.id ,
+    s_marital_status: '',
+    s_occupation:  '',
+    s_address:  '',
+    s_adoption_preferences: ''
+  })
+
+  const [message, setMessage] = useState('')
+  const [isSaving, setIsSaving] = useState(false)
+  const [hasError, setHasError] = useState(false)
+
   const name = user.name.trim()
   const initials = name
     .split(/\s+/)
@@ -11,6 +27,33 @@ export default function AcountPage({ user }) {
     .join('')
     .toUpperCase()
   const role = user.role.replaceAll('_', ' ')
+
+  async function updateAccount(event) {
+    event.preventDefault()
+    setMessage('')
+    setHasError(false)
+    setIsSaving(true)
+
+    try {
+       
+      const data = await addEntryRequest(applicant, '/updateAccount')
+      setApplicant({
+        user_id: user.id ,
+        s_marital_status: '',
+        s_occupation:  '',
+        s_address:  '',
+        s_adoption_preferences: ''
+      })
+
+      setMessage(data.message || 'Account details updated.')
+    } catch (error) {
+      setHasError(true)
+      setMessage(error.message)
+    } finally {
+      setIsSaving(false)
+    }
+  }
+
 
   return (
     <>
@@ -60,6 +103,73 @@ export default function AcountPage({ user }) {
               <dd>{role}</dd>
             </div>
           </dl>
+        </section>
+
+        <section className={styles.details} aria-labelledby="update-details-heading">
+          <div className={styles.sectionHeading}>
+            <span className={styles.sectionIcon}>
+              <UserRound size={20} aria-hidden="true" />
+            </span>
+            <div>
+              <h2 id="update-details-heading">Update account details</h2>
+              <p>Change the contact information saved to your account.</p>
+            </div>
+          </div>
+
+          <form className={styles.accountForm} onSubmit={updateAccount}>
+            <label>
+              Marital status
+              <input
+                name="Marital"
+                value={applicant.s_marital_status}
+                onChange={(event) => setApplicant((current) => ({ ...current, s_marital_status: event.target.value }))}
+                maxLength={150}
+                required
+              />
+            </label>
+            <label>
+              Occupation
+              <input
+                name="occupation"
+                type="occupation"
+                value={applicant.s_occupation}
+                onChange={(event) => setApplicant((current) => 
+                    ({ ...current, s_occupation: event.target.value }))}
+                maxLength={255}
+                required
+              />
+            </label>
+            <label>
+              Address
+              <input
+                name="address"
+                type="address"
+                value={applicant.s_address}
+                onChange={(event) => setApplicant((current) => ({ ...current, s_address: event.target.value }))}
+                maxLength={20}
+              />
+            </label>
+
+            <label>
+              Adoption preferences
+              <input
+                name="preferences"
+                type="preferences"     
+                value={applicant.s_adoption_preferences}
+                onChange={(event) => setApplicant((current) => ({ ...current, s_adoption_preferences: event.target.value }))}
+                maxLength={20}
+              />
+            </label>
+
+            <button className={styles.saveButton} type="submit" disabled={isSaving}>
+              {isSaving ? 'Saving...' : 'Save changes'}
+            </button>
+            {message && (
+              <p className={hasError ? styles.formError : styles.formSuccess} role={hasError ? 'alert' : 'status'}>
+                {message}
+              </p>
+            )}
+          </form>
         </section>
 
         <aside className={styles.note}>

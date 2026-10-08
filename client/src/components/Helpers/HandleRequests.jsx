@@ -22,15 +22,16 @@ export const HandleGetList = async (urlName) => {
 export const addEntryRequest = async (myEntry,urlName) => {
     const response = await fetch(Api_connection + urlName, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
         body: JSON.stringify(myEntry)
     });
+    const data = await response.json().catch(() => ({}));
     if (!response.ok) {
-        throw new Error('Unable to add request.');
+        throw new Error(data.message || 'Unable to add request.');
     }
-    const data = await response.json();
     return data;
 };
 

@@ -1,12 +1,14 @@
 .wrap{display:grid;gap:24px;align-items:start}
 .form{background:white;padding:100px;border-radius:62px;box-shadow:0 8px 30px rgba(2,62,138,0.05)}
-.form label{display:block;margin-bottom:10px;font-size:14px;color:var(--muted)}
+.form label{display:block;margin-bottom:4px;font-size:14px;color:var(--muted)}
 
 .form input,.form textarea{width:100%;
     padding:12px;
     border-radius:8px;
     border:1px solid #e6eef8;
     margin-top:6px}
+
+.form form{display:grid;gap:9px}
 
 .btn{
     display:block;
@@ -15,7 +17,12 @@
     border-radius:10px;border:0;
     margin-top:16px;
     margin-bottom: 40px;
+    width: 206px;
     cursor:pointer}
+
+.btn:disabled{cursor:wait;opacity:.7}
+.feedback{margin:12px 0;color:#18744a}
+.feedbackError{color:#a33f35}
 
 .map{background:#f6fbff;padding:12px;border-radius:12px}
 
@@ -25,23 +32,22 @@
 .NameInput {
   width: 500px;
   height: 90px;
-   border-radius: 13px;
-   font-style:italic;
+  border-radius: 13px;
+  font-style:italic;
   font-size: larger;
 }
 
 .EmailInput {
   width: 500px;
-  height: 90px;
   border-radius: 13px;
   font-style:italic;
   font-size: larger;
-  margin-top: 16px;
 }
 
 
 .MessageInput textarea {
   height: 300px;
+  width: 900px;
   resize: vertical;
   font-size: larger;
   font-style:normal;

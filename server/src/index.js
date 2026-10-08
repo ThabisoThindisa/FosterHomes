@@ -219,6 +219,45 @@ app.get('/api/auth/me', requireAuth, async function (req, res) {
   }
 });
 
+app.put('/api/auth/me', requireAuth, async function (req, res) {
+  const name = typeof req.body.name === 'string' ? req.body.name.trim() : '';
+  const email = typeof req.body.email === 'string' ? req.body.email.trim().toLowerCase() : '';
+  const phone = typeof req.body.phone === 'string' ? req.body.phone.trim() : '';
+
+  if (!name || !email) {
+    return res.status(400).json({ message: 'Name and email are required.' });
+  }
+  if (name.length > 150 || email.length > 255 || phone.length > 20) {
+    return res.status(400).json({ message: 'One or more account fields exceed the allowed length.' });
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return res.status(400).json({ message: 'Enter a valid email address.' });
+  }
+
+  try {
+    await pool.execute(
+      'UPDATE users SET u_full_name = ?, u_email = ?, u_phone = ? WHERE user_id = ? AND u_is_active = 1',
+      [name, email, phone || null, req.user.user_id]
+    );
+    const [rows] = await pool.execute(
+      'SELECT user_id, u_full_name, u_email, u_phone, u_role FROM users WHERE user_id = ? AND u_is_active = 1 LIMIT 1',
+      [req.user.user_id]
+    );
+
+    if (!rows[0]) {
+      return res.status(404).json({ message: 'User account not found.' });
+    }
+
+    res.json({ message: 'Account details updated.', user: publicUser(rows[0]) });
+  } catch (error) {
+    if (error.code === 'ER_DUP_ENTRY') {
+      return res.status(409).json({ message: 'That email address is already in use.' });
+    }
+    console.error('Error updating account details:', error);
+    res.status(500).json({ message: 'Could not update account details.' });
+  }
+});
+
 //-------------------Handle the retrievement of content for every page---------------
 
 // 1.Get the programs
@@ -262,7 +301,7 @@ app.post('/api/AddPrograms', async (req, res) => {
       });
     }
 
-    const [result] = await pool.query(
+    await pool.query(
       'INSERT INTO adoption_programs (ad_name, ad_description, ad_eligibility_requirements) VALUES (?, ?, ?)',
       [
         ad_name.trim(),
@@ -654,6 +693,67 @@ app.post('/api/AddEnquiry', async (req, res) => {
 
     res.status(500).json({
       message: 'Failed to add enquiry.',
+      error: error.message
+    });
+  }
+});
+
+
+//----------------update applicant
+
+//--------------- The user sent enqueries----------
+app.post('/api/updateAccount', requireAuth, async (req, res) => {
+  try {
+    const {
+        s_marital_status,
+        s_occupation,
+        s_address,
+        s_adoption_preferences
+    } = req.body;
+
+    // Check required fields
+    if (!s_address || !s_marital_status) {
+      return res.status(400).json({
+        message: 'Please enter all information.'
+      });
+    }
+
+    // Insert enquiry into MySQL
+    await pool.query(
+      `INSERT INTO applicants
+       (user_id, s_marital_status, s_occupation, s_address, s_adoption_preferences)
+       VALUES (?, ?, ?, ?, ?)
+       ON DUPLICATE KEY UPDATE
+       s_marital_status = VALUES(s_marital_status),
+       s_occupation = VALUES(s_occupation),
+       s_address = VALUES(s_address),
+       s_adoption_preferences = VALUES(s_adoption_preferences)`,
+      [
+        req.user.user_id,
+        s_marital_status,
+        s_occupation,
+        s_address,
+        s_adoption_preferences
+      ]
+    );
+
+    const [rows] = await pool.query(
+      `SELECT *
+       FROM applicants
+       WHERE user_id = ?`,
+      [req.user.user_id]
+    );
+
+    res.status(201).json({
+      message: 'Applicant information updated successfully.',
+      data: rows[0]
+    });
+
+  } catch (error) {
+    console.error('Error updating usr information:', error);
+
+    res.status(500).json({
+      message: 'Failed to update.',
       error: error.message
     });
   }

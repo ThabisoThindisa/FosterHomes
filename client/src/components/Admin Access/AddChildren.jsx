@@ -1,5 +1,5 @@
 
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import styles from '../css/Admin.module.css'
 import Header from '../SemanticElements/Header'
 import NavigationBar from '../SemanticElements/NavBar'
@@ -8,9 +8,7 @@ import { delete_Users, HandleGetList, addEntryRequest } from '../Helpers/HandleR
 import { useNavigate } from "react-router-dom";
 
 export default function ManageUsers() {
-  const [Allusers, setAllUsers] = useState([])
-  const [loading, setLoading] = useState(true)
-  const [error, setError] = useState('')
+  const [AllChildren, setAllChildren] = useState([])
   const [message, setMessage] = useState('')
    const navigate = useNavigate();
 
@@ -28,7 +26,7 @@ export default function ManageUsers() {
 
      try {
        const savedChild = await addEntryRequest(child, '/AddChild')
-       setAllUsers((currentChild) => [savedChild, ...currentChild])
+       setAllChildren((currentChild) => [savedChild, ...currentChild])
        setChild({
          C_fullName: '',
          c_reference_code: '',
