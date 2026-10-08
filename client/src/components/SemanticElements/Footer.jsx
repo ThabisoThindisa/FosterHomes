@@ -30,7 +30,7 @@ export default function Footer() {
           <ul style={{ listStyle: 'none', margin: 0, padding: 0, lineHeight: 1.8 }}>
             <li><a href="/HomePage" style={{ color: '#fff', textDecoration: 'none' }}>Home</a></li>
             <li><a href="/programs" style={{ color: '#fff', textDecoration: 'none' }}>Programs</a></li>
-            <li><a href="/Testimonial"style={{ color: '#fff', textDecoration: 'none' }}>Our stories</a></li>
+            <li><a href="/OurStories"style={{ color: '#fff', textDecoration: 'none' }}>Our stories</a></li>
             <li><a href="/Gallery" style={{ color: '#fff', textDecoration: 'none' }}>Gallery</a></li>
             <li><a href="/contacts" style={{ color: '#fff', textDecoration: 'none' }}>Contact us</a></li>
             </ul>

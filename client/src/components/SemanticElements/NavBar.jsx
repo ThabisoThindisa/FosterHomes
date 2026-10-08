@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react'
 import { Link,useNavigate  } from 'react-router-dom'
 import logo from '../../images/logo.png'
 import styles from '../css/NavBar.module.css'
+import { API_URL } from '../Helpers/HandleRequests'
+import PORTAL_OPTIONS from '../Portal options/PortalOptions'
 
 // The links to each page
 const LINKS = [
@@ -15,14 +17,7 @@ const LINKS = [
     ]
    },
   { label: 'Adoption Portal',
-      children: [
-      
-      { label: 'Our Programs', to: '/programs'},
-      { label: 'Manage Adoptions', to: "/adoption" },
-      { label: 'Community Stories', to: "/Testimonial"},
-      { label: 'Gallery', to: '/Gallery' }
-
-    ]
+      children: PORTAL_OPTIONS
    },
  
   { label: 'Contact', to: '/contacts' },
@@ -39,7 +34,6 @@ export default function NavBar() {
 const [openDropdown, setOpenDropdown] = useState(null)
 
   // API connection
-  const API_URL = 'http://localhost:4000/api'
   const navigate = useNavigate();
 
   const handleRefresh = () => {

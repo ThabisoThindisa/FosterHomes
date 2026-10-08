@@ -9,10 +9,10 @@ import SiteLogo from './images/logo.png'
 import Login from './components/Login';
 import NavBar from './components/SemanticElements/NavBar';
 import Register from './components/Register';
-import Programs from './components/Programs'
+import Programs from './components/Portal options/Programs'
 import Header from './components/SemanticElements/Header'
-import Gallery from './components/Gallery'
-import Testimonial from './components/Testimonials'
+import Gallery from './components/Portal options/Gallery'
+import StoriesPage from './components/Portal options/StoriesPage'
 import HomePage from './components/HomePage'
 import Contact from './components/Contact'
 import AdminPag from './components/Admin'
@@ -27,9 +27,8 @@ import './styles/animations.css';
 import FosterHomesP from './components/Admin Access/DisplayHomes';
 import AdoptionPage from './components/Admin Access/ManageAdoptions';
 import UserPage from './components/Admin Access/ManageUsers'
+import { API_URL } from './components/Helpers/HandleRequests'
 
-
-const API_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
 
 async function request(path, options = {}) {
   const response = await fetch(`${API_URL}${path}`, {
@@ -87,7 +86,7 @@ function App() {
     <Route path="/programs" element={<Programs />} />
     <Route path="/Gallery" element={<Gallery />} />
     <Route path="/logout" element={<Dashboard />} />
-    <Route path="/Testimonial" element={<Testimonial />} />
+    <Route path="/OurStories" element={<StoriesPage />} />
     <Route path="/Admin" element={<AdminPag />} />
     
     {/*Admin pages */}

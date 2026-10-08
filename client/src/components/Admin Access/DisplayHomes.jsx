@@ -9,7 +9,7 @@ import {HandleGetList,addEntryRequest} from '../Helpers/HandleRequests'  //'./He
 export default function DisplayHomes(){
 
   //Store and set the variavles 
-   const [homes, setHomes] = useState([]) //All stored testimonial /Stories
+   const [homes, setHomes] = useState([]) //All stored OurStories /Stories
    const [Single_homes, setSingle_Homes] = useState({
             user_id : '',
             fh_name : '',
@@ -26,7 +26,7 @@ useEffect(() => {
 
     const addHomes = async () => {
         try {
-        const HomeList = await addEntryRequest(Single_homes,'/getFosterHomes');
+        await addEntryRequest(Single_homes,'/getFosterHomes');
         setSingle_Homes({
             user_id : '',
             fh_name : '',

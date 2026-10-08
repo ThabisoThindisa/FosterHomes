@@ -29,6 +29,14 @@ Open http://localhost:5173.
 
 The API runs on http://localhost:4000. Registration creates both a `users` record and an `applicants` profile, and login checks `u_is_active` before issuing an HTTP-only cookie.
 
+## Deployment
+
+- Build the client from `client` with `npm ci` and `npm run build`; publish the generated `dist` directory.
+- Start the API from `server` with `npm ci` and `npm start`. Configure `DB_HOST`, `DB_PORT`, `DB_NAME`, `DB_USER`, `DB_PASSWORD`, `JWT_SECRET`, and `CLIENT_ORIGIN` in the hosting provider. `CLIENT_ORIGIN` must exactly match the deployed client origin.
+- Set the client build variable `VITE_API_URL` to the API base URL including `/api` (for example, `https://api.example.com/api`). When the API is reverse-proxied under the same origin at `/api`, it can be left unset.
+- Configure static hosting to rewrite application routes to `index.html` so direct visits and refreshes on routes such as `/OurStories` work.
+- The authentication cookie uses `SameSite=Lax`; deploy the client and API on the same site or proxy API requests through the client origin so browsers send the session cookie.
+
 ## Admin Login details
 Email: Homes@gmail.com
 Password: Homes@2026

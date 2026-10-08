@@ -1,9 +1,9 @@
 import { useEffect, useState } from 'react'
-import styles from './css/CardGrid.module.css'
-import Footer from './SemanticElements/Footer'
-import NavigationBar from './SemanticElements/NavBar'
-import Header from './SemanticElements/Header'
-import {HandleGetList } from './Helpers/HandleRequests'
+import styles from '../css/CardGrid.module.css'
+import Footer from '../SemanticElements/Footer'
+import NavigationBar from '../SemanticElements/NavBar'
+import Header from '../SemanticElements/Header'
+import {HandleGetList } from '../Helpers/HandleRequests'
 
 export default function Programs() {
 

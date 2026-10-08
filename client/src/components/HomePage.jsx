@@ -4,20 +4,18 @@ import stylesBox from './css/Home.module.css'
 import NavigationBar from './SemanticElements/NavBar';
 import Footer from './SemanticElements/Footer'
 import { useState,useEffect } from 'react';
+import { API_URL } from './Helpers/HandleRequests'
 
 export default function HomePage() {
    
   
-//Use this connection.
-const Api_connection ='http://localhost:4000/api';
-
  const [programs, setPrograms] = useState([])
    const [loading, setLoading] = useState(true)
    const [error, setError] = useState(null)
  
     //------------------Retrieve available programs---------------
    useEffect(() => {
-     fetch(Api_connection +'/getPrograms')
+     fetch(API_URL + '/getPrograms')
        .then((response) => {
          if (!response.ok) {
            throw new Error('Failed to fetch programs')
@@ -54,7 +52,7 @@ const Api_connection ='http://localhost:4000/api';
           </p>
 
           <div className={styles.ctas}>
-            <Link to="/Testimonial" className={styles.primary}>
+            <Link to="/OurStories" className={styles.primary}>
               Community Stories
             </Link>
 

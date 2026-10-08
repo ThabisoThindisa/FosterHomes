@@ -1,7 +1,8 @@
 import { useEffect, useState } from 'react';
-import NavigationBar from "./SemanticElements/NavBar";
-import Header from "./SemanticElements/Header";
-import Footer from './SemanticElements/Footer'
+import NavigationBar from "../SemanticElements/NavBar";
+import Header from "../SemanticElements/Header";
+import Footer from '../SemanticElements/Footer'
+import { API_URL } from '../Helpers/HandleRequests'
 
 
 export default function Gallery() {
@@ -11,9 +12,7 @@ export default function Gallery() {
   useEffect(() => {
     async function getPictures() {
       try {
-        const response = await fetch(
-          'http://localhost:4000/api/getPictures'
-        );
+        const response = await fetch(API_URL + '/getPictures');
 
         if (!response.ok) {
           throw new Error('Failed to load pictures');
@@ -52,7 +51,7 @@ export default function Gallery() {
           <div className="galleryCard" key={picture.gallery_id}>
 
             <img
-              src={`http://localhost:4000/api/getPictures/${picture.gallery_id}`}
+              src={API_URL + '/getPictures/' + picture.gallery_id}
               alt={picture.alt_text}
             />
 
