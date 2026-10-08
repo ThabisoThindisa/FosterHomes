@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 02, 2026 at 01:32 PM
+-- Generation Time: Oct 08, 2026 at 06:09 AM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -74,10 +74,7 @@ CREATE TABLE `adoption_programs` (
 INSERT INTO `adoption_programs` (`program_id`, `ad_name`, `ad_description`, `ad_eligibility_requirements`, `ad_is_active`, `ad_created_at`) VALUES
 (1, 'Domestic Adoption Programme', 'A programme supporting eligible individuals and families through the domestic adoption process.', 'Applicants must meet the applicable legal, social and financial requirements and complete the required assessment process.', 1, '2026-09-20 14:44:21'),
 (2, 'Foster-to-Adopt Programme', 'A programme for approved foster caregivers who may become eligible to adopt a child in their care.', 'Applicants must be approved foster caregivers and complete the required adoption assessment.', 1, '2026-09-20 14:44:21'),
-(9, 'Meet ups', 'Trust building and communication', 'First time adoption', 1, '2026-09-23 21:54:38'),
-(24, 'aa', 'aa', 'aa', 1, '2026-09-25 15:07:17'),
-(25, 'test', 'test', 'aaa', 1, '2026-09-25 15:50:18'),
-(26, 'sun', 'sun', 'aaaaa', 1, '2026-09-28 13:32:54');
+(9, 'Meet ups', 'Trust building and communication', 'First time adoption', 1, '2026-09-23 21:54:38');
 
 -- --------------------------------------------------------
 
@@ -99,12 +96,7 @@ CREATE TABLE `applicants` (
 --
 
 INSERT INTO `applicants` (`applicant_id`, `user_id`, `s_marital_status`, `s_occupation`, `s_address`, `s_adoption_preferences`) VALUES
-(1, 11, NULL, NULL, NULL, NULL),
-(2, 12, NULL, NULL, NULL, NULL),
-(3, 13, NULL, NULL, NULL, NULL),
-(4, 14, NULL, NULL, NULL, NULL),
-(5, 15, NULL, NULL, NULL, NULL),
-(6, 16, NULL, NULL, NULL, NULL);
+(8, 19, 'Single', 'Software engineer', 'Mokopane', '');
 
 -- --------------------------------------------------------
 
@@ -154,6 +146,14 @@ CREATE TABLE `children` (
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `children`
+--
+
+INSERT INTO `children` (`child_id`, `c_reference_code`, `c_Fullname`, `c_date_of_birth`, `c_gender`, `status`, `special_needs`, `created_at`) VALUES
+(1, 'A33', 'Thabiso', '2025-12-16', 'Male', 'in_care', 'yes', '2026-10-06 21:07:26'),
+(2, 'B33', 'love', '2026-10-01', 'Male', 'in_care', 'no', '2026-10-06 21:45:25');
+
 -- --------------------------------------------------------
 
 --
@@ -170,6 +170,13 @@ CREATE TABLE `enquiries` (
   `status` enum('new','in_progress','resolved') NOT NULL DEFAULT 'new',
   `created_at` datetime NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `enquiries`
+--
+
+INSERT INTO `enquiries` (`enquiry_id`, `full_name`, `email`, `phone`, `subject`, `message`, `status`, `created_at`) VALUES
+(1, 'Love', 'test@gmail.com', '0766547791', 'test 1', 'test 1', 'new', '2026-10-07 18:52:51');
 
 -- --------------------------------------------------------
 
@@ -281,6 +288,14 @@ CREATE TABLE `social_workers` (
   `s_specialisation` varchar(255) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `social_workers`
+--
+
+INSERT INTO `social_workers` (`social_worker_id`, `user_id`, `s_registration_number`, `s_organisation_name`, `s_office_location`, `s_specialisation`) VALUES
+(1, 3, 'SACSSP-2021-00456', 'Hope Family Services', 'Johannesburg, Gauteng', 'Child Adoption and Foster Care'),
+(2, 4, 'SACSSP-2022-00781', 'Family Support Network', 'Pretoria, Gauteng', 'Family Counselling and Child Welfare');
+
 -- --------------------------------------------------------
 
 --
@@ -311,7 +326,10 @@ INSERT INTO `users` (`user_id`, `u_full_name`, `u_BirthID`, `u_email`, `u_passwo
 (13, 'test', '0000000000000', 'test@gmail.com', '$2a$12$UIWG5FxIXLyhwO5eZFSaSO5NP4/ALMeMS1KfxES.KZhu.orggCwW.', NULL, 'adoptive_parent', 1, '2026-09-23 18:11:21'),
 (14, 'thabiso', '0006045560080', 'admin@gmail.com', '$2a$12$7EVRtIbgkbUyKzOY90KDJeiMWqgL/OZoJl/Qy4PD86m53vSXHCgbi', NULL, 'admin', 1, '2026-09-23 21:29:43'),
 (15, 'vincent', '123456789101', 'vin@gmail.com', '$2a$12$E8SwS4zmvOkbmBfjGwwd/eZF07cPzgTk/zKhWWqvQkq6T69FgcQSW', NULL, 'adoptive_parent', 1, '2026-09-24 18:34:44'),
-(16, 'vin', '8888888888888', 'vincet@gmail.com', '$2a$12$I/laZ6qpc5icwPJovjHDJeHhHELRgYOkvv7o7Ixo9/v6KmSKHXp3m', NULL, 'adoptive_parent', 1, '2026-09-29 16:29:14');
+(16, 'vin', '8888888888888', 'vincet@gmail.com', '$2a$12$I/laZ6qpc5icwPJovjHDJeHhHELRgYOkvv7o7Ixo9/v6KmSKHXp3m', NULL, 'adoptive_parent', 1, '2026-09-29 16:29:14'),
+(17, 'Thandiwe Mokoena', '9107245800086', 'thandiwe.mokoena@example.com', '$2b$10$ExampleHash020', '0756789012', 'social_worker', 1, '2026-10-05 16:10:51'),
+(18, 'David Mthembu', '8909185200089', 'david.mthembu@example.com', '$2b$10$ExampleHash021', '0767890123', 'social_worker', 1, '2026-10-05 16:10:51'),
+(19, 'Homes', '1234567899999', 'homes@gmail.com', '$2a$12$mzZqdt9XJeBMY6A/oA1ni.40IRNWYewxC6aFZAn5H4cU/6mRPzFGi', NULL, 'admin', 1, '2026-10-07 08:26:36');
 
 --
 -- Indexes for dumped tables
@@ -443,7 +461,7 @@ ALTER TABLE `adoption_programs`
 -- AUTO_INCREMENT for table `applicants`
 --
 ALTER TABLE `applicants`
-  MODIFY `applicant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `applicant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `application_documents`
@@ -461,13 +479,13 @@ ALTER TABLE `appointments`
 -- AUTO_INCREMENT for table `children`
 --
 ALTER TABLE `children`
-  MODIFY `child_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `child_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `enquiries`
 --
 ALTER TABLE `enquiries`
-  MODIFY `enquiry_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `enquiry_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `fosterhomes`
@@ -485,7 +503,7 @@ ALTER TABLE `gallery`
 -- AUTO_INCREMENT for table `ourstories`
 --
 ALTER TABLE `ourstories`
-  MODIFY `Story_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `Story_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `services`
@@ -497,13 +515,13 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `social_workers`
 --
 ALTER TABLE `social_workers`
-  MODIFY `social_worker_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `social_worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
 
 --
 -- Constraints for dumped tables
