@@ -4,18 +4,55 @@ import styles from  '../css/Testimonials.module.css'
 import Header from '../SemanticElements/Header'   //'./SemanticElements/Header'
 import NavigationBar from '../SemanticElements/NavBar';
 import Footer from '../SemanticElements/Footer' //'./SemanticElements/Footer'
-import {HandleGetList} from '../Helpers/HandleRequests'  //'./Helpers/HandleRequests'
+import {HandleGetList,addEntryRequest} from '../Helpers/HandleRequests'  //'./Helpers/HandleRequests'
 
 export default function DisplayHomes(){
 
   //Store and set the variavles 
    const [homes, setHomes] = useState([]) //All stored testimonial /Stories
+   const [Single_homes, setSingle_Homes] = useState({
+            user_id : '',
+            fh_name : '',
+            fh_address : '',
+            fh_contact_number : '',
+            fh_email: '',
+            fh_capacity: '',
+            fh_available_spaces: '',
+            fh_status:''
 
+   })
      //------------Retrieve available Homes---------------------
+useEffect(() => {
+
+    const addHomes = async () => {
+        try {
+        const HomeList = await addEntryRequest(Single_homes,'/getFosterHomes');
+        setSingle_Homes({
+            user_id : '',
+            fh_name : '',
+            fh_address : '',
+            fh_contact_number : '',
+            fh_email: '',
+            fh_capacity: '',
+            fh_available_spaces: '',
+            fh_status:''
+       })
+        } catch (fetchError) {
+            setError(fetchError.message);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    addHomes();
+
+}, []);
+
 useEffect(() => {
 
     const getFosterHomes = async () => {
         try {
+          
             const HomeList = await HandleGetList('/getFosterHomes');
             setHomes(HomeList);
         } catch (fetchError) {

@@ -6,6 +6,7 @@ import NavigationBar from '../SemanticElements/NavBar'
 import Footer from '../SemanticElements/Footer'
 import { delete_Users, HandleGetList, addEntryRequest } from '../Helpers/HandleRequests'
 import { useNavigate } from "react-router-dom";
+import '../Admin Access/display.css'
 
 export default function ManageUsers() {
   const [AllChildren, setAllChildren] = useState([])
@@ -102,20 +103,8 @@ export default function ManageUsers() {
              <button type="submit" className={styles.submitButton}>Add Child.</button>
            </form>
 
-           <button 
-           
-             style={{
-    backgroundColor: '#4175af',
-    color: 'white',
-    border: 'none',
-    padding: '12px 24px',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    marginTop: '10px',
-    cursor: 'pointer'
-  }}
-           
+           <button className="pressBtn"
+          
            onClick={() => navigate("/AllUsers")}>
             Back.
            </button>
