@@ -109,45 +109,82 @@ export default function handleGetRequests(app, pool, requireAuth, publicUser) {
     }
   });
  
-  //------------Retrieve the applicant id using user id----------
-  app.get('/api/getApplicant', requireAuth, async (req, res) => {
+
+
+//--------------------Get and update applications----------
+
+app.get('/api/getAdoptionApplications', async (req, res) => {
     try {
-      const [rows] = await pool.query(
-        'SELECT applicant_id FROM applicants WHERE user_id = ?;',
-        [req.user.user_id]
-      );
+  const sql = "SELECT aa.application_id, sw_user.u_full_name AS social_worker_name, " +
+    "p.ad_name AS program_name, aa.application_date, aa.status, " +
+    "aa.notes FROM adoption_applications AS aa LEFT JOIN social_workers AS sw " +
+    "ON aa.social_worker_id = sw.social_worker_id LEFT JOIN users AS sw_user " +
+    "ON sw.user_id = sw_user.user_id LEFT JOIN programs AS p " +
+    "ON aa.program_id = p.ad_id ORDER BY aa.application_date DESC";
 
-      if (rows.length === 0) {
-        return res.status(404).json({
-          message: 'Applicant not found.'
+        const [applications] = await pool.query(sql);
+
+        res.status(200).json({
+            success: true,
+            data: applications
         });
-      }
 
-      res.status(200).json(rows[0]);
     } catch (error) {
-      console.error('Error retrieving applicant:', error);
+        console.error('Error fetching adoption applications:', error);
 
-      res.status(500).json({
-        message: 'Failed to retrieve applicant.',
-        error: error.message
-      });
+        res.status(500).json({
+            success: false,
+            message: 'Failed to retrieve adoption applications.'
+        });
     }
-  });
+});
+
+
 
   //------------Get Galery----------
   app.get('/api/getPictures', async function (_req, res) {
     try {
+      const [columns] = await pool.query('SHOW COLUMNS FROM gallery');
+      const columnNames = new Set(columns.map((column) => column.Field));
+      const imageColumn = columnNames.has('image_url')
+        ? 'image_url'
+        : columnNames.has('image_data')
+          ? 'image_data'
+          : null;
+
+      if (!imageColumn) {
+        throw new Error('Gallery table does not contain an image column.');
+      }
+
       const [rows] = await pool.query(
-        `SELECT id AS gallery_id, alt_text
+        `SELECT id AS gallery_id, ${imageColumn} AS image_value, image_type, alt_text
          FROM gallery
          ORDER BY id DESC`
       );
 
-      return res.json(rows);
+      const pictures = rows.map((picture) => {
+        const { image_value, ...pictureData } = picture;
+
+        if (imageColumn === 'image_url') {
+          return { ...pictureData, image_url: String(image_value) };
+        }
+
+        const imageData = Buffer.isBuffer(image_value)
+          ? image_value
+          : Buffer.from(image_value);
+        const storedPath = imageData.toString('utf8');
+        const imageUrl = /^\/uploads\/|^https?:\/\//i.test(storedPath)
+          ? storedPath
+          : `data:${picture.image_type};base64,${imageData.toString('base64')}`;
+
+        return { ...pictureData, image_url: imageUrl };
+      });
+
+      return res.json({ data: pictures });
     } catch (error) {
       console.error('Failed to retrieve pictures:', error);
       return res.status(500).json({
-        error: 'Failed to retrieve pictures'
+        message: 'Failed to retrieve pictures'
       });
     }
   });

@@ -3,12 +3,13 @@ import styles from './css/Admin.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
-import {API_URL,HandleGetList,addEntryRequest} from './Helpers/HandleRequests'
+import {HandleGetList,addEntryRequest,handleDeleteRequest} from './Helpers/HandleRequests'
 import { useNavigate } from 'react-router-dom'
 
 export default function Admin(){
 
-      const handleRefresh = () => {
+  const navigate = useNavigate()
+  const handleRefresh = () => {
     navigate(0); // Navigates to the current path, simulating a refresh
   };
 
@@ -117,43 +118,38 @@ const Add_Gallery_Image = async (event) => {
     setFile(selectedFile)
   }
 
-  const delete_Program = async (ProgramID) => {
+  const deleteProgram = async (programId) => {
     try {
-      const response = await fetch(API_URL + '/deleteProgram/' + ProgramID, {
-        method: 'DELETE',
-      })
-
-      const data = await response.json().catch(() => ({}))
-
-      if (response.ok) {
-        setAllPrograms((currentPrograms) => currentPrograms.filter((item) => item.program_id !== ProgramID))
+      const deletedProgram = await handleDeleteRequest('/deleteProgram', 'program', programId)
+      if (deletedProgram) {
+        setAllPrograms((currentPrograms) => currentPrograms.filter((item) => item.program_id !== programId))
         setMessage('Program deleted successfully.')
-      } else {
-        console.error(data.message || 'Failed to delete program.')
-        setMessage(data.message || 'Failed to delete program.')
       }
     } catch (error) {
       console.error('Error deleting program:', error)
-      setMessage('Error deleting program.')
+      setMessage(error.message || 'Error deleting program.')
     }
   }
 
-  function remove(id, type, label) {
-    if (!window.confirm('Delete this '+ label)) return
-    if (type === 'program')
-       setAllPrograms((items) => items.filter((item) =>
-       item.program_id !== id))
+  const deleteStory = async (storyId) => {
+    try {
+      const deletedStory = await handleDeleteRequest('/DeleteStory', 'story', storyId)
+      if (deletedStory) {
+        setAllStories((currentStories) => currentStories.filter((story) => story.Story_id !== storyId))
+        setMessage('Story deleted successfully.')
+      }
+    } catch (error) {
+      console.error('Error deleting story:', error)
+      setMessage(error.message || 'Error deleting story.')
+    }
+  }
 
-    if (type === 'story') setStories((items) => 
-      items.filter((item) => 
-        item.Story_id !== id))
-
-    if (type === 'picture')
-       setGallery((items) =>
-       items.filter((item) => 
-        (item.gallery_id || item.image_id) !== id))
-
-    setMessage(`${label[0].toUpperCase()}${label.slice(1)} deleted locally.`)
+  const removePicture = (pictureId) => {
+    if (!window.confirm('Delete this picture from the list?')) return
+    setGallery((currentGallery) =>
+      currentGallery.filter((image) => (image.gallery_id || image.image_id) !== pictureId)
+    )
+    setMessage('Picture removed from the list.')
   }
 
   return (
@@ -180,6 +176,7 @@ const Add_Gallery_Image = async (event) => {
     <input
         type="file"
         accept="image/*"
+        required
         onChange={handleFileUpload}
     />
 
@@ -208,15 +205,66 @@ const Add_Gallery_Image = async (event) => {
           <span><strong>{item.ad_name}</strong>
           <small>{item.ad_description}</small>
           </span>
-          <button onClick={() => {delete_Program(item.program_id)
-          remove(item.program_id, 'program', 'program')}}>Delete
+          <button type="button" onClick={() => deleteProgram(item.program_id)}>Delete
           </button>
           </article>)}</section>
 
       <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.Story_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
-        </span><button onClick={() => remove(story.Story_id, 'story', 'story')}>Delete</button></article>)}</section>
-      <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button onClick={() => remove(image.gallery_id || image.image_id, 'picture', 'picture')}>Delete</button></article>)}</section>
+        </span><button type="button" onClick={() => deleteStory(story.Story_id)}>Delete</button></article>)}</section>
+      <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button type="button" onClick={() => removePicture(image.gallery_id || image.image_id)}>Delete</button></article>)}</section>
+      
+    <button 
+      
+    style={{
+    backgroundColor: '#4175af',
+    color: 'white',
+    border: 'none',
+    padding: '22px 24px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    marginTop: '10px',
+    marginRight: '10px',
+    cursor: 'pointer'
+  }}
+      
+      onClick={() => navigate("/SeeAplication")} >View Adoption applications
+      </button>
+      <button 
+      
+          style={{
+    backgroundColor: '#4175af',
+    color: 'white',
+    border: 'none',
+    padding: '22px 24px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    marginTop: '10px',
+    marginRight: '10px',
+    cursor: 'pointer'
+  }}
+      
+      onClick={() => navigate("/SocialWorkers")}>View Queries.
+      </button>
+     <button 
+      
+    style={{
+    backgroundColor: '#4175af',
+    color: 'white',
+    border: 'none',
+    padding: '22px 24px',
+    borderRadius: '8px',
+    fontSize: '16px',
+    fontWeight: '600',
+    marginTop: '10px',
+    marginRight: '10px',
+    cursor: 'pointer'
+  }}
+      
+      onClick={() => navigate("/ChildManage")} >View Appointments
+      </button>
       </main>
      <Footer />
     </>

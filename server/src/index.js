@@ -6,6 +6,7 @@ import jwt from 'jsonwebtoken';
 import mysql from 'mysql2/promise';
 import fs from 'node:fs/promises';
 import handleGetRequests from './HandleGetRequest.js';
+import HandleDeleteRequests from './HandleDeleteRequests.js'
 import upload, { uploadDir } from './FileUploading.js';
 import registerUserAuthorization, { publicUser } from './userAuthorization.js';
 
@@ -56,8 +57,10 @@ const requireAuth = async function (req, res, next) {
   }
 };
 
+//Organise the files based on their fuctionil
 registerUserAuthorization(app, pool, jwtSecret);
 handleGetRequests(app, pool, requireAuth, publicUser);
+HandleDeleteRequests(app, pool);
 
 app.put('/api/auth/me', requireAuth, async function (req, res) {
   const name = typeof req.body.name === 'string' ? req.body.name.trim() : '';
@@ -189,36 +192,6 @@ app.post('/api/AddStory', async (req, res) => {
   }
 })
 
-//---------delete programs----------
-app.delete('/api/deleteProgram/:id', async (req, res) => {
-  try {
-    // Get the program ID from the URL
-    const ProgramID = req.params.id;
-    const [result] = await db.query(
-      'DELETE FROM adoption_programs WHERE program_id = ?',
-      [ProgramID]
-    );
-
-    // Check if the program exists
-    if (result.affectedRows === 0) {
-      return res.status(404).json({
-        message: 'Program not found.'
-      });
-    }
-
-    // Send success response
-    res.status(200).json({
-      message: 'Program deleted successfully.'
-    });
-
-  } catch (error) {
-    res.status(500).json({
-      message: 'Internal server error.'
-    });
-  }
-});
-
-
 //--------------Add a Workers---
 app.post('/api/AddWorker', async (req, res) => {
   try {
@@ -277,13 +250,27 @@ app.post('/api/AddPictures', upload.single('image'), async (req, res) => {
     if (req.file) await fs.unlink(req.file.path).catch(() => {});
     return res.status(400).json({ message: 'Image and description are required.' });
   }
+  if (altText.length > 150) {
+    await fs.unlink(req.file.path).catch(() => {});
+    return res.status(400).json({ message: 'Image description must be 150 characters or fewer.' });
+  }
 
-  const imageUrl = '/uploads/'+ req.file.filename;
+  const imageUrl = '/uploads/' + req.file.filename;
 
   try {
+    const [columns] = await pool.query('SHOW COLUMNS FROM gallery');
+    const columnNames = new Set(columns.map((column) => column.Field));
+    const imageColumn = columnNames.has('image_url') ? 'image_url'
+      : columnNames.has('image_data') ? 'image_data'
+        : null;
+
+    if (!imageColumn) {
+      throw new Error('Gallery table does not contain a supported image column.');
+    }
+
     const [result] = await pool.execute(
-      'INSERT INTO gallery (image_type, image_url, alt_text) VALUES (?, ?, ?)',
-      [req.file.mimetype, imageUrl, altText]
+      `INSERT INTO gallery (image_type, ${imageColumn}, alt_text) VALUES (?, ?, ?)`,
+      [req.file.mimetype, imageColumn === 'image_url' ? imageUrl : Buffer.from(imageUrl), altText]
     );
 
     return res.status(201).json({
@@ -492,14 +479,24 @@ app.post('/api/makeAplication', requireAuth, async (req, res) => {
     const {
        social_worker_id,
        program_id,
+       foster_home_id,
        application_date,
        notes
     } = req.body;
 
+    const socialWorkerId = Number(social_worker_id);
+    const programId = Number(program_id);
+    const fosterHomeId = Number(foster_home_id);
+
     // Check required fields
-    if (!social_worker_id || !program_id || !application_date) {
+    if (
+      !Number.isInteger(socialWorkerId) || socialWorkerId <= 0 ||
+      !Number.isInteger(programId) || programId <= 0 ||
+      !Number.isInteger(fosterHomeId) || fosterHomeId <= 0 ||
+      typeof application_date !== 'string' || !application_date.trim()
+    ) {
       return res.status(400).json({
-        message: 'Missing information.'
+        message: 'Select a social worker, program, foster home, and application date.'
       });
     }
 
@@ -516,12 +513,13 @@ app.post('/api/makeAplication', requireAuth, async (req, res) => {
 
     // Insert adoption_applications into MySQL
     const [result] = await pool.query(
-      'INSERT INTO adoption_applications (applicant_id, social_worker_id, program_id, application_date, status, notes) VALUES (?, ?, ?, ?, ?, ?)',
+      'INSERT INTO adoption_applications (applicant_id, social_worker_id, program_id, foster_home_id, application_date, status, notes) VALUES (?, ?, ?, ?, ?, ?, ?)',
       [
        applicants[0].applicant_id,
-       social_worker_id,
-       program_id,
-       application_date,
+       socialWorkerId,
+       programId,
+       fosterHomeId,
+       application_date.trim(),
        'submitted',
        notes || null
       ]

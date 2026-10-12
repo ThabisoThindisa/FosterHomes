@@ -11,7 +11,7 @@ const upload = multer({
       done(null, `${crypto.randomUUID()}${path.extname(file.originalname)}`);
     }
   }),
-  limits: { fileSize: 5 * 1024 * 1024 },
+  limits: { fileSize: 10 * 1024 * 1024 },
   fileFilter: (_req, file, done) => {
     if (file.mimetype.startsWith('image/')) done(null, true);
     else done(new Error('Please upload an image.'));

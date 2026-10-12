@@ -2,7 +2,8 @@ import { useEffect, useState } from 'react';
 import NavigationBar from "../SemanticElements/NavBar";
 import Header from "../SemanticElements/Header";
 import Footer from '../SemanticElements/Footer'
-import { API_URL } from '../Helpers/HandleRequests'
+import { API_URL, getGallery } from '../Helpers/HandleRequests'
+import styles from '../css/Gallery.module.css'
 
 
 export default function Gallery() {
@@ -10,26 +11,25 @@ export default function Gallery() {
   const [error, setError] = useState('');
 
   useEffect(() => {
-    async function getPictures() {
+    async function loadPictures() {
       try {
-        const response = await fetch(API_URL + '/getPictures');
-
-        if (!response.ok) {
-          throw new Error('Failed to load pictures');
-        }
-
-        const data = await response.json();
-
-        setPictures(data);
-
-      } catch (error) {
-        console.error(error);
-        setError(error.message);
+        setPictures(await getGallery());
+      } catch (fetchError) {
+        console.error('Error loading gallery:', fetchError);
+        setError('Unable to load gallery images.');
       }
     }
 
-    getPictures();
+    loadPictures();
   }, []);
+
+  const getImageSource = (imageUrl) => {
+    if (/^(https?:|data:)/i.test(imageUrl)) return imageUrl;
+    if (/^\/uploads\//i.test(imageUrl) && /^https?:\/\//i.test(API_URL)) {
+      return new URL(imageUrl, API_URL).toString();
+    }
+    return imageUrl;
+  };
 
   return (
 
@@ -41,25 +41,22 @@ export default function Gallery() {
               title="Gallery"
               description="Explore moments of care, connection, and belonging."
             />
-    <div className="galleryContainer">
+    <div className={styles.container}>
 
-      {error && <p>{error}</p>}
+      {error && <p role="alert">{error}</p>}
 
-      <div className="galleryGrid">
-
+      <div className={styles.grid}>
         {pictures.map((picture) => (
-          <div className="galleryCard" key={picture.gallery_id}>
-
+          <article className={styles.card} key={picture.gallery_id}>
             <img
-              src={API_URL + '/getPictures/' + picture.gallery_id}
+              src={getImageSource(picture.image_url)}
               alt={picture.alt_text}
+              className={styles.image}
             />
-
-            <p>{picture.alt_text}</p>
-
-          </div>
+           
+          </article>
         ))}
-
+        {!error && pictures.length === 0 && <p>No gallery images are available yet.</p>}
       </div>
 
     </div>

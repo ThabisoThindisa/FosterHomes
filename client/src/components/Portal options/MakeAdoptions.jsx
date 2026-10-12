@@ -12,6 +12,7 @@ import {HandleGetList,addEntryRequest} from '../Helpers/HandleRequests'
 
 export default function ManageAdoptions(){
 const [showWorkers, setShowWorkers] = useState([]); 
+const [showHomes, setHomes] = useState([]); 
 const [applicantId, setApplicantId] = useState(null)
 const [message, setMessage] = useState('');
 const [Display_allPrograms, setAllPrograms] = useState([])
@@ -20,31 +21,13 @@ const [Display_allPrograms, setAllPrograms] = useState([])
 const [Application, setApplication] = useState({
   social_worker_id: '', //d
   program_id : '', //d
+  foster_home_id: '',
   application_date: '', //d
   status: '',
   notes: '' //d
 
 });
 
-const Listdoption_types = [
-  {
-    id: 1,
-    name: "Initial Adoption Consultation",
- },
-  {
-    id: 2,
-    name: "Adoption Application Review",
-},
-  {
-    id: 3,
-    name: "Social Worker Assessment",
-   
-  },
-  {
-    id: 4,
-    name: "Home Assessment",
-}
-];
 //-------Retrieve available users registred.---------------
 useEffect(() => {
   const getAllSocialWorkers = async () => {
@@ -85,6 +68,20 @@ useEffect(() => {
       getApplicant();
   }, []);
 
+       //------------------Retrieve Homes ---------------
+  useEffect(() => {
+      const getHomes = async () => {
+          try {
+              const Homecare = await HandleGetList('/getFosterHomes');
+              setHomes(Homecare);
+          } catch (fetchError) {
+              setMessage(fetchError.message);
+          }
+      };
+      getHomes();
+  }, []);
+
+
 
  async function MakeApplication(event) {
      event.preventDefault()
@@ -96,11 +93,18 @@ useEffect(() => {
      }
 
      try {
-       await addEntryRequest(Application,'/makeAplication')
+       const application = {
+         ...Application,
+         social_worker_id: Number(Application.social_worker_id),
+         program_id: Number(Application.program_id),
+         foster_home_id: Number(Application.foster_home_id)
+       }
+       await addEntryRequest(application,'/makeAplication')
        
        setApplication({
        social_worker_id: '',
        program_id: '',
+       foster_home_id: '',
        application_date: '',
        status: '',
        notes: ''
@@ -138,12 +142,13 @@ useEffect(() => {
     you with your adoption journey and appointment.
     </p>
 <select
-  value={Application.social_worker_id}
+required
+value={Application.social_worker_id}
   onChange={(e) => setApplication((current) => ({ ...current, social_worker_id: e.target.value }))}
   style={{width: '200px',padding: '19px',borderRadius: '11px',border: '1px solid #ccc', cursor: 'pointer'}}
 >
     <option value="">
-    Select Social Worker
+    Select Home
   </option>
   {showWorkers.map((worker) => (
     <option key={worker.social_worker_id || worker.s_registration_number} value={worker.social_worker_id || worker.s_registration_number}>
@@ -160,7 +165,8 @@ useEffect(() => {
        adoption and foster care journey.
     </p>
 <select
-  value={Application.program_id}
+required
+value={Application.program_id}
   onChange={(e) => setApplication((current) => ({ ...current, program_id: e.target.value }))}
   style={{width: '200px',padding: '19px',borderRadius: '11px',border: '1px solid #ccc', cursor: 'pointer'}}
 >
@@ -175,6 +181,27 @@ useEffect(() => {
 </select>
   </div>
 
+  <div className={styles.fosterHomeCard}>
+    <h2>Foster home</h2>
+    <p>
+      Choose the foster home for your application.
+    </p>
+<select
+  required
+  value={Application.foster_home_id}
+  onChange={(e) => setApplication((current) => ({ ...current, foster_home_id: e.target.value }))}
+  style={{width: '200px',padding: '19px',borderRadius: '11px',border: '1px solid #ccc', cursor: 'pointer'}}
+>
+    <option value="">
+    Select Foster Home.
+  </option>
+  {showHomes.map((home) => (
+    <option key={home.foster_home_id} value={home.foster_home_id}>
+      {home.fh_name}
+    </option>
+  ))}
+</select>
+  </div>
 
   <div className={styles.fosterHomeCard}>
     <h2>Date</h2>
@@ -185,6 +212,7 @@ useEffect(() => {
           <div>
                <label htmlFor="ChildDOB"></label>
                <input
+                required
                 value={Application.application_date}
               onChange={(e) => setApplication((current) => ({ ...current, application_date: e.target.value }))}
                  type="date"
@@ -211,7 +239,6 @@ useEffect(() => {
         />
   </div>
   <button type="submit" className="pressBtn">Enter</button>
-  {message && <p role="status">{message}</p>}
 </form>   
  {/*------------------end appointments-----------------  */}           
              </section>

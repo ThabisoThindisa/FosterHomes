@@ -7,10 +7,8 @@ import SiteLogo from './images/logo.png'
 
 //import the pages
 import Login from './components/Login';
-import NavBar from './components/SemanticElements/NavBar';
 import Register from './components/Register';
 import Programs from './components/Portal options/Programs'
-import Header from './components/SemanticElements/Header'
 import Gallery from './components/Portal options/Gallery'
 import StoriesPage from './components/Portal options/StoriesPage'
 import HomePage from './components/HomePage'
@@ -25,7 +23,7 @@ import AddWorkerPage from './components/Admin Access/AddSocialWorker'
 import './styles/animations.css';
 //Import admin pages
 import FosterHomesP from './components/Admin Access/DisplayHomes';
-import AdoptionPage from './components/Admin Access/ManageAdoptions';
+import AdoptionPage from  './components/Portal options/MakeAdoptions'//'./components/Admin Access/ManageAdoptions';
 import UserPage from './components/Admin Access/ManageUsers'
 import { API_URL } from './components/Helpers/HandleRequests'
 

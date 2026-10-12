@@ -3,12 +3,14 @@ import styles from './css/Admin.module.css'
 import Header from './SemanticElements/Header'
 import NavigationBar from './SemanticElements/NavBar'
 import Footer from './SemanticElements/Footer'
-import {API_URL,HandleGetList,addEntryRequest} from './Helpers/HandleRequests'
+import {HandleGetList,addEntryRequest,handleDeleteRequest} from './Helpers/HandleRequests'
 import { useNavigate } from 'react-router-dom'
 
 export default function Admin(){
 
-      const handleRefresh = () => {
+  const navigate = useNavigate();
+
+  const handleRefresh = () => {
     navigate(0); // Navigates to the current path, simulating a refresh
   };
 
@@ -17,7 +19,6 @@ export default function Admin(){
     { image_url: '', alt_text: '' })
     
   const [message, setMessage] = useState('')
-  const [error, setError] = useState('')
 
   //Static values to display when
 
@@ -53,7 +54,7 @@ export default function Admin(){
               const programsList = await HandleGetList('/getPrograms');
               setAllPrograms(programsList);
           } catch (fetchError) {
-              setError(fetchError.message);
+              console.error(fetchError.message);
           }
       };
       fetchPrograms();
@@ -68,13 +69,53 @@ useEffect(() => {
             const storiesList = await HandleGetList('/getStories');
             setAllStories(storiesList);
         } catch (fetchError) {
-            setError(fetchError.message);
+            console.error(fetchError.message);
         }
     };
 
     fetchStories();
 
 }, []);
+
+//---------------------------Delete a program---------------;
+
+const handleDeleteProgram = async (id) => {
+    if (!id && id !== 0) return;
+
+    try {
+        const deletedProgram = await handleDeleteRequest('/deleteProgram', 'program', id);
+
+        if (deletedProgram) {
+            setAllPrograms((prevPrograms) =>
+                prevPrograms.filter((program) => program.program_id !== id)
+            );
+            setMessage('Program deleted successfully.');
+        }
+    } catch (error) {
+        console.error('Delete program error:', error);
+        setMessage(error.message || 'Failed to delete program.');
+    }
+};
+
+//---------------------------Delete a story---------------;
+
+const handleDeleteStory = async (id) => {
+    if (!id && id !== 0) return;
+
+    try {
+        const selectedStory = await handleDeleteRequest('/DeleteStory', 'story', id);
+
+        if (selectedStory) {
+            setAllStories((prevStories) =>
+                prevStories.filter((story) => story.Story_id !== id)
+            );
+            setMessage('Story deleted successfully.');
+        }
+    } catch (error) {
+        console.error('Delete story error:', error);
+        setMessage(error.message || 'Failed to delete story.');
+    }
+};
 
 //------------------Add single image-------
 const Add_Gallery_Image = async (event) => {
@@ -117,26 +158,6 @@ const Add_Gallery_Image = async (event) => {
     setFile(selectedFile)
   }
 
-  const delete_Program = async (ProgramID) => {
-    try {
-      const response = await fetch(API_URL + '/deleteProgram/' + ProgramID, {
-        method: 'DELETE',
-      })
-
-      const data = await response.json().catch(() => ({}))
-
-      if (response.ok) {
-        setAllPrograms((currentPrograms) => currentPrograms.filter((item) => item.program_id !== ProgramID))
-        setMessage('Program deleted successfully.')
-      } else {
-        console.error(data.message || 'Failed to delete program.')
-        setMessage(data.message || 'Failed to delete program.')
-      }
-    } catch (error) {
-      console.error('Error deleting program:', error)
-      setMessage('Error deleting program.')
-    }
-  }
 
   function remove(id, type, label) {
     if (!window.confirm('Delete this '+ label)) return
@@ -144,7 +165,7 @@ const Add_Gallery_Image = async (event) => {
        setAllPrograms((items) => items.filter((item) =>
        item.program_id !== id))
 
-    if (type === 'story') setStories((items) => 
+    if (type === 'story') setAllStories((items) => 
       items.filter((item) => 
         item.Story_id !== id))
 
@@ -180,6 +201,7 @@ const Add_Gallery_Image = async (event) => {
     <input
         type="file"
         accept="image/*"
+        required
         onChange={handleFileUpload}
     />
 
@@ -208,14 +230,23 @@ const Add_Gallery_Image = async (event) => {
           <span><strong>{item.ad_name}</strong>
           <small>{item.ad_description}</small>
           </span>
-          <button onClick={() => {delete_Program(item.program_id)
-          remove(item.program_id, 'program', 'program')}}>Delete
-          </button>
+         <button
+            type="button"
+            onClick={() => handleDeleteProgram(item.program_id)}
+        > Delete
+        </button>
           </article>)}</section>
 
       <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.Story_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
-        </span><button onClick={() => remove(story.Story_id, 'story', 'story')}>Delete</button></article>)}</section>
+        </span>
+            <button
+            type="button"
+            onClick={() => handleDeleteStory(story.Story_id)}
+        > Delete
+        </button>
+
+        </article>)}</section>
       <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button onClick={() => remove(image.gallery_id || image.image_id, 'picture', 'picture')}>Delete</button></article>)}</section>
       </main>
      <Footer />

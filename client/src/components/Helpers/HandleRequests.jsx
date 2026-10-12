@@ -22,13 +22,14 @@ export const HandleGetList = async (urlName) => {
 
 //-----------------Add entry to the database ----------------
 export const addEntryRequest = async (myEntry,urlName) => {
+    const isFormData = myEntry instanceof FormData;
     const response = await fetch(API_URL + urlName, {
         method: 'POST',
         credentials: 'include',
-        headers: {
+        headers: isFormData ? undefined : {
             'Content-Type': 'application/json'
         },
-        body: JSON.stringify(myEntry)
+        body: isFormData ? myEntry : JSON.stringify(myEntry)
     });
     const data = await response.json().catch(() => ({}));
     if (!response.ok) {
@@ -80,4 +81,23 @@ export const getGallery = async () => {
     } catch (error) {
         throw error;
     }
+};
+
+export const handleDeleteRequest = async (urlname, url_Message, id) => {
+    // Confirm before deleting
+    const confirmDelete = window.confirm(
+        'Are you sure you want to delete this '+url_Message+ '?');
+
+    if (!confirmDelete) return null;
+
+    const response = await fetch(API_URL + urlname + '/' + id, {
+        method: 'DELETE',
+        credentials: 'include'
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.message || 'Failed to delete ' + url_Message);
+    }
+
+    return data;
 };

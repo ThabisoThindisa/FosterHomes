@@ -150,7 +150,8 @@ export default function ManageUsers() {
     cursor: 'pointer'
   }}
       
-      onClick={() => navigate("/SocialWorkers")}>Add Social Worker</button>
+      onClick={() => navigate("/SocialWorkers")}>Add Social Worker
+      </button>
  
        </main>
        <Footer />
