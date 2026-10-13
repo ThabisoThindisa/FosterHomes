@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 13, 2026 at 10:39 PM
+-- Generation Time: Oct 13, 2026 at 11:14 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -310,7 +310,11 @@ CREATE TABLE `social_workers` (
 
 INSERT INTO `social_workers` (`social_worker_id`, `user_id`, `s_registration_number`, `s_organisation_name`, `s_office_location`, `s_specialisation`) VALUES
 (1, 3, 'SACSSP-2021-00456', 'Hope Family Services', 'Johannesburg, Gauteng', 'Child Adoption and Foster Care'),
-(2, 4, 'SACSSP-2022-00781', 'Family Support Network', 'Pretoria, Gauteng', 'Family Counselling and Child Welfare');
+(2, 4, 'SACSSP-2022-00781', 'Family Support Network', 'Pretoria, Gauteng', 'Family Counselling and Child Welfare'),
+(9, 20, 'SACSSP-2026-00120', 'Hope Family Services', 'Mokopane, Limpopo', 'Child Adoption and Foster Care'),
+(10, 17, 'SACSSP-2026-00117', 'Thandiwe Family Support Centre', 'Polokwane, Limpopo', 'Family Counselling and Child Welfare'),
+(11, 18, 'SACSSP-2026-00118', 'Community Care Network', 'Pretoria, Gauteng', 'Child Protection and Foster Care'),
+(12, 21, 'SACSSP-2026-00121', 'New Beginnings Social Services', 'Johannesburg, Gauteng', 'Adoption Assessments and Family Support');
 
 -- --------------------------------------------------------
 
@@ -346,7 +350,7 @@ INSERT INTO `users` (`user_id`, `u_full_name`, `u_BirthID`, `u_email`, `u_passwo
 (17, 'Thandiwe Mokoena', '9107245800086', 'thandiwe.mokoena@example.com', '$2b$10$ExampleHash020', '0756789012', 'social_worker', 1, '2026-10-05 16:10:51'),
 (18, 'David Mthembu', '8909185200089', 'david.mthembu@example.com', '$2b$10$ExampleHash021', '0767890123', 'social_worker', 1, '2026-10-05 16:10:51'),
 (19, 'Homes', '1234567899999', 'homes@gmail.com', '$2a$12$mzZqdt9XJeBMY6A/oA1ni.40IRNWYewxC6aFZAn5H4cU/6mRPzFGi', NULL, 'admin', 1, '2026-10-07 08:26:36'),
-(20, 'phelma', '1234567894444', 'phelma@gmail.com', '$2a$12$jx.zKnXqrRwviekmuczZx.n/sSxsiFKPGQZ13mDQ65er9E1snubeq', NULL, 'adoptive_parent', 1, '2026-10-07 21:16:00'),
+(20, 'phelma', '1234567894444', 'phelma@gmail.com', '$2a$12$jx.zKnXqrRwviekmuczZx.n/sSxsiFKPGQZ13mDQ65er9E1snubeq', NULL, 'social_worker', 1, '2026-10-07 21:16:00'),
 (21, 'Thabo Mokoena', '9001015800081', 'thabo.mokoena@example.com', 'TEST_HASH_001', '0821234567', 'social_worker', 1, '2026-10-13 08:59:49');
 
 --
@@ -533,7 +537,7 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `social_workers`
 --
 ALTER TABLE `social_workers`
-  MODIFY `social_worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `social_worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
