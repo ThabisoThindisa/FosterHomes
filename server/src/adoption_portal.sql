@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 08, 2026 at 06:09 AM
+-- Generation Time: Oct 13, 2026 at 06:12 PM
 -- Server version: 10.4.32-MariaDB
 -- PHP Version: 8.1.25
 
@@ -32,10 +32,22 @@ CREATE TABLE `adoption_applications` (
   `applicant_id` int(11) NOT NULL,
   `social_worker_id` int(11) DEFAULT NULL,
   `program_id` int(11) DEFAULT NULL,
+  `foster_home_id` int(11) NOT NULL,
   `application_date` datetime NOT NULL DEFAULT current_timestamp(),
   `status` enum('submitted','under_review','assessment','approved','matched','completed','rejected','withdrawn') NOT NULL DEFAULT 'submitted',
   `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `adoption_applications`
+--
+
+INSERT INTO `adoption_applications` (`application_id`, `applicant_id`, `social_worker_id`, `program_id`, `foster_home_id`, `application_date`, `status`, `notes`) VALUES
+(2, 8, 1, 1, 5, '2026-10-27 00:00:00', 'completed', 'Nothing'),
+(3, 8, 1, 1, 3, '2026-10-15 00:00:00', 'submitted', 'June'),
+(4, 8, 2, 1, 9, '2026-10-13 00:00:00', 'submitted', 'During holidays'),
+(5, 8, 2, 1, 4, '2026-10-31 00:00:00', 'submitted', 'Thabiso'),
+(6, 8, 1, 1, 9, '2026-11-11 00:00:00', 'submitted', 'November');
 
 -- --------------------------------------------------------
 
@@ -73,8 +85,8 @@ CREATE TABLE `adoption_programs` (
 
 INSERT INTO `adoption_programs` (`program_id`, `ad_name`, `ad_description`, `ad_eligibility_requirements`, `ad_is_active`, `ad_created_at`) VALUES
 (1, 'Domestic Adoption Programme', 'A programme supporting eligible individuals and families through the domestic adoption process.', 'Applicants must meet the applicable legal, social and financial requirements and complete the required assessment process.', 1, '2026-09-20 14:44:21'),
-(2, 'Foster-to-Adopt Programme', 'A programme for approved foster caregivers who may become eligible to adopt a child in their care.', 'Applicants must be approved foster caregivers and complete the required adoption assessment.', 1, '2026-09-20 14:44:21'),
-(9, 'Meet ups', 'Trust building and communication', 'First time adoption', 1, '2026-09-23 21:54:38');
+(29, 'Family Reunification Support Programme', 'Supports assessments and services aimed at safely reuniting children with their birth families when appropriate and in the child\'\'s best interests.', 'Families must participate in relevant assessments and follow the applicable child-protection process.', 1, '2026-10-12 15:36:47'),
+(30, 'Sibling Adoption Programme', 'Encourages the placement of siblings together where appropriate, helping children maintain important family relationships.', 'Applicants must be assessed for their ability to accommodate and support the needs of siblings.', 1, '2026-10-12 15:37:25');
 
 -- --------------------------------------------------------
 
@@ -96,7 +108,8 @@ CREATE TABLE `applicants` (
 --
 
 INSERT INTO `applicants` (`applicant_id`, `user_id`, `s_marital_status`, `s_occupation`, `s_address`, `s_adoption_preferences`) VALUES
-(8, 19, 'Single', 'Software engineer', 'Mokopane', '');
+(8, 19, 'Single', 'Software engineer', 'Mokopane', ''),
+(12, 20, NULL, NULL, NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -111,22 +124,6 @@ CREATE TABLE `application_documents` (
   `file_path` varchar(500) NOT NULL,
   `uploaded_at` datetime NOT NULL DEFAULT current_timestamp(),
   `verification_status` enum('pending','verified','rejected') NOT NULL DEFAULT 'pending'
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
-
--- --------------------------------------------------------
-
---
--- Table structure for table `appointments`
---
-
-CREATE TABLE `appointments` (
-  `appointment_id` int(11) NOT NULL,
-  `applicant_id` int(11) NOT NULL,
-  `social_worker_id` int(11) NOT NULL,
-  `appointment_date` datetime NOT NULL,
-  `appointment_type` varchar(100) DEFAULT NULL,
-  `status` enum('requested','confirmed','completed','cancelled') NOT NULL DEFAULT 'requested',
-  `notes` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -176,7 +173,8 @@ CREATE TABLE `enquiries` (
 --
 
 INSERT INTO `enquiries` (`enquiry_id`, `full_name`, `email`, `phone`, `subject`, `message`, `status`, `created_at`) VALUES
-(1, 'Love', 'test@gmail.com', '0766547791', 'test 1', 'test 1', 'new', '2026-10-07 18:52:51');
+(1, 'Love', 'test@gmail.com', '0766547791', 'test 1', 'test 1', 'new', '2026-10-07 18:52:51'),
+(2, 'Thabiso Thindisa', 'thabiso@hapcal.com', NULL, 'How to find teders', 'First go to the government tender called eTenders', 'new', '2026-10-13 09:09:15');
 
 -- --------------------------------------------------------
 
@@ -231,7 +229,27 @@ CREATE TABLE `gallery` (
 --
 
 INSERT INTO `gallery` (`id`, `image_data`, `image_type`, `alt_text`) VALUES
-(1, 0x2f75706c6f6164732f64656637623631392d313961322d343765332d393138622d3263396630323165316130652e6a7067, 'image/jpeg', 'aaaa');
+(1, 0x2f75706c6f6164732f64656637623631392d313961322d343765332d393138622d3263396630323165316130652e6a7067, 'image/jpeg', 'aaaa'),
+(2, 0x2f75706c6f6164732f37333361303330622d363238372d343139382d386565302d3535613936343761336265622e6a7067, 'image/jpeg', 'eee'),
+(3, 0x2f75706c6f6164732f39393830613063362d653839362d343166342d623264392d3463346562393336346564342e6a7067, 'image/jpeg', 'birthday'),
+(4, 0x2f75706c6f6164732f38623162396335302d383433632d343832642d393033362d6637623238303162623037342e6a7067, 'image/jpeg', 'huging');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `homes`
+--
+
+CREATE TABLE `homes` (
+  `home_id` int(11) NOT NULL,
+  `foster_home_id` int(11) NOT NULL,
+  `home_name` varchar(150) NOT NULL,
+  `home_address` varchar(255) NOT NULL,
+  `home_description` text DEFAULT NULL,
+  `home_capacity` int(11) NOT NULL DEFAULT 1,
+  `home_status` enum('available','occupied','maintenance','inactive') NOT NULL DEFAULT 'available',
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
 
@@ -253,10 +271,8 @@ CREATE TABLE `ourstories` (
 --
 
 INSERT INTO `ourstories` (`Story_id`, `title`, `content`, `author_id`, `published_at`, `is_published`) VALUES
-(2, 'Preparing Your Home for Adoption', 'Creating a safe, welcoming, and stable home environment is an important part of preparing for adoption. Prospective adoptive parents should consider the child\'s physical, emotional, educational, and social needs.', 4, '2026-02-03 10:30:00', 1),
 (4, 'Supporting Children Through Transition', 'Children going through the adoption process may experience a range of emotions. Families can help by providing reassurance, consistency, patience, and age-appropriate communication throughout the transition.', 4, '2026-04-18 11:00:00', 1),
-(6, 'New Adoption Support Resources', 'Our adoption support resources have been expanded to provide applicants and families with additional information about preparing for adoption and supporting children before and after placement.', 4, '2026-06-12 13:00:00', 1),
-(8, 'Upcoming Adoption Awareness Event', 'Our organisation will be hosting an adoption awareness event to provide information about adoption and connect prospective applicants with adoption professionals.', 4, '2026-08-15 12:00:00', 1);
+(6, 'New Adoption Support Resources', 'Our adoption support resources have been expanded to provide applicants and families with additional information about preparing for adoption and supporting children before and after placement.', 4, '2026-06-12 13:00:00', 1);
 
 -- --------------------------------------------------------
 
@@ -329,7 +345,9 @@ INSERT INTO `users` (`user_id`, `u_full_name`, `u_BirthID`, `u_email`, `u_passwo
 (16, 'vin', '8888888888888', 'vincet@gmail.com', '$2a$12$I/laZ6qpc5icwPJovjHDJeHhHELRgYOkvv7o7Ixo9/v6KmSKHXp3m', NULL, 'adoptive_parent', 1, '2026-09-29 16:29:14'),
 (17, 'Thandiwe Mokoena', '9107245800086', 'thandiwe.mokoena@example.com', '$2b$10$ExampleHash020', '0756789012', 'social_worker', 1, '2026-10-05 16:10:51'),
 (18, 'David Mthembu', '8909185200089', 'david.mthembu@example.com', '$2b$10$ExampleHash021', '0767890123', 'social_worker', 1, '2026-10-05 16:10:51'),
-(19, 'Homes', '1234567899999', 'homes@gmail.com', '$2a$12$mzZqdt9XJeBMY6A/oA1ni.40IRNWYewxC6aFZAn5H4cU/6mRPzFGi', NULL, 'admin', 1, '2026-10-07 08:26:36');
+(19, 'Homes', '1234567899999', 'homes@gmail.com', '$2a$12$mzZqdt9XJeBMY6A/oA1ni.40IRNWYewxC6aFZAn5H4cU/6mRPzFGi', NULL, 'admin', 1, '2026-10-07 08:26:36'),
+(20, 'phelma', '1234567894444', 'phelma@gmail.com', '$2a$12$jx.zKnXqrRwviekmuczZx.n/sSxsiFKPGQZ13mDQ65er9E1snubeq', NULL, 'adoptive_parent', 1, '2026-10-07 21:16:00'),
+(21, 'Thabo Mokoena', '9001015800081', 'thabo.mokoena@example.com', 'TEST_HASH_001', '0821234567', 'social_worker', 1, '2026-10-13 08:59:49');
 
 --
 -- Indexes for dumped tables
@@ -340,6 +358,7 @@ INSERT INTO `users` (`user_id`, `u_full_name`, `u_BirthID`, `u_email`, `u_passwo
 --
 ALTER TABLE `adoption_applications`
   ADD PRIMARY KEY (`application_id`),
+  ADD KEY `idx_applications_foster_home` (`foster_home_id`),
   ADD KEY `FK_Applications_Applicants` (`applicant_id`),
   ADD KEY `FK_Applications_SocialWorkers` (`social_worker_id`),
   ADD KEY `FK_Applications_Programs` (`program_id`);
@@ -373,14 +392,6 @@ ALTER TABLE `application_documents`
   ADD KEY `FK_Documents_Applications` (`application_id`);
 
 --
--- Indexes for table `appointments`
---
-ALTER TABLE `appointments`
-  ADD PRIMARY KEY (`appointment_id`),
-  ADD KEY `FK_Appointments_Applicants` (`applicant_id`),
-  ADD KEY `FK_Appointments_SocialWorkers` (`social_worker_id`);
-
---
 -- Indexes for table `children`
 --
 ALTER TABLE `children`
@@ -405,6 +416,13 @@ ALTER TABLE `fosterhomes`
 --
 ALTER TABLE `gallery`
   ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `homes`
+--
+ALTER TABLE `homes`
+  ADD PRIMARY KEY (`home_id`),
+  ADD KEY `idx_homes_foster_home` (`foster_home_id`);
 
 --
 -- Indexes for table `ourstories`
@@ -443,7 +461,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `adoption_applications`
 --
 ALTER TABLE `adoption_applications`
-  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `application_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `adoption_matches`
@@ -455,25 +473,19 @@ ALTER TABLE `adoption_matches`
 -- AUTO_INCREMENT for table `adoption_programs`
 --
 ALTER TABLE `adoption_programs`
-  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=27;
+  MODIFY `program_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=31;
 
 --
 -- AUTO_INCREMENT for table `applicants`
 --
 ALTER TABLE `applicants`
-  MODIFY `applicant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `applicant_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `application_documents`
 --
 ALTER TABLE `application_documents`
   MODIFY `document_id` int(11) NOT NULL AUTO_INCREMENT;
-
---
--- AUTO_INCREMENT for table `appointments`
---
-ALTER TABLE `appointments`
-  MODIFY `appointment_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `children`
@@ -485,7 +497,7 @@ ALTER TABLE `children`
 -- AUTO_INCREMENT for table `enquiries`
 --
 ALTER TABLE `enquiries`
-  MODIFY `enquiry_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `enquiry_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `fosterhomes`
@@ -497,7 +509,13 @@ ALTER TABLE `fosterhomes`
 -- AUTO_INCREMENT for table `gallery`
 --
 ALTER TABLE `gallery`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `homes`
+--
+ALTER TABLE `homes`
+  MODIFY `home_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `ourstories`
@@ -515,13 +533,13 @@ ALTER TABLE `services`
 -- AUTO_INCREMENT for table `social_workers`
 --
 ALTER TABLE `social_workers`
-  MODIFY `social_worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `social_worker_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=23;
 
 --
 -- Constraints for dumped tables
@@ -532,6 +550,7 @@ ALTER TABLE `users`
 --
 ALTER TABLE `adoption_applications`
   ADD CONSTRAINT `FK_Applications_Applicants` FOREIGN KEY (`applicant_id`) REFERENCES `applicants` (`applicant_id`),
+  ADD CONSTRAINT `FK_Applications_FosterHomes` FOREIGN KEY (`foster_home_id`) REFERENCES `fosterhomes` (`foster_home_id`) ON UPDATE CASCADE,
   ADD CONSTRAINT `FK_Applications_Programs` FOREIGN KEY (`program_id`) REFERENCES `adoption_programs` (`program_id`),
   ADD CONSTRAINT `FK_Applications_SocialWorkers` FOREIGN KEY (`social_worker_id`) REFERENCES `social_workers` (`social_worker_id`);
 
@@ -555,17 +574,16 @@ ALTER TABLE `application_documents`
   ADD CONSTRAINT `FK_Documents_Applications` FOREIGN KEY (`application_id`) REFERENCES `adoption_applications` (`application_id`);
 
 --
--- Constraints for table `appointments`
---
-ALTER TABLE `appointments`
-  ADD CONSTRAINT `FK_Appointments_Applicants` FOREIGN KEY (`applicant_id`) REFERENCES `applicants` (`applicant_id`),
-  ADD CONSTRAINT `FK_Appointments_SocialWorkers` FOREIGN KEY (`social_worker_id`) REFERENCES `social_workers` (`social_worker_id`);
-
---
 -- Constraints for table `fosterhomes`
 --
 ALTER TABLE `fosterhomes`
   ADD CONSTRAINT `FK_FosterHomes_Users` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`) ON DELETE CASCADE;
+
+--
+-- Constraints for table `homes`
+--
+ALTER TABLE `homes`
+  ADD CONSTRAINT `FK_Homes_FosterHomes` FOREIGN KEY (`foster_home_id`) REFERENCES `fosterhomes` (`foster_home_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `social_workers`
