@@ -1,71 +1,101 @@
 import { useState, useEffect } from 'react'
 
-import styles from  '../css/Testimonials.module.css'
-import Header from '../SemanticElements/Header'   //'./SemanticElements/Header'
-import NavigationBar from '../SemanticElements/NavBar';
-import Footer from '../SemanticElements/Footer' //'./SemanticElements/Footer'
-import {HandleGetList,addEntryRequest} from '../Helpers/HandleRequests'  //'./Helpers/HandleRequests'
+import styles from '../css/Testimonials.module.css'
+import Header from '../SemanticElements/Header'
+import NavigationBar from '../SemanticElements/NavBar'
+import Footer from '../SemanticElements/Footer'
+import { HandleGetList } from '../Helpers/HandleRequests'
 
-export default function DisplayHomes(){
+export default function ApplicationPage() {
+  const [applications, setApplications] = useState([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState('')
 
-  //Store and set the variavles 
-   const [Applications, setApplications] = useState([]) //All stored OurStories /Stories
+  useEffect(() => {
+    const getApplications = async () => {
+      try {
+        const applicationList = await HandleGetList('/getAdoptionApplications')
+        setApplications(applicationList)
+      } catch (fetchError) {
+        setError(fetchError.message)
+      } finally {
+        setLoading(false)
+      }
+    }
 
-useEffect(() => {
+    getApplications()
+  }, [])
 
-    const getFosterHomes = async () => {
-        try {
-          
-            const Parent_Application = await HandleGetList('/getAdoptionApplications');
-            setApplications(Parent_Application);
-        } catch (fetchError) {
-            setError(fetchError.message);
-        } finally {
-            setLoading(false);
-        }
-    };
+  const formatDate = (value) => {
+    if (!value) return 'N/A'
 
-    getFosterHomes();
+    const date = new Date(value)
+    if (Number.isNaN(date.getTime())) return value
 
-}, []);
-  
+    return date.toLocaleDateString(undefined, {
+      year: 'numeric',
+      month: 'short',
+      day: 'numeric'
+    })
+  }
 
   return (
     <>
       <NavigationBar />
       <main className="dashboard">
-      <Header
-        eyebrow="Our Foster Homes"
-        title="Viewe Applications"
-        description="Our foster homes provide a safe, loving, and supportive environment for children who need temporary care and protection."
-      />
+        <Header
+          eyebrow="Adoption"
+          title="View Applications"
+          description="Review all adoption applications submitted by social workers and assigned programs."
+        />
 
-          <form>
-      <label className={styles.DisplayLabel}>All the registered fosterhomes</label>
-    </form>
+        <section style={{ padding: '1.5rem 0' }}>
+          <label className={styles.DisplayLabel}>All adoption applications</label>
+        </section>
 
-      <section className={styles.flexContainer}>
-        {Applications.map((Applications,index =1) => (
-          <article key={Applications.application_id } className={`${styles.card} ${styles.flexItem}`}>
-            <div className={styles.body}>
-              <h3>{(index+1)+'. ' + Applications.application_id }</h3>
-              <p>{'Name: '+Applications.social_worker_name }</p>
-              <p>{'Surname: '+Applications.program_name   }</p>
-              <p>{'Contact details: '+Applications.application_date  }</p>
-              <p>{'Available Space: '+Applications.status}</p>
-            
-              {Applications.notes && (
-                <small>
-                  Published at: {Applications.fh_created_at.slice(0, 10)}
-                </small>
-                
-              )}
-            </div>
-          </article>
-        ))}
-      </section>
+        <section style={{ overflowX: 'auto', marginBottom: '2rem' }}>
+          {loading ? (
+            <p>Loading applications...</p>
+          ) : error ? (
+            <p style={{ color: 'crimson' }}>Error: {error}</p>
+          ) : applications.length === 0 ? (
+            <p>No adoption applications found.</p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', background: '#fff' }}>
+              <thead>
+                <tr style={{ background: '#eef3f8' }}>
+                  <th style={tableCellStyle}>Application ID</th>
+                  <th style={tableCellStyle}>Social Worker</th>
+                  <th style={tableCellStyle}>Program</th>
+                  <th style={tableCellStyle}>Date</th>
+                  <th style={tableCellStyle}>Status</th>
+                  <th style={tableCellStyle}>Notes</th>
+                </tr>
+              </thead>
+              <tbody>
+                {applications.map((application) => (
+                  <tr key={application.application_id}>
+                    <td style={tableCellStyle}>{application.application_id}</td>
+                    <td style={tableCellStyle}>{application.social_worker_name || 'Unknown worker'}</td>
+                    <td style={tableCellStyle}>{application.program_name || 'Unassigned'}</td>
+                    <td style={tableCellStyle}>{formatDate(application.application_date)}</td>
+                    <td style={tableCellStyle}>{application.status || 'Pending'}</td>
+                    <td style={tableCellStyle}>{application.notes || '—'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </section>
       </main>
       <Footer />
     </>
   )
+}
+
+const tableCellStyle = {
+  border: '1px solid #d5dfe8',
+  padding: '0.75rem 1rem',
+  textAlign: 'left',
+  verticalAlign: 'top'
 }

@@ -77,6 +77,22 @@ useEffect(() => {
 
 }, []);
 
+///----------------Get gallery infor
+useEffect(() => {
+
+    const getGallery = async () => {
+        try {
+            const list = await HandleGetList('/getStories');
+            setAllStories(list);
+        } catch (fetchError) {
+            console.error(fetchError.message);
+        }
+    };
+
+    getGallery();
+
+}, []);
+
 //---------------------------Delete a program---------------;
 
 const handleDeleteProgram = async (id) => {
@@ -247,7 +263,8 @@ const Add_Gallery_Image = async (event) => {
         </button>
 
         </article>)}</section>
-      <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button onClick={() => remove(image.gallery_id || image.image_id, 'picture', 'picture')}>Delete</button></article>)}</section>
+      <section className={styles.list}><h2>Gallery</h2>
+      {gallery.map((image) => <article key={image.id }><span><strong>{image.image_type || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button onClick={() => remove(image.gallery_id || image.image_id, 'picture', 'picture')}>Delete</button></article>)}</section>
       </main>
      <Footer />
     </>

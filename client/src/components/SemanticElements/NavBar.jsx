@@ -19,7 +19,7 @@ const LINKS = [
   { label: 'Adoption Portal',
       children: PORTAL_OPTIONS
    },
- 
+  { label: 'Gallery', to: '/Gallery' },
   { label: 'Contact', to: '/contacts' },
   { label: 'My Account', to: '/account' },
   { label: 'Sign-Out', to: "/logout", action: 'logout' }

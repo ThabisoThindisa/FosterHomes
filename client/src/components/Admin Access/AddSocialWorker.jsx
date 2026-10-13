@@ -4,24 +4,15 @@ import styles from '../css/Admin.module.css'
 import Header from '../SemanticElements/Header'
 import NavigationBar from '../SemanticElements/NavBar'
 import Footer from '../SemanticElements/Footer'
-import { delete_Users, HandleGetList, addEntryRequest } from '../Helpers/HandleRequests'
+import { addEntryRequest } from '../Helpers/HandleRequests'
 import { useNavigate } from "react-router-dom";
 import '../Admin Access/display.css'
 
 export default function ManageUsers() {
-  const [Allusers, setAllUsers] = useState([])
-  const [loading, setLoading] = useState(true)
+  //const [Allusers, setAllUsers] = useState([])
+ // const [loading, setLoading] = useState(true)
   const [message, setMessage] = useState('')
    const navigate = useNavigate();
-
-  const [child, setChild] = useState({
-     C_fullName: '',
-     c_reference_code: '',
-     c_date_of_birth: '',
-     c_gender: '',
-     status: 'in_care',
-     special_needs: ''
-  })
 
     const [worker, setWorker] = useState({
      s_fullName: '',
@@ -35,8 +26,8 @@ export default function ManageUsers() {
      event.preventDefault()
 
      try {
-       const indexSocialW = await addEntryRequest(worker, '/AddWorker')
-       setAllUsers((currentW) => [...currentW, indexSocialW])
+       await addEntryRequest(worker, '/AddWorker')
+       //setAllUsers((currentW) => [...currentW, indexSocialW])
        setWorker({
          s_fullName: '',
          s_registration_number: '',

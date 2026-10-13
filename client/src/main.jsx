@@ -24,7 +24,8 @@ import './styles/animations.css';
 //Import admin pages
 import FosterHomesP from './components/Admin Access/DisplayHomes';
 import AdoptionPage from  './components/Portal options/MakeAdoptions'//'./components/Admin Access/ManageAdoptions';
-import UserPage from './components/Admin Access/ManageUsers'
+import UserPage from './components/Admin Access/ManageUsers';
+import ApplicationPage from './components/Admin Access/ApplicationPage';
 import { API_URL } from './components/Helpers/HandleRequests'
 
 
@@ -91,6 +92,7 @@ function App() {
     <Route path="/fosterHomes" element={<FosterHomesP />} />
     <Route path="/ChildManage" element={<AddChildPage />} />
     <Route path="/SocialWorkers" element={<AddWorkerPage />} />
+    <Route path="/SeeAplication" element={<ApplicationPage />} />
 
     <Route path="/adoption" element={<AdoptionPage />} />
     <Route path="/AllUsers" element={<UserPage />} />

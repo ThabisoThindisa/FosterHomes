@@ -79,6 +79,19 @@ export default function handleGetRequests(app, pool, requireAuth, publicUser) {
     }
   });
 
+    //------------Display All images----------------
+  app.get('/api/getAllImages', async function (_req, res) {
+    try {
+      const [rows] = await pool.query(
+        'SELECT * FROM gallery ORDER BY id DESC;'
+      );
+
+      res.json(rows);
+    } catch (error) {
+      res.status(500).json({ error: 'Failed to retrieve Gallery information!' });
+    }
+  });
+
   //------------Get Social workers added----------
   app.get('/api/getWorkers', async function (_req, res) {
     try {
@@ -115,12 +128,18 @@ export default function handleGetRequests(app, pool, requireAuth, publicUser) {
 
 app.get('/api/getAdoptionApplications', async (req, res) => {
     try {
-  const sql = "SELECT aa.application_id, sw_user.u_full_name AS social_worker_name, " +
-    "p.ad_name AS program_name, aa.application_date, aa.status, " +
-    "aa.notes FROM adoption_applications AS aa LEFT JOIN social_workers AS sw " +
-    "ON aa.social_worker_id = sw.social_worker_id LEFT JOIN users AS sw_user " +
-    "ON sw.user_id = sw_user.user_id LEFT JOIN programs AS p " +
-    "ON aa.program_id = p.ad_id ORDER BY aa.application_date DESC";
+          const sql = `
+            SELECT aa.application_id, sw_user.u_full_name AS social_worker_name,
+              p.ad_name AS program_name, aa.application_date, aa.status, aa.notes
+            FROM adoption_applications AS aa
+            LEFT JOIN social_workers AS sw
+              ON aa.social_worker_id = sw.social_worker_id
+            LEFT JOIN users AS sw_user
+              ON sw.user_id = sw_user.user_id
+            LEFT JOIN adoption_programs AS p
+              ON aa.program_id = p.program_id
+            ORDER BY aa.application_date DESC
+          `;
 
         const [applications] = await pool.query(sql);
 

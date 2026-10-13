@@ -30,6 +30,7 @@ export default function Admin(){
   const [Display_allPrograms, setAllPrograms] = useState([]) //Display all programs
   const [Display_Allstories, setAllStories] = useState([])
   const [gallery, setGallery] = useState([])
+  const [Allgallery, setAllGallery] = useState([])
   const [file, setFile] = useState(null)
 
     //--------The add single the program----
@@ -58,6 +59,20 @@ export default function Admin(){
           }
       };
       fetchPrograms();
+  
+  }, []);
+
+  //-------------Get The images saved-----------
+    useEffect(() => {
+      const image_List = async () => {
+          try {
+              const Req_list = await HandleGetList('/getAllImages');
+              setAllGallery(Req_list);
+          } catch (fetchError) {
+              setError(fetchError.message);
+          }
+      };
+      image_List();
   
   }, []);
 
@@ -131,6 +146,7 @@ const Add_Gallery_Image = async (event) => {
     }
   }
 
+  // Remove the story based on its id
   const deleteStory = async (storyId) => {
     try {
       const deletedStory = await handleDeleteRequest('/DeleteStory', 'story', storyId)
@@ -212,58 +228,31 @@ const Add_Gallery_Image = async (event) => {
       <section className={styles.list}><h2>Stories</h2>{Display_Allstories.map((story) => <article key={story.Story_id}><span>
         <strong>{story.title}</strong><small>{story.content}</small>
         </span><button type="button" onClick={() => deleteStory(story.Story_id)}>Delete</button></article>)}</section>
-      <section className={styles.list}><h2>Gallery</h2>{gallery.map((image) => <article key={image.gallery_id || image.image_id}><span><strong>{image.alt_text || 'Gallery picture'}</strong><small>{image.image_url || image.url}</small></span><button type="button" onClick={() => removePicture(image.gallery_id || image.image_id)}>Delete</button></article>)}</section>
+      <section className={styles.list}><h2>Gallery</h2>
+      {Allgallery.map((image) => <article key={image.id}><span>
+        <strong>{image.alt_text || 'Gallery picture'}</strong>
+        <small>{'TYPE: '+image.image_type}</small></span>
+        <button type="button" onClick={() => removePicture(image.id)}>Delete</button>
+        </article>)}</section>
       
     <button 
       
     style={{
-    backgroundColor: '#4175af',
-    color: 'white',
-    border: 'none',
-    padding: '22px 24px',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    marginTop: '10px',
-    marginRight: '10px',
-    cursor: 'pointer'
+    backgroundColor: '#4175af',color: 'white',border: 'none',
+    padding: '22px 24px',borderRadius: '8px',fontSize: '16px', fontWeight: '600',
+    marginTop: '10px',marginRight: '10px',cursor: 'pointer'
   }}
       
       onClick={() => navigate("/SeeAplication")} >View Adoption applications
       </button>
       <button 
       
-          style={{
-    backgroundColor: '#4175af',
-    color: 'white',
-    border: 'none',
-    padding: '22px 24px',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    marginTop: '10px',
-    marginRight: '10px',
-    cursor: 'pointer'
+    style={{
+    backgroundColor: '#4175af',color: 'white',border: 'none',padding: '22px 24px',borderRadius: '8px',fontSize: '16px',
+    fontWeight: '600',marginTop: '10px',marginRight: '10px',cursor: 'pointer'
   }}
       
       onClick={() => navigate("/SocialWorkers")}>View Queries.
-      </button>
-     <button 
-      
-    style={{
-    backgroundColor: '#4175af',
-    color: 'white',
-    border: 'none',
-    padding: '22px 24px',
-    borderRadius: '8px',
-    fontSize: '16px',
-    fontWeight: '600',
-    marginTop: '10px',
-    marginRight: '10px',
-    cursor: 'pointer'
-  }}
-      
-      onClick={() => navigate("/ChildManage")} >View Appointments
       </button>
       </main>
      <Footer />
