@@ -9,6 +9,17 @@ const childStatuses = [
   'reunified'
 ];
 
+const applicationStatuses = [
+  'submitted',
+  'under_review',
+  'assessment',
+  'approved',
+  'matched',
+  'completed',
+  'rejected',
+  'withdrawn'
+];
+
 export default function HandleAdd(app, pool, requireAuth) {
   app.post('/api/AddPrograms', async (req, res) => {
     const { ad_name, ad_description, ad_eligibility_requirements } = req.body;
@@ -424,6 +435,42 @@ export default function HandleAdd(app, pool, requireAuth) {
       ) {
         return res.status(400).json({
           message: 'Select a social worker, program, foster home, and application date.'
+        });
+
+        app.put('/api/updateApplicationStatus/:applicationId', requireAuth, async (req, res) => {
+          if (req.user.u_role !== 'admin') {
+            return res.status(403).json({ message: 'Only administrators can update application statuses.' });
+          }
+
+          const applicationId = Number(req.params.applicationId);
+          const { status } = req.body;
+          if (
+            !Number.isInteger(applicationId) || applicationId <= 0 ||
+            typeof status !== 'string' || !applicationStatuses.includes(status)
+          ) {
+            return res.status(400).json({ message: 'Provide a valid application ID and status.' });
+          }
+
+          try {
+            const [result] = await pool.execute(
+              'UPDATE adoption_applications SET status = ? WHERE application_id = ?',
+              [status, applicationId]
+            );
+            if (result.affectedRows === 0) {
+              const [applications] = await pool.execute(
+                'SELECT application_id FROM adoption_applications WHERE application_id = ? LIMIT 1',
+                [applicationId]
+              );
+              if (!applications[0]) {
+                return res.status(404).json({ message: 'Application not found.' });
+              }
+            }
+
+            return res.json({ message: 'Application status updated.', application_id: applicationId, status });
+          } catch (error) {
+            console.error('Error updating application status:', error);
+            return res.status(500).json({ message: 'Failed to update application status.' });
+          }
         });
       }
 

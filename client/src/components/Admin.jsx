@@ -252,7 +252,7 @@ const Add_Gallery_Image = async (event) => {
     fontWeight: '600',marginTop: '10px',marginRight: '10px',cursor: 'pointer'
   }}
       
-      onClick={() => navigate("/SocialWorkers")}>View Queries.
+      onClick={() => navigate("/queries")}>View user queries
       </button>
       </main>
      <Footer />

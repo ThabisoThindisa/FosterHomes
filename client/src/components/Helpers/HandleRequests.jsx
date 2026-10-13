@@ -38,6 +38,22 @@ export const addEntryRequest = async (myEntry,urlName) => {
     return data;
 };
 
+export const updateEntryRequest = async (entry, urlName) => {
+    const response = await fetch(API_URL + urlName, {
+        method: 'PUT',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(entry)
+    });
+    const data = await response.json().catch(() => ({}));
+    if (!response.ok) {
+        throw new Error(data.message || 'Unable to update request.');
+    }
+    return data;
+};
+
   export const delete_Program = async (ProgramID) => {
     
     try {

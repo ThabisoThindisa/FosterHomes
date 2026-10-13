@@ -79,6 +79,29 @@ export default function handleGetRequests(app, pool, requireAuth, publicUser) {
     }
   });
 
+  app.get('/api/getEnquiries', requireAuth, async function (req, res) {
+    if (req.user.u_role !== 'admin') {
+      return res.status(403).json({
+        message: 'Only administrators can view user queries.'
+      });
+    }
+
+    try {
+      const [rows] = await pool.query(
+        `SELECT enquiry_id, full_name, email, phone, subject, message, status, created_at
+         FROM enquiries
+         ORDER BY created_at DESC, enquiry_id DESC`
+      );
+
+      return res.json({ data: rows });
+    } catch (error) {
+      console.error('Failed to retrieve user queries:', error);
+      return res.status(500).json({
+        message: 'Failed to retrieve user queries.'
+      });
+    }
+  });
+
     //------------Display All images----------------
   app.get('/api/getAllImages', async function (_req, res) {
     try {

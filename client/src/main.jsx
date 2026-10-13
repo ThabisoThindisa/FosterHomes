@@ -26,6 +26,7 @@ import FosterHomesP from './components/Admin Access/DisplayHomes';
 import AdoptionPage from  './components/Portal options/MakeAdoptions'//'./components/Admin Access/ManageAdoptions';
 import UserPage from './components/Admin Access/ManageUsers';
 import ApplicationPage from './components/Admin Access/ApplicationPage';
+import UserQueries from './components/Admin Access/UserQueries';
 import { API_URL } from './components/Helpers/HandleRequests'
 
 
@@ -93,6 +94,7 @@ function App() {
     <Route path="/ChildManage" element={<AddChildPage />} />
     <Route path="/SocialWorkers" element={<AddWorkerPage />} />
     <Route path="/SeeAplication" element={<ApplicationPage />} />
+    <Route path="/queries" element={<UserQueries />} />
 
     <Route path="/adoption" element={<AdoptionPage />} />
     <Route path="/AllUsers" element={<UserPage />} />
