@@ -26,6 +26,25 @@ export default function handleGetRequests(app, pool, requireAuth, publicUser) {
     }
   });
 
+  app.get('/api/getApplicant', requireAuth, async function (req, res) {
+    try {
+      const [rows] = await pool.query(
+        `SELECT s_marital_status, s_occupation, s_address, s_adoption_preferences
+         FROM applicants
+         WHERE user_id = ?
+         LIMIT 1`,
+        [req.user.user_id]
+      );
+
+      return res.json({ data: rows });
+    } catch (error) {
+      console.error('Failed to retrieve applicant information:', error);
+      return res.status(500).json({
+        message: 'Failed to retrieve applicant information.'
+      });
+    }
+  });
+
 
   //------------Get the programs saved by the admin----------
   app.get('/api/getPrograms', async function (_req, res) {

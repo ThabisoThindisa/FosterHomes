@@ -359,18 +359,15 @@ export default function HandleAdd(app, pool, requireAuth) {
     }
   });
 
-  app.post('/api/updateAccount', async (req, res) => {
+  app.post('/api/updateAccount', requireAuth, async (req, res) => {
     const {
-      user_id,
       s_marital_status,
       s_occupation,
       s_address,
       s_adoption_preferences
     } = req.body;
-    const userId = Number(user_id);
 
     if (
-      !Number.isInteger(userId) || userId <= 0 ||
       !s_address || !s_marital_status
     ) {
       return res.status(400).json({
@@ -389,7 +386,7 @@ export default function HandleAdd(app, pool, requireAuth) {
           s_address = VALUES(s_address),
           s_adoption_preferences = VALUES(s_adoption_preferences)`,
         [
-          userId,
+          req.user.user_id,
           s_marital_status,
           s_occupation || null,
           s_address,
@@ -397,8 +394,11 @@ export default function HandleAdd(app, pool, requireAuth) {
         ]
       );
       const [rows] = await pool.query(
-        'SELECT * FROM applicants WHERE user_id = ? LIMIT 1',
-        [userId]
+        `SELECT s_marital_status, s_occupation, s_address, s_adoption_preferences
+         FROM applicants
+         WHERE user_id = ?
+         LIMIT 1`,
+        [req.user.user_id]
       );
 
       return res.status(200).json({

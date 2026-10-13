@@ -1,9 +1,9 @@
 import { useState,useEffect } from 'react'
 import styles from './css/Admin.module.css'
-import Header from './SemanticElements/Header'
-import NavigationBar from './SemanticElements/NavBar'
-import Footer from './SemanticElements/Footer'
-import {HandleGetList,addEntryRequest,handleDeleteRequest} from './Helpers/HandleRequests'
+import Header from '../SemanticElements/Header'
+import NavigationBar from '../SemanticElements/NavBar'
+import Footer from '../SemanticElements/Footer'
+import {HandleGetList,addEntryRequest,handleDeleteRequest} from '../Helpers/HandleRequests'
 import { useNavigate } from 'react-router-dom'
 
 export default function Admin(){

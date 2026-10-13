@@ -1,14 +1,13 @@
 import { HeartHandshake, Mail, ShieldCheck, UserRound } from 'lucide-react'
 import NavBar from './SemanticElements/NavBar'
 import styles from './css/AcountPage.module.css'
-import { useState } from 'react';
-import {addEntryRequest} from './Helpers/HandleRequests'
+import { useEffect, useState } from 'react';
+import { addEntryRequest, HandleGetList } from './Helpers/HandleRequests'
 
 
 export default function AcountPage({ user }) {
 
 const [applicant, setApplicant] = useState({
-    user_id: user.id ,
     s_marital_status: '',
     s_occupation:  '',
     s_address:  '',
@@ -18,6 +17,37 @@ const [applicant, setApplicant] = useState({
   const [message, setMessage] = useState('')
   const [isSaving, setIsSaving] = useState(false)
   const [hasError, setHasError] = useState(false)
+  const [savedApplicant, setSavedApplicant] = useState(null)
+
+  useEffect(() => {
+    let isActive = true
+
+    async function loadApplicant() {
+      try {
+        const applicants = await HandleGetList('/getApplicant')
+        const saved = applicants[0]
+        if (isActive && saved) {
+          setSavedApplicant(saved)
+          setApplicant({
+            s_marital_status: saved.s_marital_status || '',
+            s_occupation: saved.s_occupation || '',
+            s_address: saved.s_address || '',
+            s_adoption_preferences: saved.s_adoption_preferences || ''
+          })
+        }
+      } catch (error) {
+        if (isActive) {
+          setHasError(true)
+          setMessage(error.message)
+        }
+      }
+    }
+
+    loadApplicant()
+    return () => {
+      isActive = false
+    }
+  }, [])
 
   const name = user.name.trim()
   const initials = name
@@ -37,8 +67,13 @@ const [applicant, setApplicant] = useState({
     try {
        
       const data = await addEntryRequest(applicant, '/updateAccount')
+      setSavedApplicant({
+        s_marital_status: data.data?.s_marital_status ?? applicant.s_marital_status,
+        s_occupation: data.data?.s_occupation ?? applicant.s_occupation,
+        s_address: data.data?.s_address ?? applicant.s_address,
+        s_adoption_preferences: data.data?.s_adoption_preferences ?? applicant.s_adoption_preferences,
+      })
       setApplicant({
-        user_id: user.id ,
         s_marital_status: '',
         s_occupation:  '',
         s_address:  '',
@@ -171,6 +206,39 @@ const [applicant, setApplicant] = useState({
             )}
           </form>
         </section>
+
+        {savedApplicant && (
+          <section className={styles.details} aria-labelledby="applicant-details-heading">
+            <div className={styles.sectionHeading}>
+              <span className={styles.sectionIcon}>
+                <HeartHandshake size={20} aria-hidden="true" />
+              </span>
+              <div>
+                <h2 id="applicant-details-heading">Applicant information</h2>
+                <p>Your saved adoption applicant details.</p>
+              </div>
+            </div>
+
+            <dl className={styles.detailList}>
+              <div className={styles.detailRow}>
+                <dt>Marital status</dt>
+                <dd>{savedApplicant.s_marital_status || '—'}</dd>
+              </div>
+              <div className={styles.detailRow}>
+                <dt>Occupation</dt>
+                <dd>{savedApplicant.s_occupation || '—'}</dd>
+              </div>
+              <div className={styles.detailRow}>
+                <dt>Address</dt>
+                <dd>{savedApplicant.s_address || '—'}</dd>
+              </div>
+              <div className={styles.detailRow}>
+                <dt>Adoption preferences</dt>
+                <dd>{savedApplicant.s_adoption_preferences || '—'}</dd>
+              </div>
+            </dl>
+          </section>
+        )}
 
         <aside className={styles.note}>
           <HeartHandshake size={21} aria-hidden="true" />

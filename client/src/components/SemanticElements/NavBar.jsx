@@ -27,13 +27,27 @@ const LINKS = [
   { label: 'Sign-Out', to: "/logout", action: 'logout' }
 ]
 
-export default function NavBar() {
+export default function NavBar({
+  backgroundImage,
+  backgroundSize = 'cover',
+  backgroundPosition = 'center',
+  backgroundRepeat = 'no-repeat',
+}) {
 
   const [open, setOpen] = useState(false)
   const [isAdmin, setIsAdmin] = useState(false)
   const [userState, setUserState] = useState(null)
   const [mode, setMode] = useState('login')
 const [openDropdown, setOpenDropdown] = useState(null)
+
+  const headerStyle = backgroundImage
+    ? {
+        backgroundImage: `linear-gradient(180deg, rgba(255,255,255,0.82), rgba(255,255,255,0.74)), url(${backgroundImage})`,
+        backgroundSize,
+        backgroundPosition,
+        backgroundRepeat,
+      }
+    : undefined
 
   // API connection
   const navigate = useNavigate();
@@ -87,7 +101,7 @@ const [openDropdown, setOpenDropdown] = useState(null)
   }, [])
 
   return (
-    <header className={styles.header} >
+    <header className={styles.header} style={headerStyle}>
    
       <div className={styles.brand}>
         <img
